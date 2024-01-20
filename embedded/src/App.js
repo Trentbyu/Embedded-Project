@@ -5,7 +5,7 @@ import TemperatureViewer from './compoents/temp';
 
 import Navbar from './compoents/nav';
 
-// import Clock from './Clock';
+
 
 const App = () => {
   return (
