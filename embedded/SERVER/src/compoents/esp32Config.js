@@ -4,10 +4,10 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
   const [sleepDuration, setSleepDuration] = useState('');
   const [temperature, setTemperature] = useState(null);
   const [selectedPowerState, setSelectedPowerState] = useState('');
-  const [currentPowerState, setCurrentPowerState] = useState('240'); // New state to store the current power state
-
-
-  const powerStates = ['240Mhz', '160Mhz', '80Mhz'];
+  const [currentPowerState, setCurrentPowerState] = useState('');
+  const [prevTemperature, setPrevTemperature] = useState(null);
+  const [prevPowerState, setPrevPowerState] = useState('');
+  const powerStates = ['240', '160', '80'];
 
   const handlePowerStateChange = (event) => {
     setSelectedPowerState(event.target.value);
@@ -101,7 +101,7 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
 
   // Call this function to start the scheduling
 //   scheduleAt10PM();
-    
+      
   useEffect(() => {
     // Fetch the current power state upon component mount
     const fetchPowerState = async () => {
@@ -112,8 +112,8 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
 
         if (response.ok) {
           const data = await response.json();
-          setCurrentPowerState(data.powerState || ''); // Set the current power state in the state
-          setSelectedPowerState(data.powerState || ''); // Set the selected power state as well
+          setCurrentPowerState(data.powerState || '');
+          setSelectedPowerState(data.powerState || '');
         } else {
           console.error('Failed to fetch current power state');
         }
@@ -122,15 +122,48 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
       }
     };
 
-    // Fetch the power state and start the temperature interval
-    fetchPowerState();
-    const intervalId = setInterval(() => {
-      handleTemperatureClick();
+    // Fetch temperature
+    const fetchTemperature = async () => {
+      try {
+        const response = await fetch(`${apiEndpoint}/temperature`);
+        const dataText = await response.text();
+        const temperatureMatch = dataText.match(/Temperature: (\d+\.\d+) C/);
+
+        if (temperatureMatch && temperatureMatch.length >= 2) {
+          const temperatureValue = parseFloat(temperatureMatch[1]);
+          setTemperature(temperatureValue);
+
+          // Check for temperature changes
+          if (temperatureValue !== prevTemperature) {
+            console.log('Temperature changed:', temperatureValue);
+          }
+          setPrevTemperature(temperatureValue);
+        } else {
+          console.error('Invalid temperature response:', dataText);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    // Fetch power state and temperature every second
+    let counter = 0;
+    const intervalId = setInterval(async () => {
+      await fetchTemperature();
+
+      // Fetch power state every 2 seconds
+      
+      if (counter == 2) {
+        await fetchPowerState();
+        counter = 0
+      }
+      counter++;
     }, 1000);
 
     // Cleanup the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, []); // Empty dependency array ensures that this effect runs once after the initial render
+  }, [apiEndpoint, prevTemperature]);
+
 
 
   return (
@@ -141,8 +174,8 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
             {temperature !== null ? `ESP32 internal temp: ${temperature}°C` : 'ESP32 internal temp: None'}
         </p>
         <label htmlFor="currentPowerState" className="block my-1 font-bold">
-          Current Power State: {currentPowerState} Mhz
-        </label>
+          Current Power State: {currentPowerState ? `${currentPowerState} Mhz` : 'None'}
+           </label>
         
         <div className="flex flex-col items-left space-y-4 mb-2">
         {/* Top Row: Sleep */}

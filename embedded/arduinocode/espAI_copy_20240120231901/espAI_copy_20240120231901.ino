@@ -26,7 +26,7 @@ uint8_t temprature_sens_read();
 char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 bool power;
-IPAddress staticIP(192, 168, 0, 116);  // Set your desired static IP address
+IPAddress staticIP(192, 168, 0, 100);  // Set your desired static IP address
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
 bool wifiConnected = 0;
@@ -135,8 +135,7 @@ void setup() {
   
   // setCpuFrequencyMhz(80);
  
-  // Serial.print("CPU Freq: ");
-  // Serial.println(getCpuFrequencyMhz());
+
 
   delay(1000);  // Add a delay of 5 seconds
   // Serial.println("Connected to WiFi");
@@ -254,36 +253,44 @@ void handleSleep(AsyncWebServerRequest *request) {
   esp_light_sleep_start();
 }
 
-void setPowerState(const String& state) {
-  if (state == "240Mhz") {
-    setCpuFrequencyMhz(240);
-  } else if (state == "160Mhz") {
-    setCpuFrequencyMhz(160);
-  } else if (state == "80Mhz") {
-    setCpuFrequencyMhz(80);
-  } 
+void setPowerState(int state) {
+  switch (state) {
+    case 240:
+        setCpuFrequencyMhz(240);
+        break;
+    case 160:
+        setCpuFrequencyMhz(160);
+        break;
+    case 80:
+        setCpuFrequencyMhz(80);
+        break;
+    // Add more cases if needed
+    default:
+        // Handle default case if necessary
+        break;
+}
 
 }
 void handlePowerRequest(AsyncWebServerRequest *request) {
   // Get the "state" query parameter
-  String stateParam;
+  int stateParam;
 
   if (request->hasParam("state")) {
-    stateParam = request->getParam("state")->value();
+    stateParam = request->getParam("state")->value().toInt();
     // Change power state based on the received parameter
     setPowerState(stateParam);
   } else {
     // If "state" parameter is not present, get the current power state
-    stateParam =getCpuFrequencyMhz();
+    stateParam = getCpuFrequencyMhz();
   }
 
   // Respond with the new or current power state
-  String response = "Power state: " + stateParam;
-  // Serial.print("CPU Freq: ");
-  // Serial.println(getCpuFrequencyMhz());
-   // Create a JSON response
-  String jsonResponse = "{\"powerState\":\"" + stateParam + "\"}";
+  String response = "Power state: " + String(stateParam);
+    Serial.print("CPU Freq: ");
+  Serial.println(getCpuFrequencyMhz());
+  String jsonResponse = "{\"powerState\":\"" + String(stateParam) + "\"}";
 
   // Respond with the JSON
   request->send(200, "application/json", jsonResponse);
 }
+
