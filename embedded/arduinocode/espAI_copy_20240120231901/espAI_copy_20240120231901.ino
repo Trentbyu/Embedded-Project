@@ -130,8 +130,13 @@ void setup() {
   EEPROM.get(sizeof(ssid), password);
 
   connectToWiFi();
-
+  Serial.print("CPU Freq: ");
+  Serial.println(getCpuFrequencyMhz());
   
+  setCpuFrequencyMhz(80);
+ 
+  Serial.print("CPU Freq: ");
+  Serial.println(getCpuFrequencyMhz());
 
   delay(1000);  // Add a delay of 5 seconds
   // Serial.println("Connected to WiFi");
@@ -148,6 +153,7 @@ void setup() {
   server.on("/restart", HTTP_GET, handleRestart);
   server.on("/temperature", HTTP_GET, handleTemperature);
   server.on("/power", HTTP_GET, handlePowerRequest);
+  server.on("/sleep", HTTP_GET, handleSleep);
  
   DefaultHeaders::Instance().addHeader("access-Control-Allow-Origin", "*");
 
@@ -221,7 +227,7 @@ void connectToWiFi() {
   }
 }
 
-void handlePowerRequest(AsyncWebServerRequest *request) {
+void handleSleep(AsyncWebServerRequest *request) {
   // Get the "duration" parameter from the URL
   String sleepDurationStr = request->getParam("duration")->value();
 
@@ -246,4 +252,38 @@ void handlePowerRequest(AsyncWebServerRequest *request) {
   delay(500);
 
   esp_light_sleep_start();
+}
+
+void setPowerState(const String& state) {
+  if (state == "240Mhz") {
+    setCpuFrequencyMhz(240);
+  } else if (state == "160Mhz") {
+    setCpuFrequencyMhz(160);
+  } else if (state == "80Mhz") {
+    setCpuFrequencyMhz(80);
+  } 
+
+}
+void handlePowerRequest(AsyncWebServerRequest *request) {
+  // Get the "state" query parameter
+  String stateParam;
+
+  if (request->hasParam("state")) {
+    stateParam = request->getParam("state")->value();
+    // Change power state based on the received parameter
+    setPowerState(stateParam);
+  } else {
+    // If "state" parameter is not present, get the current power state
+    stateParam =getCpuFrequencyMhz();
+  }
+
+  // Respond with the new or current power state
+  String response = "Power state: " + stateParam;
+  // Serial.print("CPU Freq: ");
+  // Serial.println(getCpuFrequencyMhz());
+   // Create a JSON response
+  String jsonResponse = "{\"powerState\":\"" + stateParam + "\"}";
+
+  // Respond with the JSON
+  request->send(200, "application/json", jsonResponse);
 }

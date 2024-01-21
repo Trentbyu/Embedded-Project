@@ -3,6 +3,15 @@ import React, { useState, useEffect } from 'react';
 const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
   const [sleepDuration, setSleepDuration] = useState('');
   const [temperature, setTemperature] = useState(null);
+  const [selectedPowerState, setSelectedPowerState] = useState('');
+  const [currentPowerState, setCurrentPowerState] = useState('240'); // New state to store the current power state
+
+
+  const powerStates = ['240Mhz', '160Mhz', '80Mhz'];
+
+  const handlePowerStateChange = (event) => {
+    setSelectedPowerState(event.target.value);
+  };
 
   
   const handleRestartClick = async () => {
@@ -47,7 +56,7 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
     // Check if sleepDuration is a valid number
     if (!isNaN(sleepDuration)) {
       try {
-        const response = await fetch(`${apiEndpoint}/power?duration=${sleepDuration}`);
+        const response = await fetch(`${apiEndpoint}/sleep?duration=${sleepDuration}`);
         const dataText = await response.text();
 
         // Process the response as needed
@@ -70,75 +79,128 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
     }
   };
 
-  // Assuming you have a function to send the value 60
-  const sendValue = async () => {
+  const handlePowerStateClick = async () => {
     try {
-      const response = await fetch(`${apiEndpoint}/power?duration=18000`);
-      const dataText = await response.text();
-      console.log('Response:', dataText);
+      const response = await fetch(`${apiEndpoint}/power?state=${selectedPowerState}`, {
+        method: 'GET',
+      });
+  
+      if (response.ok) {
+        console.log(`Power state set to ${selectedPowerState}`);
+        setCurrentPowerState(selectedPowerState); // Update the current power state
+      } else {
+        console.error(`Failed to set power state to ${selectedPowerState}`);
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error while setting power state:', error);
     }
   };
 
-  // Schedule the function to run at 10 pm every day
-  const scheduleAt10PM = () => {
-    const now = new Date();
-    let millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0) - now;
-    if (millisTill10 < 0) {
-      millisTill10 += 86400000; // It's already past 10 pm, schedule it for the next day
-    }
-
-    setTimeout(() => {
-      sendValue();
-      scheduleAt10PM(); // Reschedule for the next day
-    }, millisTill10);
-  };
+  
+  
 
   // Call this function to start the scheduling
 //   scheduleAt10PM();
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-        handleTemperatureClick();
-        }, 1000);
+    
+  useEffect(() => {
+    // Fetch the current power state upon component mount
+    const fetchPowerState = async () => {
+      try {
+        const response = await fetch(`${apiEndpoint}/power`, {
+          method: 'GET',
+        });
 
-        // Cleanup the interval when the component unmounts
-        return () => clearInterval(intervalId);
-    }, []); // Empty dependency array ensures that this effect runs once after the initial render
+        if (response.ok) {
+          const data = await response.json();
+          setCurrentPowerState(data.powerState || ''); // Set the current power state in the state
+          setSelectedPowerState(data.powerState || ''); // Set the selected power state as well
+        } else {
+          console.error('Failed to fetch current power state');
+        }
+      } catch (error) {
+        console.error('Error while fetching current power state:', error);
+      }
+    };
+
+    // Fetch the power state and start the temperature interval
+    fetchPowerState();
+    const intervalId = setInterval(() => {
+      handleTemperatureClick();
+    }, 1000);
+
+    // Cleanup the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array ensures that this effect runs once after the initial render
 
 
   return (
     <div className='my-10 mx-auto'>
     <div className="p-4 mx-auto border-4 border-gray-900 rounded">
-        <h1 className="text-2xl font-bold mb-4">{ESPNAME}</h1>
+        <h1 className="text-2xl font-bold mb-4">{ESPNAME} - Esp32</h1>
         <p className="mt-4 font-bold  mb-2">
             {temperature !== null ? `ESP32 internal temp: ${temperature}°C` : 'ESP32 internal temp: None'}
         </p>
-
-        {/* <div className=""> */}
-        <label htmlFor="sleepDuration" className="block  mb-5">
-            Sleep Duration (seconds):
+        <label htmlFor="currentPowerState" className="block my-1 font-bold">
+          Current Power State: {currentPowerState} Mhz
         </label>
-        <input
+        
+        <div className="flex flex-col items-left space-y-4 mb-2">
+        {/* Top Row: Sleep */}
+        <div className="flex flex-row items-center">
+          <label htmlFor="sleepDuration" className="block font-bold">
+            Sleep (seconds):
+          </label>
+          <input
             type="number"
             id="sleepDuration"
             value={sleepDuration}
             onChange={handleInputChange}
-            className="mb-1 border border-gray-300  p-2 rounded w-full "
-        />
-        {/* </div> */}
-        <button
+            min="0"
+            className="ml-2 border border-gray-300 p-2 rounded w-1/4"
+          />
+          <button
             onClick={handleSleepDurationChange}
-            className="bg-green-500 text-white py-1 my-2 px-4 rounded-md w-full mt-4"
-        >
+            className="ml-2 bg-green-500 text-white py-1 px-4 rounded-md"
+          >
             Enter
-        </button>
+          </button>
+        </div>
+
+        {/* Bottom Row: Power State */}
+        <div className="flex flex-row items-center">
+          <label htmlFor="powerState" className="block font-bold">
+            Power State:
+          </label>
+          <select
+            id="powerState"
+            value={selectedPowerState}
+            onChange={handlePowerStateChange}
+            className="ml-8 border border-gray-300 p-2 rounded w-1/4"
+          >
+            {powerStates.map((state) => (
+              <option key={state} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={handlePowerStateClick}
+            className="ml-2 bg-blue-500 text-white py-1 px-4 rounded-md"
+          >
+            Set Power
+          </button>
+        </div>
+      </div>
+
+
+        
         <button
             onClick={handleRestartClick}
-            className="bg-black hover:bg-black text-white font-bold py-1 px-4 rounded w-full"
+            className="bg-black hover:bg-black text-white font-bold py-2 px-4 rounded w-full"
         >
             Restart ESP  
         </button>
+
         
 
    

@@ -13,11 +13,11 @@ const Esp32ConfigPage = () => {
             <Esp32Config apiEndpoint="http://192.168.0.116" ESPNAME="192.168.0.116"/>
             <Esp8266Config apiEndpoint="http://192.168.0.99" ESPNAME="192.168.0.99"/>
         </div>
-        <div className="flex flex-wrap">
+        {/* <div className="flex flex-wrap">
             <Esp32Config apiEndpoint="http://192.168.0.100" ESPNAME="192.168.0.100"/>
             <Esp32Config apiEndpoint="http://192.168.0.116" ESPNAME="192.168.0.116"/>
             <Esp32Config apiEndpoint="http://192.168.0.116" ESPNAME="192.168.0.116"/>
-        </div>
+        </div> */}
         </div>
 
   );

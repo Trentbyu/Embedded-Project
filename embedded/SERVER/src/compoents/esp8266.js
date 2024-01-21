@@ -59,30 +59,32 @@ const Esp8266Config = ({ apiEndpoint , ESPNAME}) => {
   return (
     <div className='my-10 mx-auto'>
     <div className="p-4 mx-auto border-4 border-gray-900 rounded">
-        <h1 className="text-2xl font-bold mb-4">{ESPNAME}</h1>
+        <h1 className="text-2xl font-bold mb-4">{ESPNAME} - Esp8266</h1>
       
 
         {/* <div className=""> */}
-        <label htmlFor="sleepDuration" className="block  mb-5">
-            Sleep Duration (seconds):
-        </label>
-        <input
+        <div className="flex flex-row items-center my-5">
+          <label htmlFor="sleepDuration" className="block font-bold">
+            Sleep (seconds):
+          </label>
+          <input
             type="number"
             id="sleepDuration"
             value={sleepDuration}
             onChange={handleInputChange}
-            className="mb-1 border border-gray-300  p-2 rounded w-full "
-        />
-        {/* </div> */}
-        <button
+            min="0"
+            className="ml-2 border border-gray-300 p-2 rounded w-1/4"
+          />
+          <button
             onClick={handleSleepDurationChange}
-            className="bg-green-500 text-white py-1 my-2 px-4 rounded-md w-full mt-4"
-        >
+            className="ml-2 bg-green-500 text-white py-1 px-4 rounded-md"
+          >
             Enter
-        </button>
+          </button>
+        </div>
         <button
             onClick={handleRestartClick}
-            className="bg-black hover:bg-black text-white font-bold py-1 px-4 rounded w-full"
+            className="bg-black hover:bg-black text-white font-bold py-3 px-4 rounded w-full"
         >
             Restart ESP  
         </button>
