@@ -1,23 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from "./loading"
-const TemperatureViewer = ({ temperatureApiEndpoint }) => {
+const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
   const [temperature, setTemperature] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [refreshInterval, setRefreshInterval] = useState(10000); // Initial refresh interval in milliseconds
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshInterval, setRefreshInterval] = useState(1000); // Initial refresh interval in milliseconds
 
   useEffect(() => {
-    const fetchTemperature = async () => {
-      try {
-        const response = await fetch(temperatureApiEndpoint);
-        const data = await response.json();
+    
+  const fetchTemperature = async () => {
+    try {
+      const response = await fetch(`${temperatureApiEndpoint}/temperature`);
+      const dataText = await response.text();
 
-        setTemperature(data.temperature);
-        setIsLoading(false); // Set loading to false once data is received
-      } catch (error) {
-        console.error('Error fetching temperature', error);
-        setTimeout(fetchTemperature, 5000);
+      // Extract the temperature value from the response text
+      const temperatureMatch = dataText.match(/Temperature: (\d+\.\d+) C/);
+
+      if (temperatureMatch && temperatureMatch.length >= 2) {
+        const temperatureValue = parseFloat(temperatureMatch[1]);
+        setTemperature(temperatureValue);
+      } else {
+        console.error('Invalid temperature response:', dataText);
       }
-    };
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
     const intervalId = setInterval(fetchTemperature, refreshInterval);
 
@@ -34,7 +41,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint }) => {
   return (
     <div className="mx-10">
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="refreshInterval">
+        {/* <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="refreshInterval">
           Refresh Interval (ms):
         </label>
         <input
@@ -43,11 +50,11 @@ const TemperatureViewer = ({ temperatureApiEndpoint }) => {
           value={refreshInterval}
           onChange={handleIntervalChange}
           className="shadow appearance-none border rounded w-50 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
+        /> */}
       </div>
 
       <div>
-        <p className="text-xl font-bold mb-2">Current Temperature:</p>
+        <p className="text-xl font-bold mb-2">{ESPNAME} Current Temperature:</p>
         {isLoading ? (
             <div>
                 <p>Loading...</p>

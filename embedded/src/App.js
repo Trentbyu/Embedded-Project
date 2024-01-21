@@ -1,64 +1,29 @@
-
+// App.js
 import React from 'react';
-import ImageViewer from './compoents/camera';
-import TemperatureViewer from './compoents/temp';
-
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Navbar from './compoents/nav';
-
+import Esp32ConfigPage from './Esp32ConfigPage';
+import HomePage from './home';
 
 
 const App = () => {
   return (
-    <div>
-      <Navbar />
-      <div className="flex flex-col py-10">
+    <Router>
+      <div className="">
+        <Navbar />
 
-      {/* First set of components */}
-      <div className="flex flex-row mb-4">
-        <div className=" h-600">
-          {/* ImageViewer component */}
-          <ImageViewer imageSourceLink={"http://192.168.0.116/video?"} />
-        </div>
+        <div className="min-h-screen flex flex-col py-10 bg-gray-500">
+          
 
-        <div className=" h-600">
-          {/* TemperatureViewer component */}
-          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} />
-        </div>
-
-        <div className=" h-600">
-          {/* TemperatureViewer component */}
-          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} />
-        </div>
-
-        <div className=" h-600">
-          {/* TemperatureViewer component */}
-          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} />
-        </div>
-        <div className=" h-600">
-          {/* TemperatureViewer component */}
-          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} />
-        </div><div className=" h-600">
-          {/* TemperatureViewer component */}
-          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} />
+          {/* Route Configuration */}
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/config" element={<Esp32ConfigPage />} />
+          </Routes>
         </div>
       </div>
-
-    
-
-   
-
-</div>
-
-
-
-   
-
-
-
-      
-    </div>
+    </Router>
   );
 };
 
 export default App;
-
