@@ -18,22 +18,25 @@ bool wifiConnected = 0;
 void handleEndpoint() {
   server.send(200, "text/plain", "Hello from ESP8266!");
 }
-void handleRestart(AsyncWebServerRequest *request) {
+
+
+void handleRestart() {
   delay(1000);  // Optional delay to ensure the response is sent
   Serial.println("Restarting...");
   delay(1000);
-  
+
   ESP.restart();
 }
 
-void handleTemperature(AsyncWebServerRequest *request) {
-  // Convert raw temperature in F to Celsius degrees
-  float temperatureC = (temprature_sens_read() - 32) / 1.8;
+// void handleTemperature() {
+//   // Convert raw temperature in F to Celsius degrees
+//   float temperatureC = ESP.getTempCByIndex(0);
 
-  // Send the temperature response as text
-  String temperatureResponse = "Temperature: " + String(temperatureC) + " C";
-  request->send(200, "text/plain", temperatureResponse);
-}
+//   // Send the temperature response as text
+//   String temperatureResponse = "Temperature: " + String(temperatureC) + " C";
+//   server.send(200, "text/plain", temperatureResponse);
+// }
+
 
 void setup() {
   Serial.begin(115200);
@@ -49,9 +52,9 @@ void setup() {
   delay(1000);  
 
   server.on("/api", HTTP_GET, handleEndpoint);
-  server.on("/restart", HTTP_GET, handleEndpoint);
-  server.on("/tempurat", HTTP_GET, handleEndpoint);
-
+  server.on("/restart", HTTP_GET, handleRestart);
+  // server.on("/temperature", HTTP_GET, handleTemperature);
+  server.on("/power", HTTP_GET, handlePowerRequest);
 
 
   // Start server
@@ -121,29 +124,26 @@ void connectToWiFi() {
     Serial.flush();
   }
 }
-void handlePowerRequest(AsyncWebServerRequest *request) {
+void handlePowerRequest() {
   // Get the "duration" parameter from the URL
-  String sleepDurationStr = request->getParam("duration")->value();
+  String sleepDurationStr = server.arg("duration");
 
   // Convert the sleep duration string to an integer
-
   int sleepDuration = sleepDurationStr.toInt();
   if (sleepDuration == 0 && sleepDurationStr != "0") {
     // Handle conversion error
-    request->send(400, "text/plain", "Invalid sleep duration");
+    server.send(400, "text/plain", "Invalid sleep duration");
     return;
   }
 
   // Respond to the request
   String responseMessage = "Setting sleep duration to: " + sleepDurationStr + " seconds";
-  request->send(200, "text/plain", responseMessage);
-
-  // Convert seconds to microseconds for esp_sleep_enable_timer_wakeup
-   ESP.lightSleep(sleepDuration * uS_TO_S_FACTOR );
-
+  server.send(200, "text/plain", responseMessage);
   delay(500);
-  Serial.println("Entering light sleep mode for " + sleepDurationStr + " seconds...");
+  Serial.println("Entering deep sleep mode for " + 30e6 + " seconds...");
   delay(500);
+  // Convert seconds to microseconds for esp8266
+  ESP.deepSleep(30e6);
 
-  esp_light_sleep_start();
+  
 }
