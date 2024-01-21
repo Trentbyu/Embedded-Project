@@ -135,8 +135,8 @@ void setup() {
 
   delay(1000);  // Add a delay of 5 seconds
   // Serial.println("Connected to WiFi");
-  Serial.println(WiFi.status());
-  // Serial.println(WiFi.localIP());
+  // Serial.println(WiFi.status());
+  Serial.println(WiFi.localIP());
   // Initialize the camera
   if (!initCamera()) {
     Serial.println("Error initializing the camera");
