@@ -14,11 +14,11 @@ const HomePage = () => {
         </div>
         <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
           {/* TemperatureViewer component */}
-          {/* <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="100"/> */}
+          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="Inside"/>
         </div>
         <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
           {/* TemperatureViewer component */}
-          {/* <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="100"/> */}
+          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="Oustide"/>
         </div>
       </div>
 
@@ -30,11 +30,11 @@ const HomePage = () => {
         </div>
         <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
           {/* TemperatureViewer component */}
-          {/* <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} /> */}
+          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} />
         </div>
         <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
           {/* TemperatureViewer component */}
-          {/* <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} /> */}
+          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} />
         </div>
       </div>
     </div>
