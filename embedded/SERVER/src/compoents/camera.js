@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const ImageViewer = ({ imageSourceLink, containerId }) => {
+import { motion } from 'framer-motion';
+const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
   const [refreshInterval, setRefreshInterval] = useState(1000);
   const [temperature, setTemperature] = useState(null); 
   const [sleepDuration, setSleepDuration] = useState('');
@@ -58,7 +57,7 @@ const ImageViewer = ({ imageSourceLink, containerId }) => {
     <div className='mx-10'>
       <div className="">
         <label className="block text-gray-700 text-sm font-bold" htmlFor="refreshInterval">
-          
+          Cam {ESPNAME}
         </label>
         <select
           id="refreshInterval"
@@ -76,9 +75,18 @@ const ImageViewer = ({ imageSourceLink, containerId }) => {
         
         </div>
         
-        <div id={containerId} className="max-w-full">
-          <img className="w-400 h-300" />
-        </div>
+        <motion.div
+          id={containerId}
+          className="max-w-full"
+          // whileHover={{ scale: 1.5 }} // Zoom effect on hover
+         
+        >
+          <motion.img
+            className="w-400 h-300"
+            whileHover={{ scale: 1.5}} // Zoom effect on hover
+           
+          />
+        </motion.div>
 
 
     </div>

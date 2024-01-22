@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from "./loading"
+import { motion, useAnimation } from 'framer-motion';
 const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
   const [temperature, setTemperature] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,12 +58,12 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
 
   <div className="ml-10">
     {/* Thermometer visualization */}
-    <div className="relative bg-gray-300 w-6 h-32 mx-auto mb-2 rounded-lg">
+    <motion.div whileHover={{ scale: 2}} className="relative bg-gray-300 w-6 h-32 mx-auto mb-2 rounded-lg">
       <div
-        className="absolute bg-gradient-to-t from-blue-300 to-red-500 bottom-0 rounded-lg left-0"
-        style={{ width: '100%', height: `${25}%` }}
+        className="absolute bg-gradient-to-t from-blue-400 to-red-700 bottom-0 rounded-lg left-0"
+        style={{ width: '100%', height: `${90}%` }}
       ></div>
-    </div>
+    </motion.div>
   </div>
 </div>
 
