@@ -30,11 +30,11 @@ const HomePage = () => {
         </div>
         <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
           {/* TemperatureViewer component */}
-          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} />
+          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="Oustide" />
         </div>
         <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
           {/* TemperatureViewer component */}
-          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} />
+          <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="Oustide"/>
         </div>
       </div>
     </div>
