@@ -34,17 +34,52 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-.idea/
-.vscode/
-embedded\SERVER\FRONT-END\node_modules
-build/
-.DS_Store
-*.tgz
-my-app*
-template/src/__tests__/__snapshots__/
-lerna-debug.log
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/.changelog
-.npm/
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Distribution directories
+dist/
+
+# Typescript v1 declaration files
+typings/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+.idea/
+.vscode/
+embedded/SERVER/FRONT-END/node_modules
+embedded/SERVER/FRONT-END/build/
+embedded/SERVER/FRONT-END/DS_Store
+embedded/SERVER/FRONT-END/*.tgz
+embedded/SERVER/FRONT-END/my-app*
+embedded/SERVER/FRONT-END/template/src/__tests__/__snapshots__/
+embedded/SERVER/FRONT-END/lerna-debug.log
+embedded/SERVER/FRONT-END/npm-debug.log*
+embedded/SERVER/FRONT-END/yarn-debug.log*
+embedded/SERVER/FRONT-END/yarn-error.log*
+embedded/SERVER/FRONT-END/.changelog
+embedded/SERVER/FRONT-END/.npm/
