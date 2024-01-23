@@ -10,8 +10,8 @@ yarn-error.log*
 build/Release
 
 # Dependency directories
-node_modules/
-jspm_packages/
+embedded/SERVER/FRONT-END/node_modules/
+embedded/SERVER/FRONT-END/jspm_packages/
 
 # Distribution directories
 dist/
