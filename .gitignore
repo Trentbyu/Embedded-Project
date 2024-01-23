@@ -36,7 +36,7 @@ typings/
 
 .idea/
 .vscode/
-node_modules/
+embedded\SERVER\FRONT-END\node_modules
 build/
 .DS_Store
 *.tgz
