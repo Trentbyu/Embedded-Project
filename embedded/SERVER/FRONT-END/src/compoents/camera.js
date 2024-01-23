@@ -54,7 +54,11 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
   
 
   return (
-    <div className='mx-10'>
+    <motion.div initial={{ opacity: 0, x: 1500 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: 100 }}
+    transition={{ duration: .8 }} 
+    className='mx-10'>
       <div className="">
         <label className="block text-gray-700 text-sm font-bold" htmlFor="refreshInterval">
           Cam {ESPNAME}
@@ -78,18 +82,20 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
         <motion.div
           id={containerId}
           className="max-w-full"
+          
           // whileHover={{ scale: 1.5 }} // Zoom effect on hover
          
         >
           <motion.img
             className="w-400 h-300"
-            whileHover={{ scale: 1.5}} // Zoom effect on hover
+           
+            // whileHover={{ scale: 1.5}} // Zoom effect on hover
            
           />
         </motion.div>
 
 
-    </div>
+    </motion.div>
   );
 };
 

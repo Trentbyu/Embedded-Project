@@ -41,7 +41,10 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
   const fillPercentage = temperature !== null ? Math.min(Math.max(temperature, 0), 100) : 0;
 
   return (
-    <div className="flex items-center">
+    <motion.div  initial={{ opacity: 0, x: 1500 }}
+    animate={{ opacity: 2, x: 0 }}
+    exit={{ opacity: 0, x: 100 }}
+    transition={{ duration: 2 }}className="flex items-center">
   <div>
     <p className="text-xl font-bold mb-2">{ESPNAME} Current Temperature:</p>
     {isLoading ? (
@@ -65,7 +68,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
       ></div>
     </motion.div>
   </div>
-</div>
+</motion.div>
 
   );
 };

@@ -2,7 +2,7 @@
 import React from 'react';
 import ImageViewer from './compoents/camera';
 import TemperatureViewer from './compoents/temp';
-import VideoPlayer from './compoents/video';
+
 
 const HomePage = () => {
   return (
