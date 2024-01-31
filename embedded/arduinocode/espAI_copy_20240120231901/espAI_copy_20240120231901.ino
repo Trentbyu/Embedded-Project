@@ -21,8 +21,7 @@ extern "C" {
 
 
 uint8_t temprature_sens_read();
-// char* ssid = "Blackfamily";
-// const char* password = "Blacks1987";
+
 char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 bool power;

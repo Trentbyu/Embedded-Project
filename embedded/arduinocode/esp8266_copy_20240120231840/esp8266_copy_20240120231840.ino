@@ -2,8 +2,6 @@
 #include <ESP8266WebServer.h>
 #include <EEPROM.h>
 // #include <esp_sleep.h>
-// const char *ssid = "Blackfamily";
-// const char *password = "Blacks1987";
 
 #define uS_TO_S_FACTOR 1000000
 char ssid[32]; // Maximum length for SSID
