@@ -127,7 +127,7 @@ void setup() {
   // Load WiFi credentials from EEPROM
   EEPROM.get(0, ssid);
   EEPROM.get(sizeof(ssid), password);
-
+  delay(1500);  
   connectToWiFi();
   Serial.print("CPU Freq: ");
   Serial.println(getCpuFrequencyMhz());
@@ -136,7 +136,7 @@ void setup() {
  
 
 
-  delay(1000);  // Add a delay of 5 seconds
+  delay(100);  // Add a delay of 5 seconds
   // Serial.println("Connected to WiFi");
   // Serial.println(WiFi.status());
   Serial.println(WiFi.localIP());
@@ -172,17 +172,26 @@ void connectToWiFi() {
   WiFi.config(staticIP, gateway, subnet);
 
   unsigned long startTime = millis();
-  while (millis() - startTime < 10000) {
+  bool changeRequested = false; // Flag to track if change requested
+  while (millis() - startTime < 5000) { // Check for change request within 5 seconds
+    if (Serial.available()) {
+      String input = Serial.readStringUntil('\n');
+      input.trim(); // Remove leading/trailing whitespaces
+      if (input.equals("change")) { // If user input is "change"
+        changeRequested = true;
+        break; // Exit the loop
+      }
+    }
     if (WiFi.status() == WL_CONNECTED) {
       Serial.println("Connected to WiFi");
       wifiConnected = true;
-      break;
+      return; // Exit the function if connected
     }
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }
 
-  if (!wifiConnected) {
+  if (!wifiConnected && !changeRequested) { // If not connected and no change requested
     Serial.println("WiFi connection failed. Enter new SSID and password via UART.");
 
     Serial.print("Enter new SSID: ");
@@ -190,6 +199,7 @@ void connectToWiFi() {
       // Wait for user input
     }
     String newSSID = Serial.readStringUntil('\n');
+    newSSID.trim(); // Remove leading/trailing whitespaces
     newSSID.toCharArray(ssid, sizeof(ssid));
 
     Serial.print("Enter new password: ");
@@ -197,6 +207,7 @@ void connectToWiFi() {
       // Wait for user input
     }
     String newPassword = Serial.readStringUntil('\n');
+    newPassword.trim(); // Remove leading/trailing whitespaces
     newPassword.toCharArray(password, sizeof(password));
 
     // Save new credentials to EEPROM
@@ -215,7 +226,7 @@ void connectToWiFi() {
       if (WiFi.status() == WL_CONNECTED) {
         Serial.println("Connected to WiFi with new credentials.");
         wifiConnected = true;
-        break;
+        return; // Exit the function if connected
       }
       delay(1000);
       Serial.println("Connecting to WiFi...");
