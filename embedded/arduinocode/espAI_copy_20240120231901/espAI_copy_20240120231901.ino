@@ -128,40 +128,6 @@ void setup() {
   EEPROM.get(0, ssid);
   EEPROM.get(sizeof(ssid), password);
 
-  int n = WiFi.scanNetworks();
-
-  Serial.println("scan done");
-
-  if (n == 0) Serial.println("no networks found");
-
-  else {
-
-  Serial.print(n);
-
-  Serial.println(" networks found");
-
-  for (int i = 0; i < n; ++i) { // Print SSID and RSSI for each network found
-
-  Serial.print(i + 1);
-
-  Serial.print(": ");
-
-  Serial.print(WiFi.SSID(i));
-
-  Serial.print(" (");
-
-  Serial.print(WiFi.RSSI(i));
-
-  Serial.print(")");
-
-  char *encryptionTypeText[] = { "OPEN", "WEP", "WPA_PSK", "WPA2_PSK", "WPA_WPA2_PSK", "WPA2_ENTERPRISE", "OTHER" };
-  int k = WiFi.encryptionType(i);
-  if ( k < WIFI_AUTH_OPEN || k > WIFI_AUTH_WPA2_ENTERPRISE ) k = WIFI_AUTH_WPA2_ENTERPRISE + 1;
-  Serial.printf( "%3d: %-14s (%3d) %s\n", i + 1, WiFi.SSID(i), WiFi.RSSI(i), &encryptionTypeText[k] );
-
-  delay(10);
-
-  }}
 
   connectToWiFi();
   Serial.print("CPU Freq: ");
@@ -180,7 +146,7 @@ void setup() {
     Serial.println("Error initializing the camera");
     return;
   }
-
+  Serial.println(WiFi.status());
   // Serve the video stream
   server.on("/video", HTTP_GET, handleVideoStream);
   server.on("/restart", HTTP_GET, handleRestart);

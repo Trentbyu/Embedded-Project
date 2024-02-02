@@ -4,8 +4,9 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
   const [refreshInterval, setRefreshInterval] = useState(1000);
   const [temperature, setTemperature] = useState(null); 
   const [sleepDuration, setSleepDuration] = useState('');
-
+  let i = 0
   useEffect(() => {
+    i++
     const updateImageSource = () => {
       const imageContainer = document.getElementById(containerId);
 
@@ -23,7 +24,7 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
 
       imageElement.onload = () => {
         setTimeout(() => {
-          imageElement.src = `${imageSourceLink}/video?${new Date().getTime()}`;
+          imageElement.src = `${imageSourceLink}/video?${i}`;
         }, refreshInterval);
       };
 
