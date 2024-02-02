@@ -4,9 +4,8 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
   const [refreshInterval, setRefreshInterval] = useState(1000);
   const [temperature, setTemperature] = useState(null); 
   const [sleepDuration, setSleepDuration] = useState('');
-  let i = 0
+  const [i, setI] = useState(0);
   useEffect(() => {
-    i++
     const updateImageSource = () => {
       const imageContainer = document.getElementById(containerId);
 
@@ -24,25 +23,22 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
 
       imageElement.onload = () => {
         setTimeout(() => {
-          imageElement.src = `${imageSourceLink}/video?${i}`;
+          setI(prevI => prevI + 1); // Increment i after the image has loaded
         }, refreshInterval);
       };
 
       imageElement.onerror = () => {
         console.error('Error loading image');
         setTimeout(updateImageSource, 500);
-        
       };
 
-      imageElement.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAAA1BMVEUAAACnej3aAAAASElEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIC3AcUIAAFkqh/QAAAAAElFTkSuQmCC";
-      
+      imageElement.src = `${imageSourceLink}/video?${i}`;
       imageElement.width = 400;
       imageElement.height = 300;
-
     };
 
     updateImageSource();
-  }, [refreshInterval, imageSourceLink, containerId]);
+  }, [refreshInterval, imageSourceLink, containerId, i]);
 
   const handleIntervalChange = (event) => {
     const newInterval = parseInt(event.target.value, 10);
