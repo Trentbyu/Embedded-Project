@@ -84,7 +84,7 @@ embedded/SERVER/FRONT-END/yarn-error.log*
 embedded/SERVER/FRONT-END/.changelog
 embedded/SERVER/FRONT-END/.npm/
 
-.mp4
-.jpg
-.avi
+
+*.jpg
+*.avi
 *.mp4
