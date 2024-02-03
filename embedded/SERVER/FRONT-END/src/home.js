@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ImageViewer from './compoents/camera';
 import TemperatureViewer from './compoents/temp';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 const HomePage = () => {
   const [elements, setElements] = useState([]);
 
@@ -33,9 +33,10 @@ const HomePage = () => {
       }
   };
   return (
-        <div className="min-h-screen flex flex-col py-10 bg-gray-500">
-        <div>
-            <h2>Elements</h2>
+    <div className="min-h-screen flex flex-col py-1 bg-gray-500">
+    <div>
+        {/* <h2>Elements</h2> */}
+        {elements.length > 0 ? (
             <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
                 {elements.map(element => (
                     <li key={element.id}>
@@ -43,9 +44,20 @@ const HomePage = () => {
                     </li>
                 ))}
             </ul>
+        ) : (
+            <div class="flex justify-center items-center h-screen">
+            <div class="text-center">
+                <p class="text-lg m-10">No Devices found.  
+                    <a href="/Settings" class="text-blue-800 m-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-8 rounded inline-flex items-center">
+                        <span> Go to Settings to set one up</span>
+                    </a>
+                </p>
+            </div>
         </div>
-    </div>
 
+        )}
+    </div>
+</div>
     //   {/* First row of components */}
     //   <div className="flex flex-col sm:flex-row my-5 sm:mb-2">
     //     <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">

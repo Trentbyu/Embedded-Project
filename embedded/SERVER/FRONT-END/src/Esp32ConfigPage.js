@@ -37,8 +37,19 @@ const Esp32ConfigPage = () => {
   return (
 
     <div className="min-h-screen flex flex-col py-10 bg-gray-500">
-        <div>
-            <h2>Elements</h2>
+    <div>
+        {/* <h2>Elements</h2> */}
+        {elements.length === 0 ? (
+            <div class="flex justify-center items-center h-screen">
+            <div class="text-center">
+                <p class="text-lg m-10">No Devices found.  
+                    <a href="/Settings" class="text-blue-800 m-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-8 rounded inline-flex items-center">
+                        <span> Go to Settings to set one up</span>
+                    </a>
+                </p>
+            </div>
+        </div>
+        ) : (
             <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
                 {elements.map(element => (
                     <li key={element.id}>
@@ -46,8 +57,10 @@ const Esp32ConfigPage = () => {
                     </li>
                 ))}
             </ul>
-        </div>
+        )}
     </div>
+</div>
+
     // <motion.div className="min-h-screen flex flex-col py-10 bg-gray-500"  initial={{ opacity: 0, x: -1000 }}
     // animate={{ opacity: 1, x: 0 }}
     // exit={{ opacity: 0, x: 100 }}

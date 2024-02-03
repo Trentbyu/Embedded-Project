@@ -10,3 +10,4 @@ class Element(models.Model):
     name = models.CharField(max_length=50)  # For name
     device_type = models.CharField(max_length=10)  # For type of esp
 
+

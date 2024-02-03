@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from settingsApp.views import PageSettingsViewSet
-from settingsApp.views  import ElementListCreateView, ElementRetrieveUpdateDestroyView , create_element, ElementDeleteView
+from settingsApp.views  import ElementListCreateView, ElementRetrieveUpdateDestroyView , create_element, ElementDeleteView, get_video
 router = DefaultRouter()
 router.register(r'page-settings', PageSettingsViewSet)
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/elements/', ElementListCreateView.as_view(), name='element-list-create'),
     path('api/elements/<int:pk>/', ElementRetrieveUpdateDestroyView.as_view(), name='element-detail'),
     path('api/elements/create/', create_element, name='create-element'),
-     path('api/elements/<int:pk>/delete/', ElementDeleteView.as_view(), name='element-delete'),
+    path('api/elements/<int:pk>/delete/', ElementDeleteView.as_view(), name='element-delete'),
+    path('api/get-video/', get_video, name='get_video'),
     path('api/', include(router.urls)),
 ]
