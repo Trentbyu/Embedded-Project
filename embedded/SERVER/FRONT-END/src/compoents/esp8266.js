@@ -7,7 +7,7 @@ const Esp8266Config = ({ apiEndpoint , ESPNAME}) => {
   
   const handleRestartClick = async () => {
     try {
-      const response = await fetch(`${apiEndpoint}/restart`, {
+      const response = await fetch(`http://${apiEndpoint}/restart`, {
         method: 'GET', // You may need to change the HTTP method based on your API
       });
 
@@ -30,7 +30,7 @@ const Esp8266Config = ({ apiEndpoint , ESPNAME}) => {
     // Check if sleepDuration is a valid number
     if (!isNaN(sleepDuration)) {
       try {
-        const response = await fetch(`${apiEndpoint}/power?duration=${sleepDuration}`);
+        const response = await fetch(`http://${apiEndpoint}/power?duration=${sleepDuration}`);
         const dataText = await response.text();
 
         // Process the response as needed

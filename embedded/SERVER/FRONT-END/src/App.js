@@ -4,9 +4,10 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Navbar from './compoents/nav';
 import Esp32ConfigPage from './Esp32ConfigPage';
 import HomePage from './home';
-
+import ElementForm from './settings';
 
 const App = () => {
+  
   return (
     <Router>
       <div className="">
@@ -19,6 +20,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/config" element={<Esp32ConfigPage />} />
+            <Route path="/settings" element={<ElementForm />} />
+
           </Routes>
         </div>
       </div>

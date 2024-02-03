@@ -10,7 +10,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
     
   const fetchTemperature = async () => {
     try {
-      const response = await fetch(`${temperatureApiEndpoint}/temperature`);
+      const response = await fetch(`http://${temperatureApiEndpoint}/temperature`);
       const dataText = await response.text();
 
       // Extract the temperature value from the response text

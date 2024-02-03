@@ -24,6 +24,8 @@ const Navbar = () => {
         <div className="flex">
           <Link to="/" className="text-white mx-4">Home</Link>
           <Link to="/config" className="text-white mx-4">Esp32 Config</Link>
+          <Link to="/settings" className="text-white mx-4">settings</Link>
+
           {/* Add more links as needed */}
         </div>
       </div>
