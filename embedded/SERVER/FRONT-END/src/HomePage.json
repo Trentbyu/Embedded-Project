@@ -5,7 +5,8 @@
         "props": {
           "imageSourceLink": "http://192.168.0.116",
           "containerId": "192.168.0.116",
-          "ESPNAME": "Inside"
+          "ESPNAME": "Inside",
+          "Device": "ESP32"
         }
       },
       
@@ -14,7 +15,8 @@
         "props": {
           "imageSourceLink": "http://192.168.0.100",
           "containerId": "192.168.0.100",
-          "ESPNAME": "Outside"
+          "ESPNAME": "Outside",
+          "Device": "ESP32"
         }
       }
     ]
