@@ -10,6 +10,13 @@ CORS(app)
 # Read the existing JSON data from the file
 existing_file = os.path.join('embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
 
+# Check if the file exists
+if os.path.exists(existing_file):
+    print("File exists!")
+else:
+    print("File does not exist.")
+
+    
 with open(existing_file, 'r') as file:
     data = json.load(file)
 
