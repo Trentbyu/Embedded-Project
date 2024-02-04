@@ -50,7 +50,7 @@ def delete_component(index):
 @app.route('/api/components/order', methods=['PUT'])
 def update_component_order():
     new_order = request.json
-    print("Received order:", new_order)  # Add this line to print received data
+    # print("Received order:", new_order)  # Add this line to print received data
     if 'components' in new_order:
         data['components'] = new_order['components']
         with open(existing_file, 'w') as file:

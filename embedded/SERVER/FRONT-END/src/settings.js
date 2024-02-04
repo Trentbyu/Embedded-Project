@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const SettingsPage = () => {
+const SettingsPage = ({ ipAddress }) => {
   const [components, setComponents] = useState([]);
   const [newComponentData, setNewComponentData] = useState({
     type: "",
@@ -12,14 +12,14 @@ const SettingsPage = () => {
   });
 
   useEffect(() => {
-    fetch('http://192.168.0.156:5000/api/components')
+    fetch(`http://${ipAddress}:5000/api/components`)
       .then(response => response.json())
       .then(data => setComponents(data))
       .catch(error => console.error('Error fetching components:', error));
   }, []);
 
   const addData = () => {
-    fetch('http://192.168.0.156:5000/api/components', {
+    fetch(`http://${ipAddress}:5000/api/components`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const SettingsPage = () => {
   };
 
   const deleteComponent = (index) => {
-    fetch(`http://192.168.0.156:5000/api/components/${index}`, {
+    fetch(`http://${ipAddress}:5000/api/components/${index}`, {
       method: 'DELETE',
     })
     .then(response => {
@@ -60,7 +60,7 @@ const SettingsPage = () => {
       components: updatedComponents.map(component => component)
     };
   
-    fetch('http://192.168.0.156:5000/api/components/order', {
+    fetch(`http://${ipAddress}:5000/api/components/order`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -7,7 +7,7 @@ const Esp32ConfigPage = () => {
   // Group components by IP address
   const componentsByIP = {};
   pageData.components.forEach(component => {
-    const ipAddress = component.props.imageSourceLink;
+    const ipAddress = component.props.imageSourceLink.trim(); // Trim any leading or trailing spaces
     if (!componentsByIP[ipAddress]) {
       componentsByIP[ipAddress] = component;
     }
