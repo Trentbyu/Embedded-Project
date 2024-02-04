@@ -23,7 +23,7 @@ const HomePage = () => {
             )}
             {component.type === 'TemperatureViewer' && (
               <TemperatureViewer
-                temperatureApiEndpoint={component.props.temperatureApiEndpoint}
+                temperatureApiEndpoint={component.props.imageSourceLink}
                 ESPNAME={component.props.ESPNAME}
               />
             )}
