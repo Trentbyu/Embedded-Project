@@ -12,14 +12,14 @@ const SettingsPage = () => {
   });
 
   useEffect(() => {
-    fetch('http://192.168.0.178:5000/api/components')
+    fetch('http://192.168.0.156:5000/api/components')
       .then(response => response.json())
       .then(data => setComponents(data))
       .catch(error => console.error('Error fetching components:', error));
   }, []);
 
   const addData = () => {
-    fetch('http://192.168.0.178:5000/api/components', {
+    fetch('http://192.168.0.156:5000/api/components', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const SettingsPage = () => {
   };
 
   const deleteComponent = (index) => {
-    fetch(`http://192.168.0.178:5000/api/components/${index}`, {
+    fetch(`http://192.168.0.156:5000/api/components/${index}`, {
       method: 'DELETE',
     })
     .then(response => {
@@ -55,12 +55,12 @@ const SettingsPage = () => {
     .catch(error => console.error('Error deleting component:', error));
   };
 
-  const updateComponentOrder = () => {
+  const updateComponentOrder = (updatedComponents) => {
     const newOrder = {
-      components: components.map(component => component)
+      components: updatedComponents.map(component => component)
     };
-
-    fetch('http://192.168.0.178:5000/api/components/order', {
+  
+    fetch('http://192.168.0.156:5000/api/components/order', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -70,6 +70,7 @@ const SettingsPage = () => {
     .then(response => {
       if (response.ok) {
         console.log('Component order updated successfully');
+        setComponents(updatedComponents); // Update the state with the new order
       } else {
         console.error('Failed to update component order:', response.statusText);
       }
@@ -83,8 +84,17 @@ const SettingsPage = () => {
       const temp = updatedComponents[index];
       updatedComponents[index] = updatedComponents[index - 1];
       updatedComponents[index - 1] = temp;
-      setComponents(updatedComponents);
-      updateComponentOrder();
+      updateComponentOrder(updatedComponents); // Pass updated components directly
+    }
+  };
+
+  const moveComponentDown = (index) => {
+    if (index < components.length - 1) {
+      const updatedComponents = [...components];
+      const temp = updatedComponents[index];
+      updatedComponents[index] = updatedComponents[index + 1];
+      updatedComponents[index + 1] = temp;
+      updateComponentOrder(updatedComponents); // Pass updated components directly
     }
   };
 
@@ -171,6 +181,12 @@ const SettingsPage = () => {
               className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600"
             >
               Move Up
+            </button>
+            <button 
+              onClick={() => moveComponentDown(index)} 
+              className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+            >
+              Move Down
             </button>
           </div>
         ))}
