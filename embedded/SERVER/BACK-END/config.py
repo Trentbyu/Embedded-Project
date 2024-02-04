@@ -11,11 +11,13 @@ CORS(app)
 existing_file = os.path.join('embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
 
 # Check if the file exists
+
 if os.path.exists(existing_file):
     print("File exists!")
 else:
     # /home/trent/Embedded-Project/embedded/SERVER/FRONT-END/src
-    existing_file = os.path.join('/home','trent', 'Embedded-Project', 'embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
+    user = input("whats the user ")
+    existing_file = os.path.join('/home',user, 'Embedded-Project', 'embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
     print("File does not exist.")
 
 
