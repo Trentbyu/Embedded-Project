@@ -19,7 +19,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/config" element={<Esp32ConfigPage />} />
-            <Route path="/settings" element={<SettingsPage ipAddress="192.168.0.156" />} />
+            <Route path="/settings" element={<SettingsPage ipAddress="192.168.0.178" />} />
 
           </Routes>
         </div>
