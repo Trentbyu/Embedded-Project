@@ -50,11 +50,11 @@ try:
 
             # Download the image
             image = download_image(url)
-            # time.sleep(1)
+            time.sleep(1)
             if image is not None:
                 # Append image to buffer
                 image_buffer[ip_address].append(image)
-        time.sleep(1)
+
         # Check if 1 second has passed
         if (datetime.datetime.now() - start_time).total_seconds() >= 5:
             # Write images to video for each IP address if there are any images
@@ -69,8 +69,7 @@ try:
                     video_name = f'video_{today}_{ip_address}.mp4'
                     height, width, _ = images[0].shape
                     video_path = os.path.join(ip_folder, video_name)
-                    fourcc = cv2.VideoWriter_fourcc(*'avc1')  # Use avc1 codec for H.264 video
-
+                    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Use mp4v codec for MP4 video
                     video = cv2.VideoWriter(video_path, fourcc, 1, (width, height))
                     for img in images:
                         video.write(img)
