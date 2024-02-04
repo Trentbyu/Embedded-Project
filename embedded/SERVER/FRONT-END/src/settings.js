@@ -55,6 +55,39 @@ const SettingsPage = () => {
     .catch(error => console.error('Error deleting component:', error));
   };
 
+  const updateComponentOrder = () => {
+    const newOrder = {
+      components: components.map(component => component)
+    };
+
+    fetch('http://192.168.0.178:5000/api/components/order', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newOrder),
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log('Component order updated successfully');
+      } else {
+        console.error('Failed to update component order:', response.statusText);
+      }
+    })
+    .catch(error => console.error('Error updating component order:', error));
+  };
+
+  const moveComponentUp = (index) => {
+    if (index > 0) {
+      const updatedComponents = [...components];
+      const temp = updatedComponents[index];
+      updatedComponents[index] = updatedComponents[index - 1];
+      updatedComponents[index - 1] = temp;
+      setComponents(updatedComponents);
+      updateComponentOrder();
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "type") {
@@ -132,6 +165,12 @@ const SettingsPage = () => {
               className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
             >
               Delete
+            </button>
+            <button 
+              onClick={() => moveComponentUp(index)} 
+              className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600"
+            >
+              Move Up
             </button>
           </div>
         ))}

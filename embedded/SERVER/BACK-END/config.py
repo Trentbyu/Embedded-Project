@@ -47,6 +47,17 @@ def delete_component(index):
     else:
         return jsonify({'error': 'Invalid index'}), 404
 
+@app.route('/api/components/order', methods=['PUT'])
+def update_component_order():
+    new_order = request.json
+    if 'components' in new_order:
+        data['components'] = new_order['components']
+        with open(existing_file, 'w') as file:
+            json.dump(data, file, indent=4)
+        return jsonify({'message': 'Component order updated'}), 200
+    else:
+        return jsonify({'error': 'Invalid request format'}), 400
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
 
