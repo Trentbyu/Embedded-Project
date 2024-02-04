@@ -12,14 +12,14 @@ const SettingsPage = () => {
   });
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/components')
+    fetch('http://192.168.0.178:5000/api/components')
       .then(response => response.json())
       .then(data => setComponents(data))
       .catch(error => console.error('Error fetching components:', error));
   }, []);
 
   const addData = () => {
-    fetch('http://127.0.0.1:5000/api/components', {
+    fetch('http://192.168.0.178:5000/api/components', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const SettingsPage = () => {
   };
 
   const deleteComponent = (index) => {
-    fetch(`http://127.0.0.1:5000/api/components/${index}`, {
+    fetch(`http://192.168.0.178:5000/api/components/${index}`, {
       method: 'DELETE',
     })
     .then(response => {
