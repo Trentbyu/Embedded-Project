@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const ImageViewer = ({ imageSourceLink, containerId, ESPNAME }) => {
+const ImageViewer = ({ imageSourceLink,  ESPNAME }) => {
   const [refreshInterval, setRefreshInterval] = useState(1000);
   const [timestamp, setTimestamp] = useState(Date.now()); // Initialize with current timestamp
 
   useEffect(() => {
     const updateImageSource = () => {
-      const imageContainer = document.getElementById(containerId);
+      const imageContainer = document.getElementById(imageSourceLink);
 
       if (!imageContainer) {
-        console.error(`Element with id "${containerId}" not found`);
+        console.error(`Element with id "${imageSourceLink}" not found`);
         return;
       }
 
@@ -40,7 +40,7 @@ const ImageViewer = ({ imageSourceLink, containerId, ESPNAME }) => {
     };
 
     updateImageSource();
-  }, [refreshInterval, imageSourceLink, containerId, timestamp]);
+  }, [refreshInterval, imageSourceLink, timestamp]);
 
   const handleIntervalChange = (event) => {
     const newInterval = parseInt(event.target.value, 10);
@@ -73,7 +73,7 @@ const ImageViewer = ({ imageSourceLink, containerId, ESPNAME }) => {
       </div>
 
       <motion.div
-        id={containerId}
+        id={imageSourceLink}
         className="max-w-full"
       >
         <motion.img

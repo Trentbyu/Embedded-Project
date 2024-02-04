@@ -1,36 +1,38 @@
-import json
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 
-# Function to get user input for a new component
-def get_new_component():
-    new_type = input("Enter type of the component: ")
-    image_source_link = input("Enter image source link: ")
-    esp_name = input("Enter ESPNAME: ")
-    device = input("Enter Device: ")
 
-    new_component = {
-        "type": new_type,
-        "props": {
-            "imageSourceLink": image_source_link,
-            "containerId": image_source_link,
-            "ESPNAME": esp_name,
-            "Device": device
-        }
-    }
-    return new_component
+import json  # Import the json module
+
+app = Flask(__name__)
+CORS(app)
 
 # Read the existing JSON data from the file
 existing_file = 'embedded\SERVER\FRONT-END\src\HomePage.json'
 with open(existing_file, 'r') as file:
     data = json.load(file)
 
-# Get user input for each item to append
-while True:
-    add_more = input("Do you want to add a new component? (yes/no): ").lower()
-    if add_more != 'yes':
-        break
-    new_component = get_new_component()
-    data['components'].append(new_component)
+@app.route('/api/components', methods=['GET'])
+def get_components():
+    return jsonify(data['components'])
 
-# Write the updated JSON data back to the file
-with open(existing_file, 'w') as file:
-    json.dump(data, file, indent=4)
+@app.route('/api/components', methods=['POST'])
+def add_component():
+    new_component = request.json
+    data['components'].append(new_component)
+    with open(existing_file, 'w') as file:
+        json.dump(data, file, indent=4)
+    return jsonify(new_component), 201
+
+@app.route('/api/components/<int:index>', methods=['DELETE'])
+def delete_component(index):
+    if 0 <= index < len(data['components']):
+        del data['components'][index]
+        with open(existing_file, 'w') as file:
+            json.dump(data, file, indent=4)
+        return jsonify({'message': 'Component deleted'}), 200
+    else:
+        return jsonify({'error': 'Invalid index'}), 404
+
+if __name__ == '__main__':
+    app.run(debug=True)

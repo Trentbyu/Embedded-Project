@@ -17,7 +17,7 @@ const HomePage = () => {
             {component.type === 'ImageViewer' && (
               <ImageViewer
                 imageSourceLink={component.props.imageSourceLink}
-                containerId={component.props.containerId}
+                // containerId={component.props.containerId}
                 ESPNAME={component.props.ESPNAME}
               />
             )}

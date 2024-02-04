@@ -3,15 +3,6 @@
         {
             "type": "ImageViewer",
             "props": {
-                "imageSourceLink": "http://192.168.0.116",
-                "containerId": "192.168.0.116",
-                "ESPNAME": "Inside",
-                "Device": "ESP32"
-            }
-        },
-        {
-            "type": "ImageViewer",
-            "props": {
                 "imageSourceLink": "http://192.168.0.100",
                 "containerId": "192.168.0.100",
                 "ESPNAME": "Outside",
@@ -21,9 +12,9 @@
         {
             "type": "ImageViewer",
             "props": {
-                "imageSourceLink": "192.168.0.200",
-                "containerId": "192.168.0.200",
-                "ESPNAME": "TEST",
+                "imageSourceLink": " http://192.168.0.116",
+                "containerId": "",
+                "ESPNAME": "Tester",
                 "Device": "ESP32"
             }
         }
