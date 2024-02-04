@@ -14,9 +14,10 @@ existing_file = os.path.join('embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage
 if os.path.exists(existing_file):
     print("File exists!")
 else:
+    existing_file = os.path.join('Embedded', 'embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
     print("File does not exist.")
 
-    
+
 with open(existing_file, 'r') as file:
     data = json.load(file)
 
