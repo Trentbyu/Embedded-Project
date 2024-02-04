@@ -32,7 +32,7 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
         setTimeout(updateImageSource, 500);
       };
 
-      imageElement.src = `http://${imageSourceLink}/video?${i}`;
+      imageElement.src = `${imageSourceLink}/video?${i}`;
       imageElement.width = 400;
       imageElement.height = 300;
     };
@@ -51,42 +51,48 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
   
 
   return (
-    <motion.div 
-  initial={{ opacity: 0, x: 1500 }} 
-  animate={{ opacity: 1, x: 0 }} 
-  exit={{ opacity: 0, x: 100 }} 
-  transition={{ duration: 0.8 }} 
-  className='mx-10 h-300' // Set a fixed height for the motion div
->
-  <div className="flex flex-col h-full"> {/* Ensure flex container stretches to fill height */}
-    <label className="block text-gray-700 text-sm font-bold h-20" htmlFor="refreshInterval"> {/* Set fixed height for label */}
-      Cam {ESPNAME}
-    </label>
-    <select
-      id="refreshInterval"
-      value={refreshInterval}
-      onChange={handleIntervalChange}
-      className="shadow appearance-none rounded w-full py-1 px-2 text-white leading-tight focus:outline-none focus:shadow-outline bg-gray-600 h-10" // Set fixed height for select
-    >
-      <option value={25}>40 fps</option>
-      <option value={41}>24 fps </option>
-      <option value={100}>10 fps</option>
-      <option value={500}>2 fps</option>
-      <option value={1000}>1 fps</option>
-    </select>
-    
-    <motion.div
-      id={containerId}
-      className="max-w-full flex-grow" // Ensure image container takes up remaining space
-    >
-      <motion.img
-        className="w-full h-full object-cover" // Set image to cover container
-        // src={imageSource} // Replace with your image source
-        alt="Image"
-      />
+    <motion.div initial={{ opacity: 0, x: 1500 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: 100 }}
+    transition={{ duration: .8 }} 
+    className='mx-10'>
+      <div className="">
+        <label className="block text-gray-700 text-sm font-bold" htmlFor="refreshInterval">
+          Cam {ESPNAME}
+        </label>
+        <select
+          id="refreshInterval"
+          value={refreshInterval}
+          onChange={handleIntervalChange}
+          className="shadow appearance-none  rounded w-full py-1 px-2 text-white leading-tight focus:outline-none focus:shadow-outline bg-gray-600"
+        >
+          <option value={25}>40 fps</option>
+          <option value={41}>24 fps </option>
+          <option value={100}>10 fps</option>
+          <option value={500}>2 fps</option>
+          <option value={1000}>1 fps</option>
+        </select>
+          
+        
+        </div>
+        
+        <motion.div
+          id={containerId}
+          className="max-w-full"
+          
+          // whileHover={{ scale: 1.5 }} // Zoom effect on hover
+         
+        >
+          <motion.img
+            className="w-400 h-300"
+           
+            // whileHover={{ scale: 1.5}} // Zoom effect on hover
+           
+          />
+        </motion.div>
+
+
     </motion.div>
-  </div>
-</motion.div>
   );
 };
 
