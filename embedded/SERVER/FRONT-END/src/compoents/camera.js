@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
-  const [refreshInterval, setRefreshInterval] = useState(1000);
+  const [refreshInterval, setRefreshInterval] = useState(25);
 
   let i = 0
   useEffect(() => {
@@ -24,7 +24,7 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
       imageElement.onload = () => {
         setTimeout(() => {
           imageElement.src = `${imageSourceLink}/video?${i}`;
-        }, refreshInterval);
+        }, 25);
       };
 
       imageElement.onerror = () => {
