@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
   const [refreshInterval, setRefreshInterval] = useState(1000);
-  const [temperature, setTemperature] = useState(null); 
-  const [sleepDuration, setSleepDuration] = useState('');
+
   let i = 0
   useEffect(() => {
     i++
