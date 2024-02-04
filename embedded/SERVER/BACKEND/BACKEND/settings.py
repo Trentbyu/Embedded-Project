@@ -15,7 +15,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    # Add other origins if needed
+]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -24,9 +27,10 @@ SECRET_KEY = 'django-insecure-+1hx)w@pbm*rn1b=fe=ha@x!h2cing+-dog=u(8$6f!@gn5ab8
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-CORS_ORIGIN_ALLOW_ALL = True  # Allow requests from any origin (not recommended for production)
+CORS_ORIGIN_ALLOW_ALL = DEBUG # Allow requests from any origin (not recommended for production)
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS=['*']
 
 
 # Application definition
