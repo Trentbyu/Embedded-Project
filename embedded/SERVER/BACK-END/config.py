@@ -18,7 +18,7 @@ else:
     # /home/trent/Embedded-Project/embedded/SERVER/FRONT-END/src
     # user = input("whats the user ")
     # existing_file = os.path.join('/home',user, 'Embedded-Project', 'embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
-    existing_file = r"/home/trent/Embedded-Project/embedded/SERVER/FRONT-END/src"
+    existing_file = r"/home/trent/Embedded-Project/embedded/SERVER/FRONT-END/src/HomePage.json"
     print("File does not exist.")
 
 
