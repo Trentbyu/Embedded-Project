@@ -50,6 +50,7 @@ def delete_component(index):
 @app.route('/api/components/order', methods=['PUT'])
 def update_component_order():
     new_order = request.json
+    print("Received order:", new_order)  # Add this line to print received data
     if 'components' in new_order:
         data['components'] = new_order['components']
         with open(existing_file, 'w') as file:
@@ -57,7 +58,8 @@ def update_component_order():
         return jsonify({'message': 'Component order updated'}), 200
     else:
         return jsonify({'error': 'Invalid request format'}), 400
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
+    # app.run(debug=True)
+
 
