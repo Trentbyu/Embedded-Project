@@ -6,7 +6,6 @@ const SettingsPage = () => {
     type: "",
     props: {
       imageSourceLink: "",
-      containerId: "",
       ESPNAME: "",
       Device: ""
     }
@@ -34,7 +33,6 @@ const SettingsPage = () => {
         type: "", // Resetting type after successful addition
         props: {
           imageSourceLink: "",
-          containerId: "",
           ESPNAME: "",
           Device: ""
         }
