@@ -41,7 +41,7 @@ const ImageViewer = ({ imageSourceLink, containerId,ESPNAME }) => {
     };
 
     updateImageSource();
-  }, [refreshInterval, imageSourceLink, containerId]);
+  }, [25, imageSourceLink, containerId]);
 
   const handleIntervalChange = (event) => {
     const newInterval = parseInt(event.target.value, 10);
