@@ -3,14 +3,6 @@
         {
             "props": {
                 "Device": "ESP32",
-                "ESPNAME": "Tester",
-                "imageSourceLink": " http://192.168.0.116"
-            },
-            "type": "ImageViewer"
-        },
-        {
-            "props": {
-                "Device": "ESP32",
                 "ESPNAME": "Outside",
                 "imageSourceLink": "http://192.168.0.100"
             },
@@ -23,6 +15,14 @@
                 "imageSourceLink": " http://192.168.0.100"
             },
             "type": "TemperatureViewer"
+        },
+        {
+            "props": {
+                "Device": "ESP32",
+                "ESPNAME": "Tester",
+                "imageSourceLink": " http://192.168.0.116"
+            },
+            "type": "ImageViewer"
         }
     ]
 }
