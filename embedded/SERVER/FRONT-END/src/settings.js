@@ -90,26 +90,26 @@ const SettingsPage = () => {
         </select>
         <input 
           type="text" 
-          name="Ip Address" 
+          name="imageSourceLink" 
           value={newComponentData.props.imageSourceLink} 
           onChange={handleInputChange} 
-          placeholder="Image Source Link"
+          placeholder="Ip Address"
           className="block w-full py-2 px-3 border border-gray-300 rounded-md mb-2"
         />
         <input 
           type="text" 
-          name="ESP NAME" 
+          name="ESPNAME" 
           value={newComponentData.props.ESPNAME} 
           onChange={handleInputChange} 
-          placeholder="ESPNAME"
+          placeholder="ESP NAME"
           className="block w-full py-2 px-3 border border-gray-300 rounded-md mb-2"
         />
         <input 
           type="text" 
-          name="Device type" 
+          name="Device" 
           value={newComponentData.props.Device} 
           onChange={handleInputChange} 
-          placeholder="Device"
+          placeholder="Device Type"
           className="block w-full py-2 px-3 border border-gray-300 rounded-md mb-2"
         />
         <button 
