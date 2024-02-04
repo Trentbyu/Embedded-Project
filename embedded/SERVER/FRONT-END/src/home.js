@@ -1,44 +1,35 @@
-// HomePage.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageViewer from './compoents/camera';
 import TemperatureViewer from './compoents/temp';
-
+import pageData from './HomePage.json'; // Import JSON directly
 
 const HomePage = () => {
+  // No need to use useState for pageData if it's static
+  // const [pageData, setPageData] = useState(null);
+
+  // No need for useEffect if pageData is static
+
   return (
     <div className="min-h-screen flex flex-col py-10 bg-gray-500">
-      {/* First row of components */}
-      <div className="flex flex-col sm:flex-row my-5 sm:mb-2">
-        <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
-          {/* ImageViewer component */}
-         
-          <ImageViewer imageSourceLink={"http://192.168.0.116"} containerId="192.168.0.116" ESPNAME="Inside" />
+      {pageData.components.map((component, index) => (
+        <div key={index} className="flex flex-col sm:flex-row my-5 sm:mb-2">
+          <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
+            {component.type === 'ImageViewer' && (
+              <ImageViewer
+                imageSourceLink={component.props.imageSourceLink}
+                containerId={component.props.containerId}
+                ESPNAME={component.props.ESPNAME}
+              />
+            )}
+            {component.type === 'TemperatureViewer' && (
+              <TemperatureViewer
+                temperatureApiEndpoint={component.props.temperatureApiEndpoint}
+                ESPNAME={component.props.ESPNAME}
+              />
+            )}
+          </div>
         </div>
-        <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
-          {/* TemperatureViewer component */}
-          {/* <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="Inside"/> */}
-        </div>
-        <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
-          {/* TemperatureViewer component */}
-          {/* <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="Oustide"/> */}
-        </div>
-      </div>
-
-      {/* Second row of components */}
-      <div className="flex flex-col sm:flex-row py-10 ">
-        <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
-          {/* ImageViewer component */}
-          <ImageViewer imageSourceLink={"http://192.168.0.100"} containerId="192.168.0.100" ESPNAME="Oustide"/>
-        </div>
-        <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
-          {/* TemperatureViewer component */}
-          {/* <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="Oustide" /> */}
-        </div>
-        <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
-          {/* TemperatureViewer component */}
-          {/* <TemperatureViewer temperatureApiEndpoint={"temperatureApiEndpoint"} ESPNAME="Oustide"/> */}
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
