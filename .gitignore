@@ -83,8 +83,11 @@ embedded/SERVER/FRONT-END/yarn-debug.log*
 embedded/SERVER/FRONT-END/yarn-error.log*
 embedded/SERVER/FRONT-END/.changelog
 embedded/SERVER/FRONT-END/.npm/
+<<<<<<< HEAD
 
 
 *.jpg
 *.avi
 *.mp4
+=======
+>>>>>>> parent of bf64d28 (updates)
