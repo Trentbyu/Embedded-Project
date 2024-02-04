@@ -17,8 +17,8 @@ if os.path.exists(existing_file):
 else:
     # /home/trent/Embedded-Project/embedded/SERVER/FRONT-END/src
     # user = input("whats the user ")
-    existing_file = os.path.join('/home','trent', 'Embedded-Project', 'embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
-    # existing_file = "HomePage.json"
+    # existing_file = os.path.join('/home','trent', 'Embedded-Project', 'embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
+    existing_file = "/home/trent/Embedded-Project/embedded/SERVER/FRONT-END/src/HomePage.json"
     print("File does not exist.")
 
 
