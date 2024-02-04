@@ -85,12 +85,12 @@ const SettingsPage = () => {
           onChange={handleInputChange}
         >
           <option value="">Select Type</option>
-          <option value="ImageViewer">ImageViewer</option>
-          <option value="TemperatureViewer">TemperatureViewer</option>
+          <option value="ImageViewer">Camera</option>
+          <option value="TemperatureViewer">Temperature</option>
         </select>
         <input 
           type="text" 
-          name="imageSourceLink" 
+          name="Ip Address" 
           value={newComponentData.props.imageSourceLink} 
           onChange={handleInputChange} 
           placeholder="Image Source Link"
@@ -98,7 +98,7 @@ const SettingsPage = () => {
         />
         <input 
           type="text" 
-          name="ESPNAME" 
+          name="ESP NAME" 
           value={newComponentData.props.ESPNAME} 
           onChange={handleInputChange} 
           placeholder="ESPNAME"
@@ -106,7 +106,7 @@ const SettingsPage = () => {
         />
         <input 
           type="text" 
-          name="Device" 
+          name="Device type" 
           value={newComponentData.props.Device} 
           onChange={handleInputChange} 
           placeholder="Device"
