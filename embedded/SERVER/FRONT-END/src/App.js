@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Navbar from './compoents/nav';
 import Esp32ConfigPage from './Esp32ConfigPage';
 import HomePage from './home';
-
+import SettingsPage from './settings';
 
 const App = () => {
   return (
@@ -19,6 +19,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/config" element={<Esp32ConfigPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+
           </Routes>
         </div>
       </div>
