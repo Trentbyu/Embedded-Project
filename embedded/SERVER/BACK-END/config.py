@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-
+import os
 
 import json  # Import the json module
 
@@ -8,7 +8,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Read the existing JSON data from the file
-existing_file = 'embedded\SERVER\FRONT-END\src\HomePage.json'
+existing_file = os.path.join('embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
+
 with open(existing_file, 'r') as file:
     data = json.load(file)
 
