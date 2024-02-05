@@ -38,7 +38,8 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
     const newInterval = parseInt(event.target.value, 10);
     setRefreshInterval(isNaN(newInterval) ? 10000 : newInterval);
   };
-  const fillPercentage = temperature !== null ? Math.min(Math.max(temperature, 0), 100) : 0;
+  const fillPercentage = temperature !== null ? Math.min(Math.max(temperature, 30), 100) : 0;
+
 
   return (
     <motion.div  initial={{ opacity: 0, x: 1500 }}
