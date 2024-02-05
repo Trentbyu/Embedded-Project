@@ -16,7 +16,7 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
   
   const handleRestartClick = async () => {
     try {
-      const response = await fetch(`${apiEndpoint}/restart`, {
+      const response = await fetch(`http://${apiEndpoint}/restart`, {
         method: 'GET', // You may need to change the HTTP method based on your API
       });
 
@@ -33,30 +33,12 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
     }
   };
 
-  const handleTemperatureClick = async () => {
-    try {
-      const response = await fetch(`${apiEndpoint}/temperature`);
-      const dataText = await response.text();
-
-      // Extract the temperature value from the response text
-      const temperatureMatch = dataText.match(/Temperature: (\d+\.\d+) C/);
-
-      if (temperatureMatch && temperatureMatch.length >= 2) {
-        const temperatureValue = parseFloat(temperatureMatch[1]);
-        setTemperature(temperatureValue);
-      } else {
-        console.error('Invalid temperature response:', dataText);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
 
   const handleSleepDurationChange = async () => {
     // Check if sleepDuration is a valid number
     if (!isNaN(sleepDuration)) {
       try {
-        const response = await fetch(`${apiEndpoint}/sleep?duration=${sleepDuration}`);
+        const response = await fetch(`http://${apiEndpoint}/sleep?duration=${sleepDuration}`);
         const dataText = await response.text();
 
         // Process the response as needed
@@ -81,7 +63,7 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
 
   const handlePowerStateClick = async () => {
     try {
-      const response = await fetch(`${apiEndpoint}/power?state=${selectedPowerState}`, {
+      const response = await fetch(`http://${apiEndpoint}/power?state=${selectedPowerState}`, {
         method: 'GET',
       });
   

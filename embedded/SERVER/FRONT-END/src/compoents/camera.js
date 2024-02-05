@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const ImageViewer = ({ imageSourceLink,  ESPNAME }) => {
-  const [refreshInterval, setRefreshInterval] = useState(1000);
-  const [timestamp, setTimestamp] = useState(Date.now()); // Initialize with current timestamp
-
+const ImageViewer = ({ imageSourceLink, ESPNAME }) => {
+  const [refreshInterval, setRefreshInterval] = useState(100);
+  let i = 0
   useEffect(() => {
     const updateImageSource = () => {
       const imageContainer = document.getElementById(imageSourceLink);
@@ -22,25 +21,26 @@ const ImageViewer = ({ imageSourceLink,  ESPNAME }) => {
       }
 
       imageElement.onload = () => {
-        setTimeout(() => {
-          setTimestamp(Date.now()); // Update timestamp to trigger refresh
-        }, refreshInterval);
+        setTimeout(updateImageSource, refreshInterval); // Refresh image after interval
       };
 
       imageElement.onerror = () => {
         console.error('Error loading image');
-        setTimeout(updateImageSource, 500);
+        setTimeout(updateImageSource, 500); // Retry after 500ms if there's an error
       };
 
-      // Append timestamp to image source link
-      imageElement.src = `${imageSourceLink}/video?${timestamp}`;
+      // Construct the image source URL with the provided IP address
+      const imageURL = `http://192.168.0.156:5000/api/get_image/${imageSourceLink}?${i++}`;
+
+      // Set image source link
+      imageElement.src = imageURL;
 
       imageElement.width = 400;
       imageElement.height = 300;
     };
 
     updateImageSource();
-  }, [refreshInterval, imageSourceLink, timestamp]);
+  }, [refreshInterval, imageSourceLink]);
 
   const handleIntervalChange = (event) => {
     const newInterval = parseInt(event.target.value, 10);
@@ -64,11 +64,10 @@ const ImageViewer = ({ imageSourceLink,  ESPNAME }) => {
           onChange={handleIntervalChange}
           className="shadow appearance-none rounded w-full py-1 px-2 text-white leading-tight focus:outline-none focus:shadow-outline bg-gray-600"
         >
-          <option value={25}>40 fps</option>
-          <option value={41}>24 fps</option>
-          <option value={100}>10 fps</option>
-          <option value={500}>2 fps</option>
-          <option value={1000}>1 fps</option>
+          <option value={1000}>Refresh every 1 second</option>
+          <option value={2000}>Refresh every 2 seconds</option>
+          <option value={5000}>Refresh every 5 seconds</option>
+          {/* Add more options as needed */}
         </select>
       </div>
 
@@ -78,6 +77,7 @@ const ImageViewer = ({ imageSourceLink,  ESPNAME }) => {
       >
         <motion.img
           className="w-400 h-300"
+          alt={`Image from ${ESPNAME} camera`}
         />
       </motion.div>
     </motion.div>

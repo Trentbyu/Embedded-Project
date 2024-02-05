@@ -6,6 +6,8 @@
 #include <EEPROM.h>
 #include <esp_pm.h>
 #include <esp_sleep.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,7 +21,7 @@ extern "C" {
 
 #define uS_TO_S_FACTOR 1000000
 
-
+const char* flaskServerAddress = "http://192.168.0.156:5000/api/save_image";
 uint8_t temprature_sens_read();
 
 char ssid[32]; // Maximum length for SSID
@@ -46,9 +48,31 @@ bool wifiConnected = 0;
 #define VSYNC_GPIO_NUM    25
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
-
+TaskHandle_t Core2Task;
 AsyncWebServer server(80);
 camera_config_t config; // Declare config as a global variable
+
+void video_function(void * parameter) {
+  for (;;) {
+    // Camera capture and processing logic
+    camera_fb_t *fb = esp_camera_fb_get();
+    // Check if camera capture failed
+    if (!fb) {
+      Serial.println("Camera capture failed");
+      delay(100);
+      continue; // Continue to the next iteration of the loop
+    }
+
+    // Send the captured frame to Flask server
+    sendFrameToFlask(fb->buf, fb->len);
+    
+    // Return the captured frame buffer to the camera
+    esp_camera_fb_return(fb);
+
+    // Adjust delay as needed to control the frame capture rate
+    delay(100); 
+  }
+}
 bool initCamera(){
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
@@ -107,14 +131,20 @@ void handleRestart(AsyncWebServerRequest *request) {
   
 }
 void handleTemperature(AsyncWebServerRequest *request) {
-  
   // Convert raw temperature in F to Celsius degrees
   float temperatureC = (temprature_sens_read() - 32) / 1.8;
 
-  // Send the temperature response as text
-  request->send(200, "text/plain", "Temperature: " + String(temperatureC) + " C");
-  
- 
+  // Create a JSON object
+  StaticJsonDocument<200> jsonDoc;
+  jsonDoc["temperature"] = temperatureC;
+  Serial.println("tryin to connect...");
+
+  // Serialize JSON to a string
+  String jsonString;
+  serializeJson(jsonDoc, jsonString);
+
+  // Send the JSON response
+  request->send(200, "application/json", jsonString);
 }
 
 void setup() {
@@ -148,7 +178,7 @@ void setup() {
   }
   Serial.println(WiFi.status());
   // Serve the video stream
-  server.on("/video", HTTP_GET, handleVideoStream);
+  // server.on("/video", HTTP_GET, handleVideoStream);
   server.on("/restart", HTTP_GET, handleRestart);
   server.on("/temperature", HTTP_GET, handleTemperature);
   server.on("/power", HTTP_GET, handlePowerRequest);
@@ -158,16 +188,51 @@ void setup() {
 
   server.begin();
 
+xTaskCreatePinnedToCore(
+  video_function,     // Function to run on core 2
+  "Core2Task",        // Name of the task
+  10000,              // Stack size (bytes)
+  NULL,               // Task input parameter
+  1,                  // Priority (0 is lowest)
+  &Core2Task,         // Task handle
+  1                   // Core number (1 for core 2)
+);
+
 }
 
 
 
 void loop() {
-      
+ 
+
+
 
 }
+void sendFrameToFlask(uint8_t* data, size_t len) {
+  HTTPClient http;
 
+  // Begin HTTP request
+  http.begin(flaskServerAddress);
 
+  // Set headers
+  http.addHeader("Content-Type", "image/jpeg");
+
+  // Send POST request with image data
+  int httpResponseCode = http.POST(data, len);
+
+  if (httpResponseCode > 0) {
+    // Serial.print("HTTP Response code: ");
+    // Serial.println(httpResponseCode);
+    String response = http.getString();
+    // Serial.println(response);
+  } else {
+    Serial.print("Error in sending HTTP POST request: ");
+    Serial.println(httpResponseCode);
+  }
+
+  // End HTTP connection
+  http.end();
+}
 void connectToWiFi() {
   WiFi.begin(ssid, password);
   WiFi.config(staticIP, gateway, subnet);
