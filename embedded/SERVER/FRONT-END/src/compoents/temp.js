@@ -38,7 +38,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
     const newInterval = parseInt(event.target.value, 10);
     setRefreshInterval(isNaN(newInterval) ? 10000 : newInterval);
   };
-  const fillPercentage = temperature !== null ? Math.min(Math.max(temperature, 50), 100) : 0;
+  const fillPercentage = temperature !== null ? Math.min(Math.max(temperature, 50), 120) : 0;
 
 
   return (
