@@ -1,13 +1,16 @@
 #include <Arduino.h>
-// #include "ESPAsyncWebServer.h"
-// #include <AsyncTCP.h>
+#include <WiFi.h>
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
 #include "esp_camera.h"
-#include <WiFi.h> 
+#include "ESPAsyncWebServer.h"
+#include <AsyncTCP.h>
 #include <EEPROM.h>
-// #include <esp_pm.h>
-// #include <esp_sleep.h>
-#include <HTTPClient.h>
-#include <ArduinoJson.h>
+#include <esp_pm.h>
+#include <esp_sleep.h>
+
+const char* ssid = "Blackfamily";
+const char* password = "Blacks1987";
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,24 +22,22 @@ extern "C" {
 }
 #endif
 
-#define uS_TO_S_FACTOR 1000000
+String serverName = "192.168.0.156";   // REPLACE WITH YOUR Raspberry Pi IP ADDRESS
+//String serverName = "example.com";   // OR REPLACE WITH YOUR DOMAIN NAME
 
-const char* flaskServerAddress = "http://192.168.0.156:5000/api/save_image";
-uint8_t temprature_sens_read();
+String serverPath = "/api/save_image";     // The default serverPath should be upload.php
 
-char ssid[32]; // Maximum length for SSID
-char password[64]; // Maximum length for password
-bool power;
-IPAddress staticIP(192, 168, 0, 100);  // Set your desired static IP address
-IPAddress gateway(192, 168, 0, 1);
-IPAddress subnet(255, 255, 255, 0);
-bool wifiConnected = 0;
+const int serverPort = 5000;
 
+WiFiClient client;
+
+// CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
 #define RESET_GPIO_NUM    -1
 #define XCLK_GPIO_NUM      0
 #define SIOD_GPIO_NUM     26
 #define SIOC_GPIO_NUM     27
+
 #define Y9_GPIO_NUM       35
 #define Y8_GPIO_NUM       34
 #define Y7_GPIO_NUM       39
@@ -48,12 +49,28 @@ bool wifiConnected = 0;
 #define VSYNC_GPIO_NUM    25
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
-HTTPClient http;
-// AsyncWebServer server(80);
-camera_config_t config; // Declare config as a global variable
+AsyncWebServer server(80);
+const int timerInterval = 40;    // time between each HTTP POST image
+unsigned long previousMillis = 0;   // last time image was sent
 
+void setup() {
+  WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); 
+  Serial.begin(115200);
 
-bool initCamera(){
+  WiFi.mode(WIFI_STA);
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);  
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println();
+  Serial.print("ESP32-CAM IP Address: ");
+  Serial.println(WiFi.localIP());
+
+  camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
   config.pin_d0 = Y2_GPIO_NUM;
@@ -73,159 +90,169 @@ bool initCamera(){
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.pixel_format = PIXFORMAT_JPEG; 
-  config.frame_size = FRAMESIZE_SVGA;
-  config.jpeg_quality = 12;
-  config.fb_count = 1;
-    
-  esp_err_t result = esp_camera_init(&config);
-   
-  if (result != ESP_OK) {
-    return false;
+  config.pixel_format = PIXFORMAT_JPEG;
+
+  // init with high specs to pre-allocate larger buffers
+  if(psramFound()){
+    config.frame_size = FRAMESIZE_SVGA;
+    config.jpeg_quality = 12;  //0-63 lower number means higher quality
+    config.fb_count = 2;
+  } else {
+    config.frame_size = FRAMESIZE_CIF;
+    config.jpeg_quality = 12;  //0-63 lower number means higher quality
+    config.fb_count = 1;
   }
- 
-  return true;
-}
-
-
-void setup() {
-  power = true;
-  Serial.begin(115200);
-  Serial.println("Hello...");
-  // Connect to Wi-Fi
-  EEPROM.begin(512); // Initialize EEPROM with 512 bytes
-
-  // Load WiFi credentials from EEPROM
-  EEPROM.get(0, ssid);
-  EEPROM.get(sizeof(ssid), password);
-
-
-  connectToWiFi();
-  Serial.print("CPU Freq: ");
-  Serial.println(getCpuFrequencyMhz());
   
-  // setCpuFrequencyMhz(80);
- 
-
-
-  delay(1000);  // Add a delay of 5 seconds
-  // Serial.println("Connected to WiFi");
-  // Serial.println(WiFi.status());
-  Serial.println(WiFi.localIP());
-  // Initialize the camera
-  if (!initCamera()) {
-    Serial.println("Error initializing the camera");
-    return;
-  }
-  Serial.println(WiFi.status());
-  http.begin(flaskServerAddress);
-}
-
-
-
-void loop() {
-  // Camera capture and processing logic
-    camera_fb_t *fb = esp_camera_fb_get();
-    // Check if camera capture failed
-    if (!fb) {
-      Serial.println("Camera capture failed");
-      delay(1000);
-
-    }else{
-      // Send the captured frame to Flask server
-    sendFrameToFlask(fb->buf, fb->len);
-    
-    // Return the captured frame buffer to the camera
-    esp_camera_fb_return(fb);
-
-    // Adjust delay as needed to control the frame capture rate
-    delay(1000); 
-
-    }
-
-    
-
-  // Serial.println(WiFi.status());
-
-  if (WiFi.status() != WL_CONNECTED) {
+  // camera init
+  esp_err_t err = esp_camera_init(&config);
+  if (err != ESP_OK) {
+    Serial.printf("Camera init failed with error 0x%x", err);
+    delay(1000);
     ESP.restart();
   }
+  server.on("/restart", HTTP_GET, handleRestart);
+  server.on("/temperature", HTTP_GET, handleTemperature);
+  server.on("/power", HTTP_GET, handlePowerRequest);
+  server.on("/sleep", HTTP_GET, handleSleep);
 
+ 
+  DefaultHeaders::Instance().addHeader("access-Control-Allow-Origin", "*");
+
+  server.begin();
+  sendPhoto(); 
 }
-void sendFrameToFlask(uint8_t* data, size_t len) {
 
- // Set headers for each request
-  http.addHeader("Content-Type", "image/jpeg");
-
-  // Send POST request with image data
-  int httpResponseCode = http.POST(data, len);
-
-  if (httpResponseCode > 0) {
-    String response = http.getString();
-    // Handle response if needed
-  } else {
-    Serial.print("Error in sending HTTP POST request: ");
-    Serial.println(httpResponseCode);
+void loop() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= timerInterval) {
+    sendPhoto();
+    previousMillis = currentMillis;
   }
-
 }
-void connectToWiFi() {
-  WiFi.begin(ssid, password);
-  WiFi.config(staticIP, gateway, subnet);
+void handleRestart(AsyncWebServerRequest *request) {
+  delay(1000);  // Optional delay to ensure the response is sent
+  Serial.println("Restart");
+  delay(1000);
+   
+  ESP.restart();
+  
+}
+void handleTemperature(AsyncWebServerRequest *request) {
+  // Convert raw temperature in F to Celsius degrees
+  float temperatureC = (temprature_sens_read() - 32) / 1.8;
 
-  unsigned long startTime = millis();
-  while (millis() - startTime < 10000) {
-    if (WiFi.status() == WL_CONNECTED) {
-      Serial.println("Connected to WiFi");
-      wifiConnected = true;
-      break;
-    }
+  // Create a JSON string
+  String jsonString = "{";
+  jsonString += "\"temperature\":";
+  jsonString += temperatureC;
+  jsonString += "}";
+
+  // Send the JSON response
+  request->send(200, "application/json", jsonString);
+}
+String sendPhoto() {
+  String getAll;
+  String getBody;
+
+  camera_fb_t * fb = NULL;
+  fb = esp_camera_fb_get();
+  if(!fb) {
+    Serial.println("Camera capture failed");
     delay(1000);
-    Serial.println("Connecting to WiFi...");
+    ESP.restart();
   }
+  
+  Serial.println("Connecting to server: " + serverName);
 
-  if (!wifiConnected) {
-    Serial.println("WiFi connection failed. Enter new SSID and password via UART.");
+  if (client.connect(serverName.c_str(), serverPort)) {
+    Serial.println("Connection successful!");    
+    String head = "--RandomNerdTutorials\r\nContent-Disposition: form-data; name=\"imageFile\"; filename=\"esp32-cam.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n";
+    String tail = "\r\n--RandomNerdTutorials--\r\n";
 
-    Serial.print("Enter new SSID: ");
-    while (!Serial.available()) {
-      // Wait for user input
-    }
-    String newSSID = Serial.readStringUntil('\n');
-    newSSID.toCharArray(ssid, sizeof(ssid));
-
-    Serial.print("Enter new password: ");
-    while (!Serial.available()) {
-      // Wait for user input
-    }
-    String newPassword = Serial.readStringUntil('\n');
-    newPassword.toCharArray(password, sizeof(password));
-
-    // Save new credentials to EEPROM
-    EEPROM.put(0, ssid);
-    EEPROM.put(sizeof(ssid), password);
-    EEPROM.commit();
-
-    Serial.println("SSID and password updated successfully.");
-    Serial.println("Attempting to connect to WiFi with new credentials.");
-
-    // Connect to WiFi with new credentials
-    WiFi.begin(ssid, password);
-    startTime = millis();
-
-    while (millis() - startTime < 15000) {
-      if (WiFi.status() == WL_CONNECTED) {
-        Serial.println("Connected to WiFi with new credentials.");
-        wifiConnected = true;
-        break;
+    uint32_t imageLen = fb->len;
+    uint32_t extraLen = head.length() + tail.length();
+    uint32_t totalLen = imageLen + extraLen;
+  
+    client.println("POST " + serverPath + " HTTP/1.1");
+    client.println("Host: " + serverName);
+    client.println("Content-Length: " + String(totalLen));
+    client.println("Content-Type: multipart/form-data; boundary=RandomNerdTutorials");
+    client.println();
+    client.print(head);
+  
+    // Write image data to the request
+    client.write(fb->buf, imageLen);
+    
+    client.print(tail);
+    
+    esp_camera_fb_return(fb);
+    
+    int timoutTimer = 1000;
+    long startTimer = millis();
+    boolean state = false;
+    
+    while ((startTimer + timoutTimer) > millis()) {
+      Serial.print(".");
+      delay(100);      
+      while (client.available()) {
+        char c = client.read();
+        if (c == '\n') {
+          if (getAll.length()==0) { state=true; }
+          getAll = "";
+        }
+        else if (c != '\r') { getAll += String(c); }
+        if (state==true) { getBody += String(c); }
+        startTimer = millis();
       }
-      delay(1000);
-      Serial.println("Connecting to WiFi...");
+      if (getBody.length()>0) { break; }
     }
-
-    Serial.flush();
+    Serial.println();
+    client.stop();
+    Serial.println(getBody);
   }
+  else {
+    getBody = "Connection to " + serverName +  " failed.";
+    Serial.println(getBody);
+  }
+  return getBody;
+}
+void setPowerState(int state) {
+  switch (state) {
+    case 240:
+        setCpuFrequencyMhz(240);
+        break;
+    case 160:
+        setCpuFrequencyMhz(160);
+        break;
+    case 80:
+        setCpuFrequencyMhz(80);
+        break;
+    // Add more cases if needed
+    default:
+        // Handle default case if necessary
+        break;
 }
 
+}
+void handlePowerRequest(AsyncWebServerRequest *request) {
+  // Get the "state" query parameter
+  int stateParam;
 
+  if (request->hasParam("state")) {
+    stateParam = request->getParam("state")->value().toInt();
+    // Change power state based on the received parameter
+    setPowerState(stateParam);
+  } else {
+    // If "state" parameter is not present, get the current power state
+    stateParam = getCpuFrequencyMhz();
+  }
 
+  // Respond with the new or current power state
+  String response = "Power state: " + String(stateParam);
+    Serial.print("CPU Freq: ");
+  Serial.println(getCpuFrequencyMhz());
+  String jsonResponse = "{\"powerState\":\"" + String(stateParam) + "\"}";
+
+  // Respond with the JSON
+  request->send(200, "application/json", jsonResponse);
+}
