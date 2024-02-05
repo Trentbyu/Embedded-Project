@@ -56,7 +56,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
       </div>
     ) : (
       <p className="text-3xl">
-        {temperature !== null ? `${fillPercentage} °C` : 'NONE °C'}
+        {temperature !== null ? `${temperature} °C` : 'NONE °C'}
       </p>
     )}
   </div>
@@ -66,7 +66,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
     <motion.div whileHover={{ scale: 2}} className="relative bg-gray-300 w-6 h-32 mx-auto mb-2 rounded-lg">
       <div
         className="absolute bg-gradient-to-t from-blue-400 to-red-700 bottom-0 rounded-lg left-0"
-        style={{ width: '100%', height: `${90}%` }}
+        style={{ width: '100%', height: `${fillPercentage}%` }}
       ></div>
     </motion.div>
   </div>
