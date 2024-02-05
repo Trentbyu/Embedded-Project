@@ -54,7 +54,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
       </div>
     ) : (
       <p className="text-3xl">
-        {temperature !== null ? `${temperature} °C` : 'NONE °C'}
+        {temperature !== null ? `${fillPercentage} °C` : 'NONE °C'}
       </p>
     )}
   </div>
