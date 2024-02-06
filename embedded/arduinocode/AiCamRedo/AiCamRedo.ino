@@ -13,7 +13,7 @@ char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 char serverIP[16]; // Maximum length for server IP
 bool power;
-IPAddress staticIP(192, 168, 0, 100);  // Set your desired static IP address
+IPAddress staticIP(192, 168, 0, 116);  // Set your desired static IP address
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
 bool wifiConnected = 0;
@@ -130,8 +130,8 @@ void setup() {
 
   // init with high specs to pre-allocate larger buffers
   if(psramFound()){
-    config.frame_size = FRAMESIZE_CIF;
-    config.jpeg_quality = 10;  //0-63 lower number means higher quality
+    config.frame_size = FRAMESIZE_VGA;
+    config.jpeg_quality = 20;  //0-63 lower number means higher quality
     config.fb_count = 2;
   } else {
     config.frame_size = FRAMESIZE_CIF;
