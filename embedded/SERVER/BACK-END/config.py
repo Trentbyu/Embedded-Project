@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 import os
-import cv2
+# import cv2
 import json  # Import the json module
 from datetime import datetime
 app = Flask(__name__)
