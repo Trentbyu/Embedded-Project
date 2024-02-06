@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
-const SettingsPage = ({ ipAddress }) => {
+import ipAddress from './index';
+const SettingsPage = () => {
   const [components, setComponents] = useState([]);
   const [newComponentData, setNewComponentData] = useState({
     type: "",

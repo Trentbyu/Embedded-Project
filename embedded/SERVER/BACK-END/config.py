@@ -10,6 +10,7 @@ CORS(app)
 # Read the existing JSON data from the file
 existing_file = os.path.join('embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
 UPLOAD_FOLDER = 'uploads'
+VIDEO_FOLDER = 'videos'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 # Check if the file exists
@@ -61,6 +62,7 @@ def update_component_order():
     else:
         return jsonify({'error': 'Invalid request format'}), 400
     
+
 @app.route('/api/save_image', methods=['POST'])
 def save_image():
     if 'imageFile' not in request.files:
@@ -79,23 +81,6 @@ def save_image():
     try:
         image_file.save(save_path)
 
-        # Perform face recognition on the saved image
-        image = cv2.imread(save_path)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-        # Load the pre-trained face detection model
-        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
-        # Detect faces in the image
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-
-        # Draw rectangles around the detected faces
-        for (x, y, w, h) in faces:
-            cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
-
-        # Save the modified image
-        cv2.imwrite(save_path, image)
-
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -104,12 +89,36 @@ def save_image():
 
 @app.route('/api/get_image/<ip_address>', methods=['GET'])
 def get_image(ip_address):
-    image_path = fr'C:\Users\trent\OneDrive\Documents\GitHub\Embedded-Project\uploads\192_168_0_100_esp32-cam.jpg'
+    # image_path = os.path.join(UPLOAD_FOLDER, f'192_168_0_100_esp32-cam.jpg')
+   
+    image_path = r"C:\Users\trent\OneDrive\Documents\GitHub\Embedded-Project\uploads\192_168_0_116_esp32-cam.jpg"
+
 
     if not os.path.exists(image_path):
         return jsonify({'error': 'Image not found'}), 404
-    
+
     return send_file(image_path, mimetype='image/jpeg')
+
+
+@app.route('/api/create_video', methods=['GET'])
+def create_video():
+    images = [img for img in os.listdir(UPLOAD_FOLDER) if img.endswith(".jpg")]
+    images.sort()
+    frame = cv2.imread(os.path.join(UPLOAD_FOLDER, images[0]))
+    height, width, layers = frame.shape
+
+    video_name = 'output_video.avi'
+    video_path = os.path.join(VIDEO_FOLDER, video_name)
+
+    video = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc(*'DIVX'), 1, (width, height))
+
+    for image in images:
+        video.write(cv2.imread(os.path.join(UPLOAD_FOLDER, image)))
+
+    cv2.destroyAllWindows()
+    video.release()
+
+    return send_file(video_path, mimetype='video/avi')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

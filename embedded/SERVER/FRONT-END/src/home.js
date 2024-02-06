@@ -3,7 +3,7 @@ import ImageViewer from './compoents/camera';
 import TemperatureViewer from './compoents/temp';
 import pageData from './HomePage.json'; // Import JSON directly
 
-const HomePage = () => {
+const HomePage = ({ })=> {
   // No need to use useState for pageData if it's static
   // const [pageData, setPageData] = useState(null);
 
@@ -17,7 +17,7 @@ const HomePage = () => {
             {component.type === 'ImageViewer' && (
               <ImageViewer
                 imageSourceLink={component.props.imageSourceLink}
-                // containerId={component.props.containerId}
+                // IP={ipAddress}
                 ESPNAME={component.props.ESPNAME}
               />
             )}
