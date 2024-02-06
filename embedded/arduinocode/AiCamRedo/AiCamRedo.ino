@@ -13,7 +13,7 @@ char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 char serverIP[16]; // Maximum length for server IP
 bool power;
-IPAddress staticIP(192, 168, 0, 116);  // Set your desired static IP address
+IPAddress staticIP(192, 168, 0, 100);  // Set your desired static IP address
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
 bool wifiConnected = 0;
@@ -68,6 +68,7 @@ void handleVideoStream(AsyncWebServerRequest *request) {
   // Check if camera capture failed
   if (!fb) {
     request->send(500, "text/plain", "Camera capture failed");
+    ESP.restart();
     return;
   }
   // Send the captured frame as a response
@@ -96,7 +97,7 @@ void setup() {
 
   // Construct server name using the retrieved server IP address
   
-  serverName = "192.168.0.156";
+  serverName = serverIP;
 
 
   WiFi.mode(WIFI_STA);
@@ -245,6 +246,7 @@ String sendPhoto() {
     Serial.println(getBody);
   }
   else {
+    delay(1000);
     char serverIPCharArray[16]; // Maximum length for server IP
     readServerIPFromEEPROM(serverIPCharArray);
 
@@ -253,9 +255,10 @@ String sendPhoto() {
 
     // Construct server name using the retrieved server IP address
     
-    serverName = "192.168.0.156";
+    serverName = serverIP;
 
     getBody = "Connection to " + serverName +  " failed.";
+    delay(1000);
     Serial.println(getBody);
   }
   return getBody;
