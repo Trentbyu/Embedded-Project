@@ -3,14 +3,14 @@ from flask_cors import CORS
 import os
 import cv2
 import json  # Import the json module
-
+from datetime import datetime
 app = Flask(__name__)
 CORS(app)
-
+# os.chdir('c:\\Users\\trent\\OneDrive\\Documents\\GitHub\\Embedded-Project\\')
 # Read the existing JSON data from the file
 existing_file = os.path.join('embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
 UPLOAD_FOLDER = 'uploads'
-VIDEO_FOLDER = 'videos'
+
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 # Check if the file exists
@@ -65,6 +65,7 @@ def update_component_order():
 
 @app.route('/api/save_image', methods=['POST'])
 def save_image():
+    
     if 'imageFile' not in request.files:
         return jsonify({'error': 'No image file provided'}), 400
 
@@ -75,9 +76,16 @@ def save_image():
     # Get the IP address of the sender and replace '.' with '_'
     sender_ip = request.remote_addr.replace('.', '_')
 
-    # Save the image file with sender IP appended to filename
-    filename = f"{sender_ip}_{image_file.filename}"
-    save_path = os.path.join(UPLOAD_FOLDER, filename)
+    # Generate timestamp
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+
+    # Save the image file with sender IP and timestamp appended to filename
+    filename = f"{sender_ip}_{timestamp}_{image_file.filename}"
+
+    if not os.path.exists(os.path.join(UPLOAD_FOLDER, sender_ip)):
+        os.makedirs(os.path.join(UPLOAD_FOLDER, sender_ip))
+
+    save_path = os.path.join(UPLOAD_FOLDER,sender_ip, filename)
     try:
         image_file.save(save_path)
 
@@ -89,36 +97,22 @@ def save_image():
 
 @app.route('/api/get_image/<ip_address>', methods=['GET'])
 def get_image(ip_address):
-    # image_path = os.path.join(UPLOAD_FOLDER, f'192_168_0_100_esp32-cam.jpg')
+    folder_path = fr"c:\Users\trent\OneDrive\Documents\GitHub\\Embedded-Project\embedded\\SERVER\BACK-END\uploads\{ip_address.replace('.', '_')}"
    
-    image_path = r"C:\Users\trent\OneDrive\Documents\GitHub\Embedded-Project\uploads\192_168_0_116_esp32-cam.jpg"
+    if not os.path.exists(folder_path):
+        return jsonify({'error': 'Folder not found'}), 404
 
+    files = os.listdir(folder_path)
+    if not files:
+        return jsonify({'error': 'No images found in folder'}), 404
 
-    if not os.path.exists(image_path):
-        return jsonify({'error': 'Image not found'}), 404
+    # Get the most recent file
+    most_recent_file = max(files, key=lambda f: os.path.getmtime(os.path.join(folder_path, f)))
+    image_path = os.path.join(folder_path, most_recent_file)
 
     return send_file(image_path, mimetype='image/jpeg')
 
 
-@app.route('/api/create_video', methods=['GET'])
-def create_video():
-    images = [img for img in os.listdir(UPLOAD_FOLDER) if img.endswith(".jpg")]
-    images.sort()
-    frame = cv2.imread(os.path.join(UPLOAD_FOLDER, images[0]))
-    height, width, layers = frame.shape
-
-    video_name = 'output_video.avi'
-    video_path = os.path.join(VIDEO_FOLDER, video_name)
-
-    video = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc(*'DIVX'), 1, (width, height))
-
-    for image in images:
-        video.write(cv2.imread(os.path.join(UPLOAD_FOLDER, image)))
-
-    cv2.destroyAllWindows()
-    video.release()
-
-    return send_file(video_path, mimetype='video/avi')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

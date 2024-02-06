@@ -13,7 +13,7 @@ char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 char serverIP[16]; // Maximum length for server IP
 bool power;
-IPAddress staticIP(192, 168, 0, 116);  // Set your desired static IP address
+IPAddress staticIP(192, 168, 0, 100);  // Set your desired static IP address
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
 bool wifiConnected = 0;
@@ -62,7 +62,20 @@ const int DEFAULT_INTERVAL = 10000; // Default interval value
 int timerInterval = DEFAULT_INTERVAL;
 unsigned long previousMillis = 0;   // last time image was sent
 
-
+void handleVideoStream(AsyncWebServerRequest *request) {
+   // Capture a frame from the camera
+  camera_fb_t *fb = esp_camera_fb_get();
+  // Check if camera capture failed
+  if (!fb) {
+    request->send(500, "text/plain", "Camera capture failed");
+    return;
+  }
+  // Send the captured frame as a response
+  request->send_P(200, "image/jpeg", fb->buf, fb->len);
+  // Serial.println("img sent");
+  // Return the captured frame buffer to the camera
+  esp_camera_fb_return(fb);
+}
 
 void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); 
@@ -147,6 +160,7 @@ void setup() {
   server.on("/sleep", HTTP_GET, handleSleep);
   server.on("/serverIP", HTTP_GET, handleServerIPRequest);
   server.on("/set_interval", HTTP_GET, handleSetInterval);
+  server.on("/video", HTTP_GET, handleVideoStream);
   
  
   DefaultHeaders::Instance().addHeader("access-Control-Allow-Origin", "*");

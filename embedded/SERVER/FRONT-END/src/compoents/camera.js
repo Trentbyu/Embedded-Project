@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ipAddress from '../index';
 const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
-  const [refreshInterval, setRefreshInterval] = useState(500);
+  const [refreshInterval, setRefreshInterval] = useState(40);
   const [intervalInput, setIntervalInput] = useState(1000); // State to hold the value of the interval input
-
-  let i = 0;
 
   useEffect(() => {
     let i = 0; // Initialize the variable for constructing the image URL
@@ -31,12 +29,11 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
 
         imageElement.onerror = () => {
             console.error('Error loading image');
-            const imageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Hot_dog_with_mustard.png/220px-Hot_dog_with_mustard.png";
             setTimeout(updateImageSource, 500); // Retry after 500ms if there's an error
         };
 
         // Construct the image source URL with the provided IP address
-        const imageURL = `http://${ipAddress}:5000/api/get_image/${imageSourceLink}?${i++}`;
+        const imageURL = `http://${imageSourceLink}/video?${i++}`;
 
         // Set image source link
         imageElement.src = imageURL;
@@ -48,35 +45,35 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
     updateImageSource();
 }, [refreshInterval, imageSourceLink]);
 
-  const handleIntervalChange = async () => {
-    try {
-      const response = await fetch(`http://${imageSourceLink}/set_interval?interval=${intervalInput}`, {
-        method: 'GET'
-      });
+  // const handleIntervalChange = async () => {
+  //   try {
+  //     const response = await fetch(`http://${imageSourceLink}/set_interval?interval=${intervalInput}`, {
+  //       method: 'GET'
+  //     });
 
-      if (!response.ok) {
-        console.error('Error: Interval could not be set.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+  //     if (!response.ok) {
+  //       console.error('Error: Interval could not be set.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // };
 
   // Event listener to handle page unload
-    useEffect(() => {
-      const handleBeforeUnload = async () => {
-        // Set intervalInput to 1000 before unloading the page
-        setIntervalInput(1500);
-        // Call the function to send the interval change request
-        await handleIntervalChange();
-      };
+    // useEffect(() => {
+    //   const handleBeforeUnload = async () => {
+    //     // Set intervalInput to 1000 before unloading the page
+    //     setIntervalInput(1500);
+    //     // Call the function to send the interval change request
+    //     await handleIntervalChange();
+    //   };
 
-      window.addEventListener('beforeunload', handleBeforeUnload);
+    //   window.addEventListener('beforeunload', handleBeforeUnload);
 
-      return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-      };
-    }, []);
+    //   return () => {
+    //     window.removeEventListener('beforeunload', handleBeforeUnload);
+    //   };
+    // }, []);
 
   return (
     <motion.div
@@ -90,7 +87,7 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
       <label className="block text-gray-700 text-sm font-bold" htmlFor="refreshInterval">
         Cam {ESPNAME}
       </label>
-      <select
+      {/* <select
         value={intervalInput}
         onChange={(e) => setIntervalInput(parseInt(e.target.value))}
         className="border border-gray-300 rounded-md p-2 px-5 mt-2"
@@ -105,7 +102,7 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
       </select>
       <button onClick={handleIntervalChange} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
         Change Interval
-      </button>
+      </button> */}
     </div>
 
     <motion.div
