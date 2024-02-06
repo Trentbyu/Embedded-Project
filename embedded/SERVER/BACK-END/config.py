@@ -104,7 +104,7 @@ def save_image():
 
 @app.route('/api/get_image/<ip_address>', methods=['GET'])
 def get_image(ip_address):
-    image_path = fr'C:\Users\trent\OneDrive\Documents\GitHub\Embedded-Project\uploads\192_168_0_116_esp32-cam.jpg'
+    image_path = fr'C:\Users\trent\OneDrive\Documents\GitHub\Embedded-Project\uploads\192_168_0_100_esp32-cam.jpg'
 
     if not os.path.exists(image_path):
         return jsonify({'error': 'Image not found'}), 404

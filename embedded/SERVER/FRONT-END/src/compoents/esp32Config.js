@@ -88,7 +88,7 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
     // Fetch the current power state upon component mount
     const fetchPowerState = async () => {
       try {
-        const response = await fetch(`${apiEndpoint}/power`, {
+        const response = await fetch(`http://${apiEndpoint}/power`, {
           method: 'GET',
         });
 
@@ -107,21 +107,20 @@ const Esp32Config = ({ apiEndpoint , ESPNAME}) => {
     // Fetch temperature
     const fetchTemperature = async () => {
       try {
-        const response = await fetch(`${apiEndpoint}/temperature`);
-        const dataText = await response.text();
-        const temperatureMatch = dataText.match(/Temperature: (\d+\.\d+) C/);
-
-        if (temperatureMatch && temperatureMatch.length >= 2) {
-          const temperatureValue = parseFloat(temperatureMatch[1]);
+        const response = await fetch(`http://${apiEndpoint}/temperature`);
+        const data = await response.json();
+    
+        if (data && data.temperature !== undefined) {
+          const temperatureValue = parseFloat(data.temperature);
           setTemperature(temperatureValue);
-
+    
           // Check for temperature changes
-          if (temperatureValue !== prevTemperature) {
-            console.log('Temperature changed:', temperatureValue);
-          }
+          // if (temperatureValue !== prevTemperature) {
+          //   console.log('Temperature changed:', temperatureValue);
+          // }
           setPrevTemperature(temperatureValue);
         } else {
-          console.error('Invalid temperature response:', dataText);
+          console.error('Invalid temperature response:', data);
         }
       } catch (error) {
         console.error('Error:', error);

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const ImageViewer = ({ imageSourceLink, ESPNAME }) => {
-  const [refreshInterval, setRefreshInterval] = useState(100);
-  let i = 0
+  const [refreshInterval, setRefreshInterval] = useState(1000);
+  let i = 0;
+
   useEffect(() => {
     const updateImageSource = () => {
       const imageContainer = document.getElementById(imageSourceLink);
@@ -42,45 +43,46 @@ const ImageViewer = ({ imageSourceLink, ESPNAME }) => {
     updateImageSource();
   }, [refreshInterval, imageSourceLink]);
 
-  const handleIntervalChange = (event) => {
-    const newInterval = parseInt(event.target.value, 10);
-    setRefreshInterval(isNaN(newInterval) ? 1000 : newInterval);
+  const handleIntervalChange = async (event) => {
+  
+    try {
+      const response = await fetch(`http://${imageSourceLink}/set_interval?interval=${10000}`, {
+        method: 'GET'
+      });
+  
+      if (!response.ok) {
+        console.error('Error: Interval could not be set.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 1500 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 100 }}
-      transition={{ duration: 0.8 }}
-      className='mx-10'>
-      <div className="">
-        <label className="block text-gray-700 text-sm font-bold" htmlFor="refreshInterval">
-          Cam {ESPNAME}
-        </label>
-        <select
-          id="refreshInterval"
-          value={refreshInterval}
-          onChange={handleIntervalChange}
-          className="shadow appearance-none rounded w-full py-1 px-2 text-white leading-tight focus:outline-none focus:shadow-outline bg-gray-600"
-        >
-          <option value={1000}>Refresh every 1 second</option>
-          <option value={2000}>Refresh every 2 seconds</option>
-          <option value={5000}>Refresh every 5 seconds</option>
-          {/* Add more options as needed */}
-        </select>
-      </div>
+    initial={{ opacity: 0, x: 1500 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: 100 }}
+    transition={{ duration: 0.8 }}
+    className='mx-10'
+  >
+    <div className="">
+      <label className="block text-gray-700 text-sm font-bold" htmlFor="refreshInterval">
+        Cam {ESPNAME}
+      </label>
+      <button onClick={handleIntervalChange} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Change Interval</button>
+    </div>
 
-      <motion.div
-        id={imageSourceLink}
-        className="max-w-full"
-      >
-        <motion.img
-          className="w-400 h-300"
-          alt={`Image from ${ESPNAME} camera`}
-        />
-      </motion.div>
+    <motion.div
+      id={imageSourceLink}
+      className="max-w-full"
+    >
+      <motion.img
+        className="w-400 h-300"
+        alt={`Image from ${ESPNAME} camera`}
+      />
     </motion.div>
+  </motion.div>
   );
 };
 

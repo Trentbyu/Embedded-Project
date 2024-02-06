@@ -18,7 +18,8 @@ const SettingsPage = ({ ipAddress }) => {
       .catch(error => console.error('Error fetching components:', error));
   }, []);
 
-  const addData = () => {
+  const addData = (imageSourceLink) => {
+    // Fetch request to add component
     fetch(`http://${ipAddress}:5000/api/components`, {
       method: 'POST',
       headers: {
@@ -32,11 +33,26 @@ const SettingsPage = ({ ipAddress }) => {
       setNewComponentData({
         type: "", // Resetting type after successful addition
         props: {
-          imageSourceLink: "",
+          imageSourceLink: "", // Resetting image source link
           ESPNAME: "",
           Device: ""
         }
       });
+  
+      // Fetch request to set server IP address
+      fetch(`http://${imageSourceLink}/serverIP?ip=${ipAddress}`, {
+        method: 'GET',
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to set server IP address');
+        }
+        return response.text();
+      })
+      .then(responseText => {
+        console.log(responseText); // Log success message
+      })
+      .catch(error => console.error('Error setting server IP address:', error));
     })
     .catch(error => console.error('Error adding component:', error));
   };
@@ -156,7 +172,7 @@ const SettingsPage = ({ ipAddress }) => {
           className="block w-full py-2 px-3 border border-gray-300 rounded-md mb-2"
         />
         <button 
-          onClick={addData} 
+          onClick={() => addData(newComponentData.props.imageSourceLink)} 
           className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
         >
           Add
