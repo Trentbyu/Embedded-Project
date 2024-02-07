@@ -36,8 +36,11 @@ String serverName = "";   // REPLACE WITH YOUR Raspberry Pi IP ADDRESS
 String serverPath = "/api/save_image";     // The default serverPath should be upload.php
 
 const int serverPort = 5000;
-
+const int buttonPin = 2; // Change this to the GPIO pin you're using for the button
+bool buttonState = false;
+const int flashPin = 4;
 WiFiClient client;
+
 
 // CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
@@ -82,6 +85,8 @@ void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); 
   power = true;
   Serial.begin(115200);
+  pinMode(buttonPin, INPUT_PULLUP); // Set buttonPin as input with internal pull-up resistor
+  pinMode(flashPin, OUTPUT);
   Serial.println("Hello...");
   // Connect to Wi-Fi
   EEPROM.begin(512); // Initialize EEPROM with 512 bytes
@@ -132,7 +137,7 @@ void setup() {
   // init with high specs to pre-allocate larger buffers
   if(psramFound()){
     config.frame_size = FRAMESIZE_VGA;
-    config.jpeg_quality = 20;  //0-63 lower number means higher quality
+    config.jpeg_quality = 10;  //0-63 lower number means higher quality
     config.fb_count = 2;
   } else {
     config.frame_size = FRAMESIZE_CIF;
@@ -180,10 +185,40 @@ void loop() {
   // delay(5000);
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= timerInterval) {
-    sendPhoto();
+    // sendPhoto();
     previousMillis = currentMillis;
   }
+  bool newState = digitalRead(buttonPin);
+  // Check if the button state has changed
+  if (newState != buttonState) {
+    buttonState = newState;
+    
+    // If button is pressed (assuming the button is connected between GPIO and GND)
+    if (buttonState == LOW) {
+      Serial.println("Button pressed!");
+      // Perform your action here when the button is pressed
+     
+      sendPhoto();
+      delay(100);
+
+    }
+
+    for(int i =0; i<10; i++){
+    sendPhoto();
+    delay(100);
+    }
+  }
+
+    
+
 }
+
+
+  //  Serial.println("flash");
+
+  // digitalWrite(flashPin, !digitalRead(flashPin));
+  // delay(500);
+
 
 String sendPhoto() {
   String getAll;
