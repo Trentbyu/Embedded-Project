@@ -38,8 +38,8 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
         // Set image source link
         imageElement.src = imageURL;
 
-        imageElement.width = 800;
-        imageElement.height = 400;
+        imageElement.width = 600;
+        imageElement.height = 300;
     };
 
     updateImageSource();
