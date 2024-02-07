@@ -9,11 +9,9 @@ else
   kill $pid
 fi
 
-# Start the npm service
-echo "Starting npm service..."
+
 cd /home/trent/Embedded-Project/
 git pull
 
 cd /home/trent/Embedded-Project/embedded/SERVER/FRONT-END/
 npm start 
-sleep 2
