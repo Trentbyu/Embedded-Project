@@ -110,7 +110,7 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
       className="max-w-full"
     >
       <motion.img
-        className="w-800 h-400"
+        className="w-600 h-300"
         alt={`Image from ${ESPNAME} camera`}
       />
     </motion.div>
