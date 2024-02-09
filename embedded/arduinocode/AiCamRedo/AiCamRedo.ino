@@ -13,7 +13,7 @@ char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 char serverIP[16]; // Maximum length for server IP
 bool power;
-IPAddress staticIP(192, 168, 0, 100);  // Set your desired static IP address
+IPAddress staticIP(192, 168, 0, 116);  // Set your desired static IP address
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
 bool wifiConnected = 0;
@@ -286,7 +286,7 @@ String sendPhoto() {
     readServerIPFromEEPROM(serverIPCharArray);
 
     // Convert char array to String
-    String serverIP = String(serverIPCharArray);
+    String serverIP = "192.168.1.134";
 
     // Construct server name using the retrieved server IP address
     
