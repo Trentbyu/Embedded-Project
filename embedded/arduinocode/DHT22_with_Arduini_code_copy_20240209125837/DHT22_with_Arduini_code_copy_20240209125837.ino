@@ -123,16 +123,17 @@ void setup(){
   // Print ESP8266 Local IP Address
   Serial.println(WiFi.localIP());
 
-  // Route for root / web page
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send_P(200, "text/html", index_html, processor);
-  });
-  server.on("/temperature", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send_P(200, "text/plain", String(t).c_str());
-  });
-  server.on("/humidity", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send_P(200, "text/plain", String(h).c_str());
-  });
+  // // Route for root / web page
+  // server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+  //   request->send_P(200, "text/html", index_html, processor);
+  // });
+  // server.on("/temperature", HTTP_GET, [](AsyncWebServerRequest *request){
+  //   request->send_P(200, "text/plain", String(t).c_str());
+  // });
+  // server.on("/humidity", HTTP_GET, [](AsyncWebServerRequest *request){
+  //   request->send_P(200, "text/plain", String(h).c_str());
+  // });
+  server.on("/temperature", HTTP_GET, handleTemperature);
 
   // Start server
   server.begin();
@@ -166,4 +167,18 @@ void loop(){
       Serial.println(h);
     }
   }
+}
+
+void handleTemperature(AsyncWebServerRequest *request) {
+  // Convert raw temperature in F to Celsius degrees
+  // float temperatureC = (t- 32) / 1.8;
+
+  // Create a JSON string
+  String jsonString = "{";
+  jsonString += "\"temperature\":";
+  jsonString += t;
+  jsonString += "}";
+
+  // Send the JSON response
+  request->send(200, "application/json", jsonString);
 }
