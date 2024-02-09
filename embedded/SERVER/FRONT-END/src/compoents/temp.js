@@ -20,7 +20,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
         const temperatureValue = parseFloat(temperatureMatch[1]);
         setTemperature(temperatureValue);
       } else {
-        console.error('Invalid temperature response:', dataText);
+        console.error('Invalid temperature response:');
       }
     } catch (error) {
       console.error('Error:', error);
