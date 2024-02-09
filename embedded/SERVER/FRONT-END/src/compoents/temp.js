@@ -7,37 +7,65 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
   const [refreshInterval, setRefreshInterval] = useState(1000); // Initial refresh interval in milliseconds
 
   useEffect(() => {
-    
-  const fetchTemperature = async () => {
-    try {
-      const response = await fetch(`http://${temperatureApiEndpoint}/temperature`);
-      const dataText = await response.text();
+    // Fetch the current power state upon component mount
+    const fetchPowerState = async () => {
+      try {
+        const response = await fetch(`http://${apiEndpoint}/power`, {
+          method: 'GET',
+        });
 
-      // Extract the temperature value from the response text
-      const temperatureMatch = dataText.match(/Temperature: (\d+\.\d+) C/);
-
-      if (temperatureMatch && temperatureMatch.length >= 2) {
-        const temperatureValue = parseFloat(temperatureMatch[1]);
-        setTemperature(temperatureValue);
-      } else {
-        console.error('Invalid temperature response:');
+        if (response.ok) {
+          const data = await response.json();
+          setCurrentPowerState(data.powerState || '');
+          setSelectedPowerState(data.powerState || '');
+        } else {
+          console.error('Failed to fetch current power state');
+        }
+      } catch (error) {
+        console.error('Error while fetching current power state:', error);
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-    const intervalId = setInterval(fetchTemperature, refreshInterval);
-
-    return () => {
-      clearInterval(intervalId);
     };
-  }, [refreshInterval, temperatureApiEndpoint]);
 
-  const handleIntervalChange = (event) => {
-    const newInterval = parseInt(event.target.value, 10);
-    setRefreshInterval(isNaN(newInterval) ? 10000 : newInterval);
-  };
+    // Fetch temperature
+    const fetchTemperature = async () => {
+      try {
+        const response = await fetch(`http://${apiEndpoint}/temperature`);
+        const data = await response.json();
+    
+        if (data && data.temperature !== undefined) {
+          const temperatureValue = parseFloat(data.temperature);
+          setTemperature(temperatureValue);
+    
+          // Check for temperature changes
+          // if (temperatureValue !== prevTemperature) {
+          //   console.log('Temperature changed:', temperatureValue);
+          // }
+          setPrevTemperature(temperatureValue);
+        } else {
+          console.error('Invalid temperature response:', data);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    // Fetch power state and temperature every second
+    let counter = 0;
+    const intervalId = setInterval(async () => {
+      await fetchTemperature();
+
+      // Fetch power state every 2 seconds
+      
+      if (counter == 2) {
+        await fetchPowerState();
+        counter = 0
+      }
+      counter++;
+    }, 1000);
+
+    // Cleanup the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [apiEndpoint, prevTemperature]);
   const fillPercentage = temperature !== null ? Math.min(Math.max(temperature, 10), 100) : 0;
 
 

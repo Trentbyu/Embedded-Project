@@ -21,7 +21,7 @@ const char* password = "Posegate";
 DHT dht(DHTPIN, DHTTYPE);
 
 // current temperature & humidity, updated in loop()
-float t = 0.0;
+float t = 20.0;
 float h = 0.0;
 
 // Create AsyncWebServer object on port 80
@@ -73,6 +73,8 @@ void setup(){
   //   request->send_P(200, "text/plain", String(h).c_str());
   // });
   server.on("/temperature", HTTP_GET, handleTemperature);
+
+  DefaultHeaders::Instance().addHeader("access-Control-Allow-Origin", "*");
 
   // Start server
   server.begin();
