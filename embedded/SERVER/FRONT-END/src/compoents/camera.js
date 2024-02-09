@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ipAddress from '../index';
 const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
-  const [refreshInterval, setRefreshInterval] = useState(30);
+  const [refreshInterval, setRefreshInterval] = useState(40);
   const [intervalInput, setIntervalInput] = useState(1000); // State to hold the value of the interval input
 
   useEffect(() => {
