@@ -43,7 +43,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
       // Fetch power state every 2 seconds
       
       if (counter == 2) {
-        await fetchPowerState();
+        // await fetchPowerState();
         counter = 0
       }
       counter++;
