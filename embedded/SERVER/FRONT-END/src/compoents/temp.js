@@ -5,31 +5,17 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
   const [temperature, setTemperature] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshInterval, setRefreshInterval] = useState(1000); // Initial refresh interval in milliseconds
+  const [prevTemperature, setPrevTemperature] = useState(null);
+
 
   useEffect(() => {
     // Fetch the current power state upon component mount
-    const fetchPowerState = async () => {
-      try {
-        const response = await fetch(`http://${apiEndpoint}/power`, {
-          method: 'GET',
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setCurrentPowerState(data.powerState || '');
-          setSelectedPowerState(data.powerState || '');
-        } else {
-          console.error('Failed to fetch current power state');
-        }
-      } catch (error) {
-        console.error('Error while fetching current power state:', error);
-      }
-    };
+  
 
     // Fetch temperature
     const fetchTemperature = async () => {
       try {
-        const response = await fetch(`http://${apiEndpoint}/temperature`);
+        const response = await fetch(`http://${temperatureApiEndpoint}/temperature`);
         const data = await response.json();
     
         if (data && data.temperature !== undefined) {
@@ -65,7 +51,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
 
     // Cleanup the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [apiEndpoint, prevTemperature]);
+  }, [ prevTemperature]);
   const fillPercentage = temperature !== null ? Math.min(Math.max(temperature, 10), 100) : 0;
 
 
