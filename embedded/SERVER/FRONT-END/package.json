@@ -13,6 +13,7 @@
     "express": "^4.18.2",
     "framer-motion": "^10.18.0",
     "node-fetch": "^3.3.2",
+    "opencv.js": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.3",

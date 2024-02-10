@@ -95,23 +95,6 @@ def save_image():
     return jsonify({'message': 'Image saved successfully', 'path': save_path}), 200
 
 
-@app.route('/api/get_image/<ip_address>', methods=['GET'])
-def get_image(ip_address):
-    folder_path = fr"c:\Users\trent\OneDrive\Documents\GitHub\\Embedded-Project\embedded\\SERVER\BACK-END\uploads\{ip_address.replace('.', '_')}"
-   
-    if not os.path.exists(folder_path):
-        return jsonify({'error': 'Folder not found'}), 404
-
-    files = os.listdir(folder_path)
-    if not files:
-        return jsonify({'error': 'No images found in folder'}), 404
-
-    # Get the most recent file
-    most_recent_file = max(files, key=lambda f: os.path.getmtime(os.path.join(folder_path, f)))
-    image_path = os.path.join(folder_path, most_recent_file)
-
-    return send_file(image_path, mimetype='image/jpeg')
-
 
 
 if __name__ == '__main__':
