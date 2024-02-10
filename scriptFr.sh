@@ -12,6 +12,6 @@ fi
 
 cd /home/trent/Embedded-Project/
 git pull
-
-cd /home/trent/Embedded-Project/embedded/SERVER/FRONT-END/
+npm install 
+cd /home/trent/Embedded-Project/embedded/FRONT-END/
 npm start 

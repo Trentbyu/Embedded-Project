@@ -10,5 +10,5 @@ else
   kill $pid
 fi
 
-cd /home/trent/Embedded-Project/embedded/SERVER/BACK-END/
+cd /home/trent/Embedded-Project/embedded/BACK-END/
 sudo python3 config.py
