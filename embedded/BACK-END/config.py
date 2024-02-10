@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 # os.chdir('c:\\Users\\trent\\OneDrive\\Documents\\GitHub\\Embedded-Project\\')
 # Read the existing JSON data from the file
-existing_file = os.path.join('embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
+existing_file = os.path.join('embedded',  'FRONT-END', 'src', 'HomePage.json')
 UPLOAD_FOLDER = 'uploads'
 
 if not os.path.exists(UPLOAD_FOLDER):
@@ -21,7 +21,7 @@ else:
     # /home/trent/Embedded-Project/embedded/SERVER/FRONT-END/src
     # user = input("whats the user ")
     # existing_file = os.path.join('/home','trent', 'Embedded-Project', 'embedded', 'SERVER', 'FRONT-END', 'src', 'HomePage.json')
-    existing_file = "/home/trent/Embedded-Project/embedded/SERVER/FRONT-END/src/HomePage.json"
+    existing_file = "/home/trent/Embedded-Project/embedded/FRONT-END/src/HomePage.json"
     print("File does not exist.")
 
 
