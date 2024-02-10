@@ -1,41 +1,62 @@
-// D4:8A:FC:CF:2C:F8
-#include <esp_now.h>
 #include <WiFi.h>
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
 
-#define TOGGLE_PIN 2
+int ledPin = 2; // Change to your LED pin
+const char *ssid = "Blackfamily";
+const char *password = "Blacks1987";
+IPAddress staticIP(192, 168, 0, 200); // Define your desired static IP address
+IPAddress gateway(192, 168, 0, 1);     // Gateway should be on the same subnet
+IPAddress subnet(255, 255, 255, 0);
 
-// MAC address of the sender ESP32
-uint8_t senderMacAddress[] = {0x54, 0x43, 0xB2, 0xAB, 0x37, 0x48};
+AsyncWebServer server(80);
+void handleon(AsyncWebServerRequest *request) {
+  // Convert raw temperature in F to Celsius degrees
+  digitalWrite(ledPin, HIGH);
 
-// Callback function to handle received data
-void onDataReceived(const uint8_t *mac, const uint8_t *data, int len) {
-  Serial.print("Received data: ");
-  for (int i = 0; i < len; i++) {
-    Serial.print((char)data[i]);
-  }
-  Serial.println();
-  
-  // Toggle pin 2
-  digitalWrite(TOGGLE_PIN, !digitalRead(TOGGLE_PIN));
+
+    // Create a JSON string
+    String jsonString = "on";
+  Serial.println("on");
+
+  // Send the JSON response
+  request->send(200, "application/json", jsonString);
+}
+void handleoff(AsyncWebServerRequest *request) {
+  // Convert raw temperature in F to Celsius degrees
+
+  digitalWrite(ledPin, LOW);
+
+    // Create a JSON string
+  String jsonString = "off";
+  Serial.println("off");
+
+  // Send the JSON response
+  request->send(200, "application/json", jsonString);
 }
 
 void setup() {
   Serial.begin(115200);
-
-  // Initialize ESP-NOW
-  if (esp_now_init() != ESP_OK) {
-    Serial.println("Error initializing ESP-NOW");
-    return;
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, HIGH);
+  WiFi.begin(ssid, password);
+  WiFi.config(staticIP, gateway, subnet); // Set static IP configuration
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
   }
 
-  // Register callback function for receiving data
-  esp_now_register_recv_cb(onDataReceived);
-  
-  // Set pin mode for toggling pin
-  pinMode(TOGGLE_PIN, OUTPUT);
+  Serial.println("WiFi connected");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  server.on("/on", HTTP_GET, handleon);
+  server.on("/off", HTTP_GET, handleoff);
+
+  DefaultHeaders::Instance().addHeader("access-Control-Allow-Origin", "*");
+  server.begin();
 }
 
 void loop() {
-  // Do other tasks here if needed
-  delay(1000);
+  // Nothing to be done in the loop for this example
 }

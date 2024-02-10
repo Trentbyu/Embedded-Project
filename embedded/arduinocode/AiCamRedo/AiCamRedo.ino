@@ -8,7 +8,7 @@
 #include <EEPROM.h>
 #include <esp_pm.h>
 #include <esp_sleep.h>
-
+#include <HTTPClient.h>
 char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 char serverIP[16]; // Maximum length for server IP
@@ -194,16 +194,17 @@ void loop() {
     delay(100);
     }
   }
+  // delay(1000);
+ // Call the "/on" endpoint
+  // callEndpoint("/on");
 
-    
+  // Wait for 5 seconds
+  // delay(1000);
+
+  // Call the "/off" endpoint
+  // callEndpoint("/off");
 
 }
-
-
-  //  Serial.println("flash");
-
-  // digitalWrite(flashPin, !digitalRead(flashPin));
-  // delay(500);
 
 
 
