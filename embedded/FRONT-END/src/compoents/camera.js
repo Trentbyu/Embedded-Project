@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import ipAddress from '../index';
 const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
   const [refreshInterval, setRefreshInterval] = useState(40);
-  const [intervalInput, setIntervalInput] = useState(1000); // State to hold the value of the interval input
 
   useEffect(() => {
     let i = 0; // Initialize the variable for constructing the image URL
