@@ -8,7 +8,7 @@
 #include <EEPROM.h>
 #include <esp_pm.h>
 #include <esp_sleep.h>
-#include <esp_now.h>
+
 char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 char serverIP[16]; // Maximum length for server IP
@@ -162,29 +162,8 @@ void setup() {
  
   Serial.println("READY");
   
-  if (esp_now_init() != ESP_OK) {
-    Serial.println("Error initializing ESP-NOW");
-    return;
-  }
 
-  esp_now_register_send_cb([](const uint8_t* mac, esp_now_send_status_t status) {
-    if (status == ESP_NOW_SEND_SUCCESS) {
-      Serial.println("Data sent successfully.");
-    } else {
-      Serial.println("Error sending data");
-    }
-  });
-  Serial.println("Ready to send data.");
-  uint8_t mac[6];
-  esp_read_mac(mac, ESP_MAC_WIFI_STA);
-  esp_now_peer_info_t peerInfo;
-  memcpy(peerInfo.peer_addr, mac, 6);
-  peerInfo.channel = 0; // Use channel 0
-  peerInfo.encrypt = false; // No encryption
-  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
-    Serial.println("Failed to add peer");
-    return;
-  }
+
   sendPhoto(); 
 }
 
@@ -216,14 +195,7 @@ void loop() {
     }
   }
 
-    // Send data to all listening receivers
-  uint8_t data = 1; // Change this to any value you want to send
-  esp_err_t result = esp_now_send(NULL, &data, sizeof(data));
-  if (result != ESP_OK) {
-    Serial.println("Error sending data");
-  }
-
-  // delay(1000); // Send data every second
+    
 
 }
 

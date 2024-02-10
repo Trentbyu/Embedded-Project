@@ -55,11 +55,9 @@ String sendPhoto() {
       }
       if (getBody.length()>0) { break; }
     }
-    Serial.println("Image sent to: ");
-    Serial.print(serverName);
-
+    Serial.println();
     client.stop();
-    // Serial.println(getBody);
+    Serial.println(getBody);
   }
   else {
     delay(1000);
