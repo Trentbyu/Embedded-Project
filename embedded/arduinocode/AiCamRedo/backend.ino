@@ -65,7 +65,7 @@ String sendPhoto() {
     readServerIPFromEEPROM(serverIPCharArray);
 
     // Convert char array to String
-    String serverIP = "192.168.1.156";
+    String serverIP = serverIPCharArray;
 
     // Construct server name using the retrieved server IP address
     
