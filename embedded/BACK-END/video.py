@@ -29,7 +29,7 @@ for file_name in files:
     minute = timestamp[10:12]
     
     # Construct the video name based on year, month, hour, and minute
-    video_name = f"video_{year}_{month}_{hour}_{minute}.avi"
+    video_name = f"video_{year}_{month}_{hour}_{minute}.mp4"
     
     # Add the file to the corresponding minute group
     images_by_minute[video_name].append(file_name)
