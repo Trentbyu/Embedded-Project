@@ -100,7 +100,7 @@ def get_gif():
     argument = request.args.get('argument')
     ip_address = request.args.get('ip_address')
     # Path to your GIF file based on the argument
-    gif_path = f'uploads/{ip_address}/playback/{argument}'
+    gif_path = fr'/home/trent/Embedded-Project/embedded/BACK-END/uploads/{ip_address}/playback/{argument}'
 
     # Send the GIF file
     return send_file(gif_path, mimetype='image/gif')
