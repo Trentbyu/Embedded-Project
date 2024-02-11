@@ -23,6 +23,7 @@ function PlaybackFiles() {
 
   const handleClick = (fileName) => {
     setSelectedFile(fileName);
+    console.log(fileName)
   };
 
   return (
