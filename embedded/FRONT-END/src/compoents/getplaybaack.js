@@ -1,30 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import ipAddress from '../index';
 
-function GetPlayback({  argument }) {
+function GetPlayback({ argument }) {
     const [gif, setGif] = useState('');
-  
+    const [playing, setPlaying] = useState(true); // State to manage playing/pausing
+    const [currentTime, setCurrentTime] = useState(0); // State to manage current time
+
     useEffect(() => {
-      fetch(`http://${ipAddress}:5000/gif?argument=${argument}`)
-        .then(response => {
-          // Assuming the response is a blob
-          return response.blob();
-        })
-        .then(blob => {
-          // Convert the blob into a URL
-          const gifUrl = URL.createObjectURL(blob);
-          setGif(gifUrl);
-        })
-        .catch(error => {
-          console.error('Error fetching GIF:', error);
-        });
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://${ipAddress}:5000/gif?argument=${argument}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const blob = await response.blob();
+                const gifUrl = URL.createObjectURL(blob);
+                setGif(gifUrl);
+            } catch (error) {
+                console.error('Error fetching GIF:', error);
+            }
+        };
+
+        fetchData();
     }, [ipAddress, argument]);
-  
+
+    useEffect(() => {
+        // Function to jump forward
+        const jumpForward = () => {
+            const video = document.getElementById('gif');
+            if (video) {
+                video.currentTime += 5; // Jump forward 5 seconds, adjust this as needed
+            }
+        };
+
+        const interval = setInterval(() => {
+            if (playing) {
+                setCurrentTime(prevTime => prevTime + 1); // Increment currentTime every second
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [playing]);
+
+    const togglePlay = () => {
+        setPlaying(prevPlaying => !prevPlaying);
+    };
+
     return (
-      <div>
-        {gif && <img src={gif} alt="GIF" />}
-      </div>
+        <div>
+            {gif && (
+                <div>
+                    <img id="gif" src={gif} alt="GIF" />
+                    <button onClick={togglePlay}>{playing ? 'Pause' : 'Play'}</button>
+                    <button onClick={() => setCurrentTime(currentTime + 5)}>Jump Forward</button>
+                </div>
+            )}
+        </div>
     );
-  }
-  
-  export default GetPlayback;
+}
+
+export default GetPlayback;
