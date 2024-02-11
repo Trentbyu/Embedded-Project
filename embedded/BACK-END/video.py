@@ -43,7 +43,7 @@ for video_name, image_files in images_by_minute.items():
     video_path = os.path.join(folder_path, video_name)
     frame = cv2.imread(os.path.join(folder_path, image_files[0]))
     height, width, _ = frame.shape
-    fourcc = cv2.VideoWriter_fourcc(*'MP4V')
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Use 'mp4v' codec for MP4 format
     out = cv2.VideoWriter(video_path, fourcc, 20.0, (width, height))
     
     # Write each image to the video
