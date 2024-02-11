@@ -107,10 +107,13 @@ def get_gif():
 
 @app.route('/playback_files')
 def get_playback_files():
-    playback_folder = 'uploads/192_168_0_116/playback'
+    ip_address = request.args.get('ip_address')
+    if ip_address is None:
+        return jsonify(error="IP address parameter is missing"), 400
+
+    playback_folder = f'uploads/{ip_address}/playback'
     files = os.listdir(playback_folder)
     return jsonify(files)
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
     # app.run(debug=True)

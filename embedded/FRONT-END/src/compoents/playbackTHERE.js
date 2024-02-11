@@ -11,7 +11,7 @@ function PlaybackFiles() {
   }, []);
 
   const fetchFiles = () => {
-    fetch(`http://${ipAddress}:5000/playback_files`)
+    fetch(`http://${ipAddress}:5000/playback_files?ip_address=192.168.0.116`)
       .then(response => response.json())
       .then(data => {
         setFiles(data);
@@ -38,8 +38,10 @@ function PlaybackFiles() {
     </ul>
     {showPlayback && selectedFile && (
       <div>
-        <GetPlayback argument={selectedFile} />
-        <button onClick={() => setShowPlayback(false)}>Hide Get Playback</button>
+        <div className="p-4 border border-gray-300 rounded-md shadow-md">
+          <GetPlayback argument={selectedFile} />
+          <button className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => setShowPlayback(false)}>Hide Get Playback</button>
+        </div>
       </div>
     )}
   </div>
