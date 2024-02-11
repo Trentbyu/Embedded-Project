@@ -3,6 +3,7 @@ import ImageViewer from './compoents/camera';
 import TemperatureViewer from './compoents/temp';
 import pageData from './HomePage.json'; // Import JSON directly
 import GetPlayback from './compoents/getplaybaack';
+import PlaybackFiles from './compoents/playbackTHERE';
 const HomePage = ({ })=> {
   // No need to use useState for pageData if it's static
   // const [pageData, setPageData] = useState(null);
@@ -30,6 +31,7 @@ const HomePage = ({ })=> {
           </div>
         </div>
       ))}
+      <PlaybackFiles/>
       <GetPlayback argument={"video_2024_02_11_01"}/>
 
     </div>

@@ -105,6 +105,11 @@ def get_gif():
     # Send the GIF file
     return send_file(gif_path, mimetype='image/gif')
 
+@app.route('/playback_files')
+def get_playback_files():
+    playback_folder = 'uploads/192_168_0_116/playback'
+    files = os.listdir(playback_folder)
+    return jsonify(files)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
