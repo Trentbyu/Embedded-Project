@@ -5,7 +5,7 @@ import GetPlayback from './getplaybaack';
 function PlaybackFiles() {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-
+  const [showPlayback, setShowPlayback] = useState(true);
   useEffect(() => {
     fetchFiles();
   }, []);
