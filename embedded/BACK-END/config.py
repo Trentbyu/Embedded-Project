@@ -111,6 +111,7 @@ def get_playback_files():
     if ip_address is None:
         return jsonify(error="IP address parameter is missing"), 400
     ip_address = request.remote_addr.replace('.', '_')
+    print(ip_address)
     playback_folder = f'uploads/{ip_address}/playback'
     files = os.listdir(playback_folder)
     return jsonify(files)
