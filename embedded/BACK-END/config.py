@@ -110,9 +110,10 @@ def get_playback_files():
     ip_address = request.args.get('ip_address')
     if ip_address is None:
         return jsonify(error="IP address parameter is missing"), 400
-    ip_address = request.remote_addr.replace('.', '_')
     print(ip_address)
-    playback_folder = fr'/home/trent/Embedded-Project/embedded/BACK-END/uploads/{ip_address}/playback'
+    # Assuming ip_address is in the format '192_168_0_156'
+    ip_address_formatted = ip_address.replace('.', '_')  # Convert underscores to dots
+    playback_folder = fr'/home/trent/Embedded-Project/embedded/BACK-END/uploads/{ip_address_formatted}/playback'
     files = os.listdir(playback_folder)
     return jsonify(files)
 if __name__ == '__main__':
