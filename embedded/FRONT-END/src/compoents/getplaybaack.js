@@ -35,14 +35,7 @@ function GetPlayback({ argument }) {
     }, [playing]);
 
     const togglePlay = () => {
-        setPlaying(prevPlaying => !prevPlaying);
-    };
-
-    const jumpForward = () => {
-        const video = document.getElementById('gif');
-        if (video) {
-            video.currentTime += 5; // Jump forward 5 seconds, adjust this as needed
-        }
+        setPlaying(prevPlaying => !prevPlaying); // Toggle playing state
     };
 
     return (
@@ -53,9 +46,6 @@ function GetPlayback({ argument }) {
                     <div className="mt-4">
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4" onClick={togglePlay}>
                             {playing ? 'Pause' : 'Play'}
-                        </button>
-                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={jumpForward}>
-                            Jump Forward
                         </button>
                     </div>
                 </div>
