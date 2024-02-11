@@ -1,9 +1,10 @@
 import os
 from collections import defaultdict
-import imageio
+from PIL import Image
+from PIL import ImageDraw
 
 # Path to the folder containing the images
-folder_path = r"uploads\192_168_0_116"
+folder_path = "uploads/192_168_0_116"  # Modify this path as needed
 
 # Get a list of all files in the folder
 files = os.listdir(folder_path)
@@ -16,8 +17,8 @@ for file_name in files:
     # Split the file name by underscore
     parts = file_name.split('_')
     # Check if the file name has enough parts
-    if len(parts) < 4 and parts[5] == 'esp32-cam.jpg':
-        print(f"Skipping file {file_name}: Not enough parts")
+    if len(parts) < 4 or parts[5] != 'esp32-cam.jpg':
+        print(f"Skipping file {file_name}: Not enough parts or incorrect format")
         continue
     
     # Extract timestamp from the file name
@@ -31,7 +32,7 @@ for file_name in files:
     second = timestamp[12:14]
 
     # Construct the video name based on year, month, hour, and minute
-    video_name = f"video_{year}_{month}_{day}_{hour}_{minute}.mp4"
+    video_name = f"video_{year}_{month}_{day}_{hour}.gif"  # Using GIF format
     
     # Add the file to the corresponding minute group
     images_by_minute[video_name].append(file_name)
@@ -44,11 +45,18 @@ for video_name, image_files in images_by_minute.items():
     # Create video for the current minute
     video_path = os.path.join(folder_path, video_name)
     
-    with imageio.get_writer(video_path, fps=10) as writer:
-        # Write each image to the video
-        for img_name in image_files:
-            img_path = os.path.join(folder_path, img_name)
-            img = imageio.imread(img_path)
-            writer.append_data(img)
+    # Create a list to store frames
+    frames = []
+    
+    # Load each image and add it to frames list
+    for img_name in image_files:
+        img_path = os.path.join(folder_path, img_name)
+        img = Image.open(img_path)
+        draw = ImageDraw.Draw(img)
+        draw.text((10, 10), img_name, fill="white")  # Add annotation with image name
+        frames.append(img)
+    
+    # Save frames as an animated GIF
+    frames[0].save(video_path, format='GIF', append_images=frames[1:], save_all=True, duration=100, loop=0)
     
     print(f"Video created: {video_path}")
