@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import ipAddress from '../index';
 
 function GetPlayback() {
   const [gif, setGif] = useState('');
 
   useEffect(() => {
-    fetch('/gif')
+    fetch(`http://${ipAddress}:5000/gif`)
       .then(response => {
         // Assuming the response is a blob
         return response.blob();
