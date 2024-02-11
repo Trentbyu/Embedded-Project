@@ -45,6 +45,11 @@ def create_videos(folder_path):
         image_files.sort()
 
         # Check if the video already exists
+        video_path = os.path.join(folder_path, "playback")
+
+        
+        if not os.path.exists(video_path):
+            os.makedirs(video_path)
         video_path = os.path.join(folder_path, "playback", video_name)
         if os.path.exists(video_path):
             print(f"Video already exists: {video_path}")
