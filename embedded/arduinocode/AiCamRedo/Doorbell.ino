@@ -24,3 +24,28 @@ void callEndpoint(String endpoint) {
   // Close the connection
   http.end();
 }
+
+void buttonTask(void *parameter) {
+  while (true) {
+    bool newState = digitalRead(buttonPin);
+    
+    // Check if the button state has changed
+    if (newState != buttonState) {
+      buttonState = newState;
+      
+      // If button is pressed (assuming the button is connected between GPIO and GND)
+      if (buttonState == LOW) {
+        Serial.println("Button pressed!");
+        // Perform your action here when the button is pressed
+        sendPhoto();
+        vTaskDelay(100 / portTICK_PERIOD_MS); // Delay for 100 milliseconds
+      }
+
+      for (int i = 0; i < 10; i++) {
+        sendPhoto();
+        vTaskDelay(100 / portTICK_PERIOD_MS); // Delay for 100 milliseconds
+      }
+    }
+    vTaskDelay(10 / portTICK_PERIOD_MS); // Delay for 10 milliseconds before checking button state again
+  }
+}

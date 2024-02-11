@@ -9,6 +9,10 @@
 #include <esp_pm.h>
 #include <esp_sleep.h>
 #include <HTTPClient.h>
+
+
+TaskHandle_t buttonTaskHandle = NULL;
+
 char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 char serverIP[16]; // Maximum length for server IP
@@ -165,44 +169,22 @@ void setup() {
 
 
   sendPhoto(); 
+
+  xTaskCreatePinnedToCore(
+    periodicTask,       // Task function
+    "PeriodicTask",     // Task name
+    4096,               // Stack size (words, not bytes)
+    NULL,               // Task parameters
+    1,                  // Priority (1 is default)
+    NULL,                // Task handle
+    1
+  );
+
+   xTaskCreatePinnedToCore(buttonTask, "Button Task", 4096, NULL, 1, &buttonTaskHandle, 1);
 }
 
 void loop() {
-  // delay(5000);
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= timerInterval) {
-    // sendPhoto();
-    previousMillis = currentMillis;
-  }
-  bool newState = digitalRead(buttonPin);
-  // Check if the button state has changed
-  if (newState != buttonState) {
-    buttonState = newState;
-    
-    // If button is pressed (assuming the button is connected between GPIO and GND)
-    if (buttonState == LOW) {
-      Serial.println("Button pressed!");
-      // Perform your action here when the button is pressed
-     
-      sendPhoto();
-      delay(100);
 
-    }
-
-    for(int i =0; i<10; i++){
-    sendPhoto();
-    delay(100);
-    }
-  }
-  // delay(1000);
- // Call the "/on" endpoint
-  // callEndpoint("/on");
-
-  // Wait for 5 seconds
-  // delay(1000);
-
-  // Call the "/off" endpoint
-  // callEndpoint("/off");
 
 }
 

@@ -125,3 +125,27 @@ void handleServerIPRequest(AsyncWebServerRequest *request) {
         request->send(400, "text/plain", "Missing 'ip' parameter");
     }
 }
+
+
+// Function to periodically execute
+void periodicTask(void *pvParameters) {
+  // Initialize variables
+  unsigned long previousMillis = millis();
+
+  // Infinite loop for periodic execution
+  while (true) {
+    // Get current time
+    unsigned long currentMillis = millis();
+    // Check if it's time to execute
+    if (currentMillis - previousMillis >= timerInterval) {
+      // Perform action
+      // sendPhoto();
+
+      // Update previous time
+      previousMillis = currentMillis;
+    }
+
+    // Delay for a short time to avoid high CPU usage
+    vTaskDelay(pdMS_TO_TICKS(100)); // Delay for 100ms
+  }
+}
