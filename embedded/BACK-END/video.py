@@ -57,6 +57,6 @@ for video_name, image_files in images_by_minute.items():
         frames.append(img)
     
     # Save frames as an animated GIF
-    frames[0].save(video_path, format='GIF', append_images=frames[1:], save_all=True, duration=100, loop=0)
+    frames[0].save(video_path, format='GIF', append_images=frames[1:], save_all=True, duration=200, loop=0)
     
     print(f"Video created: {video_path}")
