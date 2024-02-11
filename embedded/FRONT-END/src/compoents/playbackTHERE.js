@@ -36,7 +36,7 @@ function PlaybackFiles({ ipAddress }) {
         ))}
       </ul>
       {selectedFile && (
-        <GetPlayback ipAddress={ipAddress} argument={selectedFile} />
+        <GetPlayback  argument={selectedFile} />
       )}
     </div>
   );
