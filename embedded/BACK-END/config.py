@@ -94,7 +94,12 @@ def save_image():
 
     return jsonify({'message': 'Image saved successfully', 'path': save_path}), 200
 
-
+@app.route('/gif')
+def get_gif():
+    # Path to your GIF file
+    gif_path = 'path/to/your/gif.gif'
+    # Send the GIF file
+    return send_file(gif_path, mimetype='image/gif')
 
 
 if __name__ == '__main__':
