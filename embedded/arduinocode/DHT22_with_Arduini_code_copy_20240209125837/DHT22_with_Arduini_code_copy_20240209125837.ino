@@ -120,3 +120,15 @@ void handleTemperature(AsyncWebServerRequest *request) {
   // Send the JSON response
   request->send(200, "application/json", jsonString);
 }
+void handleHumidity(AsyncWebServerRequest *request) {
+
+
+  // Create a JSON string
+  String jsonString = "{";
+  jsonString += "\"Humidity\":";
+  jsonString += h;
+  jsonString += "}";
+
+  // Send the JSON response
+  request->send(200, "application/json", jsonString);
+}
