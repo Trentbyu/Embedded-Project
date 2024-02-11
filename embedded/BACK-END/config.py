@@ -97,7 +97,7 @@ def save_image():
 @app.route('/gif')
 def get_gif():
     # Path to your GIF file
-    gif_path = 'path/to/your/gif.gif'
+    gif_path = 'uploads/192_168_0_116/playback/video_2024_02_11_01.gif'
     # Send the GIF file
     return send_file(gif_path, mimetype='image/gif')
 
