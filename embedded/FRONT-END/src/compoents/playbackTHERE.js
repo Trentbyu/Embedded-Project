@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import ipAddress from '../index';
-import GetPlayback from './getplaybaack';
+import GetPlayback from './getplayback';
 
 function PlaybackFiles({ argument }) {
   const [files, setFiles] = useState([]);
   const [showPlayback, setShowPlayback] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [showFiles, setShowFiles] = useState(true); // New state for showing playback files
+  const [showFiles, setShowFiles] = useState(true); 
   const [showGif, setShowGif] = useState(true); 
 
   useEffect(() => {
@@ -16,9 +16,7 @@ function PlaybackFiles({ argument }) {
   const fetchFiles = () => {
     fetch(`http://${ipAddress}:5000/playback_files?ip_address=${argument}`)
       .then(response => response.json())
-      .then(data => {
-        setFiles(data);
-      })
+      .then(setFiles)
       .catch(error => {
         console.error('Error fetching playback files:', error);
       });
@@ -26,8 +24,7 @@ function PlaybackFiles({ argument }) {
 
   const handleClick = (fileName) => {
     setSelectedFile(fileName);
-    setShowPlayback(true); // Show playback when a file is clicked
-    console.log(fileName)
+    setShowPlayback(true);
   };
 
   return (
