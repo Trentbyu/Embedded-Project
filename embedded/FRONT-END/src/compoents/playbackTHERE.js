@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ipAddress from '../index';
 import GetPlayback from './getplaybaack';
 
-function PlaybackFiles({ ipAddress }) {
+function PlaybackFiles({  }) {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
 
