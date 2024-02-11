@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ipAddress from '../index';
-import GetPlayback from './getplayback';
+import GetPlayback from './getplaybaack';
 
 function PlaybackFiles({ argument }) {
   const [files, setFiles] = useState([]);
