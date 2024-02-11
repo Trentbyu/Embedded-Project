@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ipAddress from '../index';
-import GetPlayback from './getplaybaack';
+import GetPlayback from './GetPlayback';
 
-function PlaybackFiles({  }) {
+function PlaybackFiles() {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -36,7 +36,7 @@ function PlaybackFiles({  }) {
         ))}
       </ul>
       {selectedFile && (
-        <GetPlayback  argument={selectedFile} />
+        <GetPlayback argument={selectedFile} />
       )}
     </div>
   );
