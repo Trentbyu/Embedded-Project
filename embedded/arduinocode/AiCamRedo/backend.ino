@@ -57,10 +57,10 @@ String sendPhoto() {
     }
     Serial.println();
     client.stop();
-    Serial.println(getBody);
+    // Serial.println(getBody);
   }
   else {
-    delay(1000);
+    // delay(2000);
     char serverIPCharArray[16]; // Maximum length for server IP
     readServerIPFromEEPROM(serverIPCharArray);
 
@@ -72,7 +72,7 @@ String sendPhoto() {
     serverName = serverIP;
 
     getBody = "Connection to " + serverName +  " failed.";
-    delay(1000);
+    // delay(2000);
     Serial.println(getBody);
   }
   return getBody;

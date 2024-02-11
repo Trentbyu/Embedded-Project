@@ -54,4 +54,7 @@ void connectToWiFi() {
 
     Serial.flush();
   }
+  if (!wifiConnected) {
+    ESP.restart();
+    }
 }
