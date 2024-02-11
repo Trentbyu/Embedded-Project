@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import ipAddress from '../index';
-function PlaybackFiles({}) {
+import GetPlayback from './GetPlayback';
+
+function PlaybackFiles({ ipAddress }) {
   const [files, setFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
+    fetchFiles();
+  }, []);
+
+  const fetchFiles = () => {
     fetch(`http://${ipAddress}:5000/playback_files`)
       .then(response => response.json())
       .then(data => {
@@ -12,16 +19,25 @@ function PlaybackFiles({}) {
       .catch(error => {
         console.error('Error fetching playback files:', error);
       });
-  }, [ipAddress]);
+  };
+
+  const handleClick = (fileName) => {
+    setSelectedFile(fileName);
+  };
 
   return (
     <div>
       <h2>Playback Files:</h2>
       <ul>
         {files.map((file, index) => (
-          <li key={index}>{file}</li>
+          <li key={index} onClick={() => handleClick(file)}>
+            {file}
+          </li>
         ))}
       </ul>
+      {selectedFile && (
+        <GetPlayback ipAddress={ipAddress} argument={selectedFile} />
+      )}
     </div>
   );
 }
