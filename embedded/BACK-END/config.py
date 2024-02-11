@@ -116,6 +116,8 @@ def get_playback_files():
     playback_folder = fr'/home/trent/Embedded-Project/embedded/BACK-END/uploads/{ip_address_formatted}/playback'
     files = os.listdir(playback_folder)
     return jsonify(files)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
     # app.run(debug=True)
