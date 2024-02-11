@@ -47,7 +47,7 @@ for video_name, image_files in images_by_minute.items():
     image_files.sort()
     
     # Create video for the current minute
-    video_path = os.path.join(folder_path, video_name)
+    video_path = os.path.join(folder_path,"playback", video_name,)
     
     # Create a list to store frames
     frames = []
@@ -61,6 +61,6 @@ for video_name, image_files in images_by_minute.items():
         frames.append(img)
     
     # Save frames as an animated GIF
-    frames[0].save(video_path, format='GIF', append_images=frames[1:], save_all=True, duration=400, loop=0)
+    frames[0].save(video_path, format='GIF', append_images=frames[1:], save_all=True, duration=300, loop=0)
     
     print(f"Video created: {video_path}")
