@@ -25,14 +25,6 @@ function GetPlayback({ argument }) {
     }, [ipAddress, argument]);
 
     useEffect(() => {
-        // Function to jump forward
-        const jumpForward = () => {
-            const video = document.getElementById('gif');
-            if (video) {
-                video.currentTime += 5; // Jump forward 5 seconds, adjust this as needed
-            }
-        };
-
         const interval = setInterval(() => {
             if (playing) {
                 setCurrentTime(prevTime => prevTime + 1); // Increment currentTime every second
@@ -46,13 +38,26 @@ function GetPlayback({ argument }) {
         setPlaying(prevPlaying => !prevPlaying);
     };
 
+    const jumpForward = () => {
+        const video = document.getElementById('gif');
+        if (video) {
+            video.currentTime += 5; // Jump forward 5 seconds, adjust this as needed
+        }
+    };
+
     return (
-        <div>
+        <div className="flex flex-col items-center">
             {gif && (
                 <div>
-                    <img id="gif" src={gif} alt="GIF" />
-                    <button onClick={togglePlay}>{playing ? 'Pause' : 'Play'}</button>
-                    <button onClick={() => setCurrentTime(currentTime + 5)}>Jump Forward</button>
+                    <img id="gif" className="w-full rounded-lg shadow-lg" src={gif} alt="GIF" />
+                    <div className="mt-4">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4" onClick={togglePlay}>
+                            {playing ? 'Pause' : 'Play'}
+                        </button>
+                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={jumpForward}>
+                            Jump Forward
+                        </button>
+                    </div>
                 </div>
             )}
         </div>
