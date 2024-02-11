@@ -49,7 +49,7 @@ for video_name, image_files in images_by_minute.items():
     # Create video for the current minute
     video_path = os.path.join(folder_path,"playback")
     if not os.path.exists(video_path):
-        os.makedirs(folder_path,"playback")
+        os.makedirs(video_path)
     video_path = os.path.join(folder_path,"playback", video_name)
 
 
