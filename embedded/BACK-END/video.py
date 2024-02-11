@@ -3,7 +3,7 @@ import os
 from collections import defaultdict
 
 # Path to the folder containing the images
-folder_path = r"uploads\192_168_0_100"
+folder_path = r"uploads\192_168_0_116"
 
 # Get a list of all files in the folder
 files = os.listdir(folder_path)
