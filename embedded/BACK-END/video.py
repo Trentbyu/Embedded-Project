@@ -17,10 +17,14 @@ for file_name in files:
     # Split the file name by underscore
     parts = file_name.split('_')
     # Check if the file name has enough parts
-    if len(parts) < 4 or parts[5] != 'esp32-cam.jpg':
-        print(f"Skipping file {file_name}: Not enough parts or incorrect format")
+    try:
+        if len(parts) < 4 or parts[5] != 'esp32-cam.jpg':
+            print(f"Skipping file {file_name}: Not enough parts or incorrect format")
+            continue
+    except:
         continue
-    
+
+        
     # Extract timestamp from the file name
     timestamp = parts[4]
     # Extract year, month, hour, and minute from the timestamp
@@ -57,6 +61,6 @@ for video_name, image_files in images_by_minute.items():
         frames.append(img)
     
     # Save frames as an animated GIF
-    frames[0].save(video_path, format='GIF', append_images=frames[1:], save_all=True, duration=200, loop=0)
+    frames[0].save(video_path, format='GIF', append_images=frames[1:], save_all=True, duration=100, loop=0)
     
     print(f"Video created: {video_path}")
