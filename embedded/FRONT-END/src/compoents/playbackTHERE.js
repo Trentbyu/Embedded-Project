@@ -45,7 +45,7 @@ function PlaybackFiles({ argument }) {
       {showPlayback && selectedFile && (
         <div>
           <div className="p-4 border border-gray-300 rounded-md shadow-md">
-            <GetPlayback argument={selectedFile} />
+            <GetPlayback argument={selectedFile} espIp={argument}/>
             <button className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => setShowPlayback(false)}>Hide Get Playback</button>
           </div>
         </div>

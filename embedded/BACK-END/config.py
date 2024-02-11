@@ -98,9 +98,9 @@ def save_image():
 def get_gif():
     # Get the argument from the URL query parameters
     argument = request.args.get('argument')
-
+    ip_address = request.args.get('ip_address')
     # Path to your GIF file based on the argument
-    gif_path = f'uploads/192_168_0_116/playback/{argument}'
+    gif_path = f'uploads/{ip_address}/playback/{argument}'
 
     # Send the GIF file
     return send_file(gif_path, mimetype='image/gif')
