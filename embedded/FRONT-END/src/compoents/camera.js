@@ -69,7 +69,7 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
         className="w-600 h-300"
         alt={`Image from ${ESPNAME} camera`}
       />
-      <PlaybackFiles />
+      <PlaybackFiles argument={imageSourceLink} />
 
     </motion.div>
   </motion.div>

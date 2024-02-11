@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ipAddress from '../index';
 import GetPlayback from './getplaybaack';
 
-function PlaybackFiles() {
+function PlaybackFiles({  argument }) {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPlayback, setShowPlayback] = useState(true);
@@ -11,7 +11,7 @@ function PlaybackFiles() {
   }, []);
 
   const fetchFiles = () => {
-    fetch(`http://${ipAddress}:5000/playback_files?ip_address=192_168_0_116`)
+    fetch(`http://${ipAddress}:5000/playback_files?ip_address=${argument}`)
       .then(response => response.json())
       .then(data => {
         setFiles(data);
