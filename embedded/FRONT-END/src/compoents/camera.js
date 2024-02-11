@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ipAddress from '../index';
-import GetPlayback from './getplaybaack';
+import PlaybackFiles from './playbackTHERE';
 
 const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
   const [refreshInterval, setRefreshInterval] = useState(40);
