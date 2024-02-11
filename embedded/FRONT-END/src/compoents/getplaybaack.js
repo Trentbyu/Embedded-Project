@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ipAddress from '../index';
 
 function GetPlayback({ argument }) {
-    const [gif, setGif] = useState('');
+    const [videoUrl, setVideoUrl] = useState('');
     const [playing, setPlaying] = useState(true); // State to manage playing/pausing
     const [currentTime, setCurrentTime] = useState(0); // State to manage current time
+    const videoRef = useRef(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -14,8 +15,8 @@ function GetPlayback({ argument }) {
                     throw new Error('Network response was not ok');
                 }
                 const blob = await response.blob();
-                const gifUrl = URL.createObjectURL(blob);
-                setGif(gifUrl);
+                const videoUrl = URL.createObjectURL(blob);
+                setVideoUrl(videoUrl);
             } catch (error) {
                 console.error('Error fetching GIF:', error);
             }
@@ -25,24 +26,35 @@ function GetPlayback({ argument }) {
     }, [ipAddress, argument]);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const videoElement = videoRef.current;
+        if (videoElement) {
             if (playing) {
-                setCurrentTime(prevTime => prevTime + 1); // Increment currentTime every second
+                videoElement.play();
+            } else {
+                videoElement.pause();
             }
-        }, 1000);
-
-        return () => clearInterval(interval);
+        }
     }, [playing]);
 
     const togglePlay = () => {
         setPlaying(prevPlaying => !prevPlaying); // Toggle playing state
     };
 
+    const handleTimeUpdate = () => {
+        setCurrentTime(videoRef.current.currentTime);
+    };
+
     return (
         <div className="flex flex-col items-center">
-            {gif && (
+            {videoUrl && (
                 <div>
-                    <img id="gif" className="w-full rounded-lg shadow-lg" src={gif} alt="GIF" />
+                    <video
+                        ref={videoRef}
+                        className="w-full rounded-lg shadow-lg"
+                        src={videoUrl}
+                        onTimeUpdate={handleTimeUpdate}
+                        autoPlay
+                    />
                     <div className="mt-4">
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4" onClick={togglePlay}>
                             {playing ? 'Pause' : 'Play'}
