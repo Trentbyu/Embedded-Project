@@ -30,7 +30,7 @@ const HomePage = ({ })=> {
           </div>
         </div>
       ))}
-      <GetPlayback/>
+      <GetPlayback argument={"video_2024_02_11_01"}/>
 
     </div>
   );
