@@ -11,7 +11,7 @@ function PlaybackFiles() {
   }, []);
 
   const fetchFiles = () => {
-    fetch(`http://${ipAddress}:5000/playback_files?ip_address=192.168.0.116`)
+    fetch(`http://${ipAddress}:5000/playback_files?ip_address=192_168_0_116`)
       .then(response => response.json())
       .then(data => {
         setFiles(data);
