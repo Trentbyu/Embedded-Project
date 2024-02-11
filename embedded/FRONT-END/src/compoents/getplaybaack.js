@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function getplayback() {
+function GetPlayback() {
   const [gif, setGif] = useState('');
 
   useEffect(() => {
@@ -21,10 +21,9 @@ function getplayback() {
 
   return (
     <div>
-        <p>HELLO</p>
       {gif && <img src={gif} alt="GIF" />}
     </div>
   );
 }
 
-export default getplayback;
+export default GetPlayback;

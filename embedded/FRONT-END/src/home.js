@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ImageViewer from './compoents/camera';
 import TemperatureViewer from './compoents/temp';
 import pageData from './HomePage.json'; // Import JSON directly
-import getplayback from './compoents/getplaybaack';
+import GetPlayback from './compoents/getplaybaack';
 const HomePage = ({ })=> {
   // No need to use useState for pageData if it's static
   // const [pageData, setPageData] = useState(null);
@@ -30,7 +30,7 @@ const HomePage = ({ })=> {
           </div>
         </div>
       ))}
-      <getplayback/>
+      <GetPlayback/>
 
     </div>
   );
