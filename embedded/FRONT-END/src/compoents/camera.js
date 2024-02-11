@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ipAddress from '../index';
+import GetPlayback from './getplaybaack';
+
 const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
   const [refreshInterval, setRefreshInterval] = useState(40);
 
@@ -44,36 +46,6 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
     updateImageSource();
 }, [refreshInterval, imageSourceLink]);
 
-  // const handleIntervalChange = async () => {
-  //   try {
-  //     const response = await fetch(`http://${imageSourceLink}/set_interval?interval=${intervalInput}`, {
-  //       method: 'GET'
-  //     });
-
-  //     if (!response.ok) {
-  //       console.error('Error: Interval could not be set.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
-
-  // Event listener to handle page unload
-    // useEffect(() => {
-    //   const handleBeforeUnload = async () => {
-    //     // Set intervalInput to 1000 before unloading the page
-    //     setIntervalInput(1500);
-    //     // Call the function to send the interval change request
-    //     await handleIntervalChange();
-    //   };
-
-    //   window.addEventListener('beforeunload', handleBeforeUnload);
-
-    //   return () => {
-    //     window.removeEventListener('beforeunload', handleBeforeUnload);
-    //   };
-    // }, []);
-
   return (
     <motion.div
     initial={{ opacity: 0, x: 1500 }}
@@ -86,22 +58,7 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
       <label className="block text-gray-700 text-sm font-bold" htmlFor="refreshInterval">
         Cam {ESPNAME}
       </label>
-      {/* <select
-        value={intervalInput}
-        onChange={(e) => setIntervalInput(parseInt(e.target.value))}
-        className="border border-gray-300 rounded-md p-2 px-5 mt-2"
-      > 
-        <option value="41">41</option>
 
-        <option value="100">100</option>
-        <option value="500">500</option>
-        <option value="1000">1000</option>
-        <option value="10000">10000</option>
-
-      </select>
-      <button onClick={handleIntervalChange} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
-        Change Interval
-      </button> */}
     </div>
 
     <motion.div
@@ -112,6 +69,8 @@ const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
         className="w-600 h-300"
         alt={`Image from ${ESPNAME} camera`}
       />
+      <PlaybackFiles />
+
     </motion.div>
   </motion.div>
   );

@@ -27,19 +27,19 @@ function PlaybackFiles() {
   };
 
   return (
-    <div>
-      <h2>Playback Files:</h2>
-      <ul>
-        {files.map((file, index) => (
-          <li key={index} onClick={() => handleClick(file)}>
-            {file}
-          </li>
-        ))}
-      </ul>
-      {selectedFile && (
-        <GetPlayback argument={selectedFile} />
-      )}
-    </div>
+    <div className="p-4">
+  <h2 className="text-xl font-bold mb-2">Playback Files:</h2>
+  <ul className="list-disc pl-4">
+    {files.map((file, index) => (
+      <li key={index} className="cursor-pointer text-blue-500 hover:underline" onClick={() => handleClick(file)}>
+        {file}
+      </li>
+    ))}
+  </ul>
+  {selectedFile && (
+    <GetPlayback argument={selectedFile} />
+  )}
+</div>
   );
 }
 

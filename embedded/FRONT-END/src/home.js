@@ -21,6 +21,7 @@ const HomePage = ({ })=> {
                 // IP={ipAddress}
                 ESPNAME={component.props.ESPNAME}
               />
+
             )}
             {component.type === 'TemperatureViewer' && (
               <TemperatureViewer
@@ -31,7 +32,6 @@ const HomePage = ({ })=> {
           </div>
         </div>
       ))}
-      <PlaybackFiles/>
       {/* <GetPlayback argument={"video_2024_02_11_01"}/> */}
 
     </div>
