@@ -24,7 +24,8 @@ float t = 0.0;
 float h = 0.0;
 
 unsigned long previousMillis = 0;    // will store last time DHT was updated
-
+// Create AsyncWebServer object on port 80
+AsyncWebServer server(80);
 // Updates DHT readings every 10 seconds
 const long interval = 1000;  
 
