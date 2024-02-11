@@ -13,19 +13,15 @@ const char* password = "Posegate";
 
 #define DHTPIN 5     // Digital pin connected to the DHT sensor
 
-// Uncomment the type of sensor in use:
-//#define DHTTYPE    DHT11     // DHT 11
+// using sensor DHT 22
 #define DHTTYPE    DHT22     // DHT 22 (AM2302)
-//#define DHTTYPE    DHT21     // DHT 21 (AM2301)
+
 
 DHT dht(DHTPIN, DHTTYPE);
 
 // current temperature & humidity, updated in loop()
-float t = 20.0;
+float t = 0.0;
 float h = 0.0;
-
-// Create AsyncWebServer object on port 80
-AsyncWebServer server(80);
 
 unsigned long previousMillis = 0;    // will store last time DHT was updated
 
@@ -37,7 +33,7 @@ const long interval = 1000;
 String processor(const String& var){
   //Serial.println(var);
   if(var == "TEMPERATURE"){
-    //t =(t*1.8)+32;
+  
     return String(t);
   }
   else if(var == "HUMIDITY"){
