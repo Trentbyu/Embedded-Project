@@ -19,7 +19,7 @@ const HomePage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
         {Object.keys(groupedComponents).map((room, index) => (
           <div key={index} className="mx-4 mb-8">
-            <h2 className="text-xl mb-2">{room}</h2>
+            <h2 className="text-2xl text-left mb-3 mx-2">{room}</h2>
             <div>
               {groupedComponents[room].map((component, index) => (
                 <div key={index} className="mx-auto p-4">

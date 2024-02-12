@@ -57,10 +57,12 @@ const Esp8266Config = ({ apiEndpoint , ESPNAME}) => {
 
 
   return (
-    <div className='my-10 mx-auto'>
-    <div className="p-4 mx-auto border-4 border-gray-900 rounded">
-        <h1 className="text-2xl font-bold mb-4">{ESPNAME} - Esp8266</h1>
-      
+    <div className='my-10 mx-10 bg-gray-400'> 
+    <div className="p-8 mx-auto border-8 border-gray-900 rounded">
+      <h1 className="text-xl text-black   font-bold mb-4">ESP8266 </h1>
+
+      <h1 className="text-xl text-white text-center bg-black p-2 font-bold mb-4">{ESPNAME} </h1>
+          
 
         {/* <div className=""> */}
         <div className="flex flex-row items-center my-5">

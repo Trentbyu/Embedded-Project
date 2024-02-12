@@ -60,19 +60,20 @@ const SettingsPage = () => {
     .catch(error => console.error('Error adding component:', error));
   };
 
-  const deleteComponent = (index) => {
-    fetch(`http://${ipAddress}:5000/api/components/${index}`, {
+  const deleteComponent = (name) => {
+    fetch(`http://${ipAddress}:5000/api/components/${name}`, {
       method: 'DELETE',
     })
     .then(response => {
       if (response.ok) {
-        setComponents(components.filter((_, i) => i !== index));
+        setComponents(components.filter(component => component.props.ESPNAME !== name));
       } else {
         console.error('Failed to delete component:', response.statusText);
       }
     })
     .catch(error => console.error('Error deleting component:', error));
   };
+  
 
   const updateComponentOrder = (updatedComponents) => {
     const newOrder = {
@@ -97,17 +98,7 @@ const SettingsPage = () => {
     .catch(error => console.error('Error updating component order:', error));
   };
 
-  const moveRoomDown = (roomName) => {
-    const roomKeys = Object.keys(groupedComponents);
-    const index = roomKeys.indexOf(roomName);
-    if (index < roomKeys.length - 1) {
-      const updatedGroupedComponents = { ...groupedComponents };
-      const temp = updatedGroupedComponents[roomKeys[index]];
-      updatedGroupedComponents[roomKeys[index]] = updatedGroupedComponents[roomKeys[index + 1]];
-      updatedGroupedComponents[roomKeys[index + 1]] = temp;
-      updateComponentOrder(updatedGroupedComponents); // Pass updated grouped components directly
-    }
-  };
+
 
   const moveComponentUp = (index) => {
     if (index > 0) {
@@ -160,7 +151,7 @@ const SettingsPage = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="mb-8">
-        <h2 className="text-xl font-bold mb-2">Add New Component</h2>
+        <h2 className=" font-bold mb-2 text-3xl   text-center">Add New Component</h2>
         <label className="block mb-2">Type:</label>
         <select 
           className="block w-full py-2 px-3 border border-gray-300 rounded-md mb-2"
@@ -168,7 +159,7 @@ const SettingsPage = () => {
           value={newComponentData.type} 
           onChange={handleInputChange}
         >
-          <option value="">Select Type</option>
+          <option value="">selcet a Type </option>
           <option value="ImageViewer">Camera</option>
           <option value="TemperatureViewer">Temperature</option>
         </select>
@@ -213,7 +204,7 @@ const SettingsPage = () => {
       </div>
       <hr className="my-8" />
       <div>
-        <h2 className="text-xl font-bold mb-2">Components</h2>
+        <h2 className="text-3xl   text-center font-bold mb-2">Components</h2>
         {Object.keys(groupedComponents).map(room => (
           <div key={room}>
             <h3 className="text-lg font-semibold mb-2">{room}</h3>
@@ -224,7 +215,7 @@ const SettingsPage = () => {
                 <p className="font-semibold">NAME: {component.props.ESPNAME}</p>
                 <p className="font-semibold">Room: {component.props.room}</p>
                 <button 
-                  onClick={() => deleteComponent(index)} 
+                  onClick={() => deleteComponent(component.props.ESPNAME)} 
                   className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
                 >
                   Delete

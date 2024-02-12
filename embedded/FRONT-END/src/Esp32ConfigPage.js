@@ -15,29 +15,32 @@ const Esp32ConfigPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col py-10 bg-gray-500">
-      {Object.keys(componentsByIP).map((ipAddress, index) => {
-        const component = componentsByIP[ipAddress];
-        const { Device, ESPNAME } = component.props;
-        return (
-          <div key={index} className="flex flex-col sm:flex-row my-5 sm:mb-2">
-            <div className="h-300 mx-auto p-4 mb-4 sm:mb-0">
-              {Device === 'ESP32' && (
-                <Esp32Config
-                  apiEndpoint={ipAddress}
-                  ESPNAME={ESPNAME}
-                />
-              )}
-              {Device === 'ESP8266' && (
-                <Esp8266Config
-                  temperatureApiEndpoint={ipAddress}
-                  ESPNAME={ESPNAME}
-                />
-              )}
-            </div>
+  <div className="flex flex-wrap justify-center">
+    {Object.keys(componentsByIP).map((ipAddress, index) => {
+      const component = componentsByIP[ipAddress];
+      const { Device, ESPNAME } = component.props;
+      return (
+        <div key={index} className="w-full sm:w-1/3 px-2 mb-4">
+          <div className="h-300 mx-auto p-4">
+            {Device === 'ESP32' && (
+              <Esp32Config
+                apiEndpoint={ipAddress}
+                ESPNAME={ESPNAME}
+              />
+            )}
+            {Device === 'ESP8266' && (
+              <Esp8266Config
+                temperatureApiEndpoint={ipAddress}
+                ESPNAME={ESPNAME}
+              />
+            )}
           </div>
-        );
-      })}
-    </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
   );
 };
 

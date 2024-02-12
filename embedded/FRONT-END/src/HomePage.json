@@ -5,16 +5,16 @@
                 "Device": "ESP32",
                 "ESPNAME": "Tester",
                 "imageSourceLink": "192.168.0.100",
-                "room": "L"
+                "room": "F"
             },
             "type": "ImageViewer"
         },
         {
             "props": {
                 "Device": "ESP32",
-                "ESPNAME": "Tester2",
+                "ESPNAME": "EPS",
                 "imageSourceLink": "192.168.0.116",
-                "room": "F"
+                "room": "F2"
             },
             "type": "ImageViewer"
         }

@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
+from flask_cors import cross_origin
 import os
 # import cv2
 import json  # Import the json module
@@ -40,15 +41,23 @@ def add_component():
         json.dump(data, file, indent=4)
     return jsonify(new_component), 201
 
-@app.route('/api/components/<int:index>', methods=['DELETE'])
-def delete_component(index):
-    if 0 <= index < len(data['components']):
-        del data['components'][index]
+@app.route('/api/components/<string:name>', methods=['DELETE'])
+@cross_origin(methods=['DELETE'])
+def delete_component(name):
+    found = False
+    for component in data['components']:
+        if component['props']['ESPNAME'] == name:
+            data['components'].remove(component)
+            found = True
+            break
+    
+    if found:
         with open(existing_file, 'w') as file:
             json.dump(data, file, indent=4)
-        return jsonify({'message': 'Component deleted'}), 200
+        return jsonify({'message': f'Component {name} deleted'}), 200
     else:
-        return jsonify({'error': 'Invalid index'}), 404
+        return jsonify({'error': f'Component {name} not found'}), 404
+
 
 @app.route('/api/components/order', methods=['PUT'])
 def update_component_order():
