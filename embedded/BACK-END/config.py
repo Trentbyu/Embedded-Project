@@ -107,6 +107,21 @@ def get_gif():
     # Send the GIF file
     return send_file(gif_path, mimetype='image/gif')
 
+    
+@app.route('/mp4')
+def get_mp4():
+    # Get the argument from the URL query parameters
+    argument = request.args.get('argument')
+    ip_address = request.args.get('ip_address')
+    # Path to your MP4 file based on the argument
+    ip_address_formatted = ip_address.replace('.', '_')  # Convert underscores to dots
+
+    mp4_path = fr'/home/trent/Embedded-Project/embedded/BACK-END/uploads/{ip_address_formatted}/playback/{argument}'
+    
+    # Send the MP4 file
+    return send_file(mp4_path, mimetype='video/mp4')
+
+
 @app.route('/playback_files')
 def get_playback_files():
     ip_address = request.args.get('ip_address')

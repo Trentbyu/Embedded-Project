@@ -3,6 +3,7 @@ import sys
 from collections import defaultdict
 from PIL import Image
 from PIL import ImageDraw
+import subprocess
 
 def create_videos(folder_path):
     # Get a list of all files in the folder
@@ -34,7 +35,7 @@ def create_videos(folder_path):
         second = timestamp[12:14]
 
         # Construct the video name based on year, month, hour, and minute
-        video_name = f"video_{year}_{month}_{day}_{hour}.gif"  # Using GIF format
+        video_name = f"video_{year}_{month}_{day}_{hour}.mp4"  # Using MP4 format
 
         # Add the file to the corresponding minute group
         images_by_minute[video_name].append(file_name)
@@ -47,7 +48,6 @@ def create_videos(folder_path):
         # Check if the video already exists
         video_path = os.path.join(folder_path, "playback")
 
-        
         if not os.path.exists(video_path):
             os.makedirs(video_path)
         video_path = os.path.join(folder_path, "playback", video_name)
@@ -67,7 +67,14 @@ def create_videos(folder_path):
             frames.append(img)
 
         # Save frames as an animated GIF
-        frames[0].save(video_path, format='GIF', append_images=frames[1:], save_all=True, duration=300, loop=0)
+        gif_path = os.path.join(folder_path, "temp.gif")
+        frames[0].save(gif_path, format='GIF', append_images=frames[1:], save_all=True, duration=300, loop=0)
+
+        # Convert GIF to MP4 using ffmpeg
+        subprocess.run(['ffmpeg', '-i', gif_path, '-vf', 'fps=25', '-pix_fmt', 'yuv420p', video_path])
+
+        # Remove temporary GIF file
+        os.remove(gif_path)
 
         print(f"Video created: {video_path}")
 

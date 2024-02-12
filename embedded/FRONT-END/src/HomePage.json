@@ -1,12 +1,22 @@
 {
     "components": [
         {
-            "type": "ImageViewer",
             "props": {
-                "imageSourceLink": "192.168.0.116",
+                "Device": "ESP32",
                 "ESPNAME": "Tester",
-                "Device": "ESP32"
-            }
+                "imageSourceLink": "192.168.0.100",
+                "room": "L"
+            },
+            "type": "ImageViewer"
+        },
+        {
+            "props": {
+                "Device": "ESP32",
+                "ESPNAME": "Tester2",
+                "imageSourceLink": "192.168.0.116",
+                "room": "F"
+            },
+            "type": "ImageViewer"
         }
     ]
 }

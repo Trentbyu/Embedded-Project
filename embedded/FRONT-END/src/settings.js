@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ipAddress from './index';
+
 const SettingsPage = () => {
   const [components, setComponents] = useState([]);
   const [newComponentData, setNewComponentData] = useState({
@@ -7,7 +8,8 @@ const SettingsPage = () => {
     props: {
       imageSourceLink: "",
       ESPNAME: "",
-      Device: ""
+      Device: "",
+      room: "" // Added room property
     }
   });
 
@@ -35,7 +37,8 @@ const SettingsPage = () => {
         props: {
           imageSourceLink: "", // Resetting image source link
           ESPNAME: "",
-          Device: ""
+          Device: "",
+          room: "" // Resetting room
         }
       });
   
@@ -94,6 +97,18 @@ const SettingsPage = () => {
     .catch(error => console.error('Error updating component order:', error));
   };
 
+  const moveRoomDown = (roomName) => {
+    const roomKeys = Object.keys(groupedComponents);
+    const index = roomKeys.indexOf(roomName);
+    if (index < roomKeys.length - 1) {
+      const updatedGroupedComponents = { ...groupedComponents };
+      const temp = updatedGroupedComponents[roomKeys[index]];
+      updatedGroupedComponents[roomKeys[index]] = updatedGroupedComponents[roomKeys[index + 1]];
+      updatedGroupedComponents[roomKeys[index + 1]] = temp;
+      updateComponentOrder(updatedGroupedComponents); // Pass updated grouped components directly
+    }
+  };
+
   const moveComponentUp = (index) => {
     if (index > 0) {
       const updatedComponents = [...components];
@@ -131,6 +146,16 @@ const SettingsPage = () => {
       }));
     }
   };
+
+
+  const groupedComponents = components.length > 0 ? components.reduce((acc, component) => {
+    const { room } = component.props;
+    if (!acc[room]) {
+      acc[room] = [];
+    }
+    acc[room].push(component);
+    return acc;
+  }, {}) : {};
 
   return (
     <div className="container mx-auto p-4">
@@ -171,6 +196,14 @@ const SettingsPage = () => {
           placeholder="Device Type"
           className="block w-full py-2 px-3 border border-gray-300 rounded-md mb-2"
         />
+        <input 
+          type="text" 
+          name="room" 
+          value={newComponentData.props.room} 
+          onChange={handleInputChange} 
+          placeholder="Room"
+          className="block w-full py-2 px-3 border border-gray-300 rounded-md mb-2"
+        />
         <button 
           onClick={() => addData(newComponentData.props.imageSourceLink)} 
           className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
@@ -181,29 +214,37 @@ const SettingsPage = () => {
       <hr className="my-8" />
       <div>
         <h2 className="text-xl font-bold mb-2">Components</h2>
-        {components.map((component, index) => (
-          <div key={index} className="bg-gray-200 p-4 rounded-md mb-4">
-            <p className="font-semibold">Type: {component.type}</p>
-            <p className="font-semibold">IP: {component.props.imageSourceLink}</p>
-            <p className="font-semibold">NAME: {component.props.ESPNAME}</p>
-            <button 
-              onClick={() => deleteComponent(index)} 
-              className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-            >
-              Delete
-            </button>
-            <button 
-              onClick={() => moveComponentUp(index)} 
-              className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600"
-            >
-              Move Up
-            </button>
-            <button 
-              onClick={() => moveComponentDown(index)} 
-              className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
-            >
-              Move Down
-            </button>
+        {Object.keys(groupedComponents).map(room => (
+          <div key={room}>
+            <h3 className="text-lg font-semibold mb-2">{room}</h3>
+            {groupedComponents[room].map((component, index) => (
+              <div key={index} className="bg-gray-200 p-4 rounded-md mb-4">
+                <p className="font-semibold">Type: {component.type}</p>
+                <p className="font-semibold">IP: {component.props.imageSourceLink}</p>
+                <p className="font-semibold">NAME: {component.props.ESPNAME}</p>
+                <p className="font-semibold">Room: {component.props.room}</p>
+                <button 
+                  onClick={() => deleteComponent(index)} 
+                  className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+                >
+                  Delete
+                </button>
+                <button 
+                  onClick={() => moveComponentUp(index)} 
+                  className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600"
+                >
+                  Move Up
+                </button>
+                <button 
+                  onClick={() => moveComponentDown(index)} 
+                  className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+                >
+                  Move Down
+                </button>
+                
+              </div>
+            ))}
+            
           </div>
         ))}
       </div>
