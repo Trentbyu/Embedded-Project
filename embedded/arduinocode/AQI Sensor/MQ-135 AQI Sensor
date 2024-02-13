@@ -52,7 +52,7 @@ int readMQ135() {
 
   return sensorValue;
 }
-
+// this code takes the value for the sensor and comapres it to an AQI range.
 int calculateAQI(int sensorValue) {
   // Map the sensor reading to AQI 
   int aqi;
