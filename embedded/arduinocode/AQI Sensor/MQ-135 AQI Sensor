@@ -3,12 +3,12 @@
 #include <ESPAsyncWebServer.h>
 
 // Replace with your WiFi credentials
-const char *ssid = "HP Deskjet 4000";
-const char *password = "Posegate";
+const char *ssid = "************";
+const char *password = "*************";
 
 const int mqPin = A0;
 
-// Create an AsyncWebServer object on port 80
+// Create an AsyncWebServer object on port 80 to view the data. 
 AsyncWebServer server(80);
 
 void setup() {
