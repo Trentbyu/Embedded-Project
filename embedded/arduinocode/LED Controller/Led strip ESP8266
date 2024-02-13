@@ -1,4 +1,4 @@
-// Here the code will be for controlling the led lights for a portch light using a esp 8266
+// Here the code will be for controlling the led lights for a portch light using a esp 8266 this is example code for RGB leds wher as we will use white only leds with an on off button. 
 
 // Load Wi-Fi library
 #include <ESP8266WiFi.h>
