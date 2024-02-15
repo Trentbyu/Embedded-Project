@@ -69,7 +69,7 @@ String sendPhoto() {
 
     // Construct server name using the retrieved server IP address
     
-    serverName = serverIP;
+    serverName = "192.100.1.100";
 
     getBody = "Connection to " + serverName +  " failed.";
     // delay(2000);
