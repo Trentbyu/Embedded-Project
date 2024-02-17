@@ -2,7 +2,8 @@ import React from 'react';
 import ImageViewer from './compoents/camera';
 import TemperatureViewer from './compoents/temp';
 import pageData from './HomePage.json'; // Import JSON directly
-
+import AqiViewer from './compoents/aqi';
+import HumidityViewer from './compoents/humidity';
 const HomePage = () => {
   // Group components by room
   const groupedComponents = pageData.components.reduce((acc, component) => {
@@ -35,9 +36,22 @@ const HomePage = () => {
                       ESPNAME={component.props.ESPNAME}
                     />
                   )}
+                  {component.type === 'aqiViewer' && (
+                    <AqiViewer
+                      aqiApiEndpoint={component.props.imageSourceLink}
+                      ESPNAME={component.props.ESPNAME}
+                    />
+                  )}
+                  {component.type === 'humidityViewer' && (
+                    <HumidityViewer 
+                      humidityApiEndpoint ={component.props.imageSourceLink}
+                      ESPNAME={component.props.ESPNAME}
+                    />
+                  )}
                 </div>
               ))}
             </div>
+           
           </div>
         ))}
       </div>

@@ -1,44 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from "./loading"
 import { motion, useAnimation } from 'framer-motion';
-const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
-  const [temperature, setTemperature] = useState(null);
+const HumidityViewer  = ({ humidityApiEndpoint , ESPNAME }) => {
+  const [humidity, setHumidity] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [refreshInterval, setRefreshInterval] = useState(1000); // Initial refresh interval in milliseconds
-  const [prevTemperature, setPrevTemperature] = useState(null);
+  const [prevhumidity, setPrevhumidity] = useState(null);
 
 
   useEffect(() => {
     // Fetch the current power state upon component mount
   
 
-    // Fetch temperature
-    const fetchTemperature = async () => {
+    // Fetch humidity
+    const fetchhumidity = async () => {
       try {
-        const response = await fetch(`http://${temperatureApiEndpoint}/temperature`);
+        const response = await fetch(`http://${humidityApiEndpoint}/humidity`);
         const data = await response.json();
     
-        if (data && data.temperature !== undefined) {
-          const temperatureValue = parseFloat(data.temperature);
-          setTemperature(temperatureValue);
+        if (data && data.humidity !== undefined) {
+          const humidityValue = parseFloat(data.humidity);
+          setHumidity(humidityValue);
     
-          // Check for temperature changes
-          // if (temperatureValue !== prevTemperature) {
-          //   console.log('Temperature changed:', temperatureValue);
+          // Check for humidity changes
+          // if (humidityValue !== prevhumidity) {
+          //   console.log('humidity changed:', humidityValue);
           // }
-          setPrevTemperature(temperatureValue);
+          setPrevhumidity(humidityValue);
         } else {
-          console.error('Invalid temperature response:', data);
+          console.error('Invalid humidity response:', data);
         }
       } catch (error) {
         console.error('Error:', error);
       }
     };
 
-    // Fetch power state and temperature every second
+    // Fetch power state and humidity every second
     let counter = 0;
     const intervalId = setInterval(async () => {
-      await fetchTemperature();
+      await fetchhumidity();
 
       // Fetch power state every 2 seconds
       
@@ -51,8 +50,8 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
 
     // Cleanup the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [ prevTemperature]);
-  const fillPercentage = temperature !== null ? Math.min(Math.max(temperature, 10), 100) : 0;
+  }, [ prevhumidity]);
+  const fillPercentage = humidity !== null ? Math.min(Math.max(humidity, 10), 100) : 0;
 
 
   return (
@@ -61,7 +60,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
     exit={{ opacity: 0, x: 100 }}
     transition={{ duration: 2 }}className="flex items-center">
   <div>
-    <p className="text-xl font-bold mb-2">{ESPNAME} Current Temperature:</p>
+    <p className="text-xl font-bold mb-2">{ESPNAME} Current humidity:</p>
     {isLoading ? (
       <div className="text-center">
         <p>Loading...</p>
@@ -69,7 +68,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
       </div>
     ) : (
       <p className="text-3xl">
-        {temperature !== null ? `${temperature} °F` : 'NONE °C'}
+        {humidity !== null ? `${humidity} °%` : 'NONE °%'}
       </p>
     )}
   </div>
@@ -78,7 +77,7 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
     {/* Thermometer visualization */}
     <motion.div whileHover={{ scale: 2}} className="relative bg-gray-300 w-6 h-32 mx-auto mb-2 rounded-lg">
       <div
-        className="absolute bg-gradient-to-t from-blue-400 to-red-700 bottom-0 rounded-lg left-0"
+        className="absolute bg-gradient-to-t from-yellow-400 to-blue-700 bottom-0 rounded-lg left-0"
         style={{ width: '100%', height: `${fillPercentage}%` }}
       ></div>
     </motion.div>
@@ -88,4 +87,4 @@ const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
   );
 };
 
-export default TemperatureViewer;
+export default HumidityViewer ;
