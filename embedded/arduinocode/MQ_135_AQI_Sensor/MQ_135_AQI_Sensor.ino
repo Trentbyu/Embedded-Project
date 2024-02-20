@@ -3,8 +3,8 @@
 #include <ESPAsyncWebServer.h>
 
 // Replace with your WiFi credentials
-const char *ssid = "************";
-const char *password = "*************";
+const char* ssid = "TP-Link_49D5";
+const char* password = "ECEN361$";
 
 const int mqPin = A0;
 
@@ -21,23 +21,27 @@ void setup() {
     Serial.println("Connecting to WiFi...");
   }
   Serial.println("Connected to WiFi");
+  Serial.println(WiFi.localIP());
 
   // Route for root
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    String html = "<html><body>";
-    html += "<h1>Sensor Data</h1>";
+  // server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+  //   String html = "<html><body>";
+  //   html += "<h1>Sensor Data</h1>";
     
-    int mqValue = readMQ135();
-    int aqiValue = calculateAQI(mqValue);
-    // Displaying values on webpage
-    html += "<p>AQI: " + String(aqiValue) + " - " + getAqiCategory(aqiValue) + "</p>";
-    html += "<p>CO2 Level: " + String(mqValue) + " ppm</p>";
-    html += "<p>Benzene Level: " + String(mqValue) + " ppb</p>";
+  //   int mqValue = readMQ135();
+  //   int aqiValue = calculateAQI(mqValue);
+  //   // Displaying values on webpage
+  //   html += "<p>AQI: " + String(aqiValue) + " - " + getAqiCategory(aqiValue) + "</p>";
+  //   html += "<p>CO2 Level: " + String(mqValue) + " ppm</p>";
+  //   html += "<p>Benzene Level: " + String(mqValue) + " ppb</p>";
     
-    html += "</body></html>";
-    request->send(200, "text/html", html);
-  });
+  //   html += "</body></html>";
+  //   request->send(200, "text/html", html);
+  // });
+  server.on("/aqi", HTTP_GET, handleaqi);
 
+  DefaultHeaders::Instance().addHeader("access-Control-Allow-Origin", "*");
+  
   // Start server
   server.begin();
 }
@@ -89,4 +93,19 @@ String getAqiCategory(int aqi) {
   } else {
     return "Hazardous";
   }
+}
+
+void handleaqi(AsyncWebServerRequest *request) {
+
+    int mqValue = readMQ135();
+  
+    int aqi = calculateAQI(mqValue);
+  // Create a JSON string
+  String jsonString = "{";
+  jsonString += "\"aqi\":\"";
+  jsonString += aqi;
+  jsonString += "\"}";
+
+  // Send the JSON response
+  request->send(200, "application/json", jsonString);
 }

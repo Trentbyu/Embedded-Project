@@ -8,9 +8,11 @@
 #include <DHT.h>
 
 // Replace with your network credentials
-const char* ssid = "HP Deskjet 4000";
-const char* password = "Posegate";
-
+const char* ssid = "TP-Link_49D5";
+const char* password = "ECEN361$";
+IPAddress staticIP(192, 100, 1, 103);  // Set your desired static IP address
+IPAddress gateway(192, 100, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
 #define DHTPIN 5     // Digital pin connected to the DHT sensor
 
 // using sensor DHT 22
@@ -50,6 +52,7 @@ void setup(){
   
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
+  WiFi.config(staticIP, gateway, subnet);
   Serial.println("Connecting to WiFi");
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
@@ -70,6 +73,8 @@ void setup(){
   //   request->send_P(200, "text/plain", String(h).c_str());
   // });
   server.on("/temperature", HTTP_GET, handleTemperature);
+  server.on("/humidity", HTTP_GET, handleHumidity);
+
 
   DefaultHeaders::Instance().addHeader("access-Control-Allow-Origin", "*");
 
@@ -95,15 +100,15 @@ void loop(){
       Serial.println(t);
     }
     // Read Humidity
-    // float newH = dht.readHumidity();
-    // // if humidity read failed, don't change h value 
-    // if (isnan(newH)) {
-    //   Serial.println("Failed to read from DHT sensor!");
-    // }
-    // else {
-    //   h = newH;
-    //   Serial.println(h);
-    // }
+    float newH = dht.readHumidity();
+    // if humidity read failed, don't change h value 
+    if (isnan(newH)) {
+      Serial.println("Failed to read from DHT sensor!");
+    }
+    else {
+      h = newH;
+      Serial.println(h);
+    }
   }
 }
 
@@ -125,7 +130,7 @@ void handleHumidity(AsyncWebServerRequest *request) {
 
   // Create a JSON string
   String jsonString = "{";
-  jsonString += "\"Humidity\":";
+  jsonString += "\"humidity\":";
   jsonString += h;
   jsonString += "}";
 
