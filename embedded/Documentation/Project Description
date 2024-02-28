@@ -1,0 +1,39 @@
+# Bed Control System with Smart Home Integration
+
+## Overview
+This project aims to create a comprehensive system for controlling various aspects of the home environment from the comfort of one's bed. It involves integrating smart technologies and devices to enable remote control and monitoring.
+
+## Features
+
+### TV Control
+- A ceiling-mounted TV controlled via voice commands through Alexa or a web interface.
+- Ability to bring the TV down or retract it at different angles using a series of buttons on a local host or a touchscreen device.
+
+### Self Designed Ring Doorbell 
+- Customized Ring doorbell with added temperature sensor.
+- Enables users to see who is at the door without leaving their bed.
+-Has video playback as a normal store bought camera does.
+
+### Outdoor/ Indoor tempature sensors
+-Be able to see the indoor and ourdoor tempatures.
+-Informational aspect to the project with real time data. 
+-temperature sensing capabilities for added convenience and environmental monitoring.
+
+### Additional Cameras
+- Integration of additional cameras for enhanced surveillance.
+- Can be used as a dog camera or for monitoring the backdoor.
+
+### Smart Porch Light
+- Implementation of a smart porch light to aid camera visibility in low-light conditions.
+- Enhances security and visibility around the front door area.
+
+### AQI Sensor
+- Integration of an Air Quality Index (AQI) sensor for monitoring outdoor air quality.
+- Provides valuable environmental data for informational purposes.
+
+### Local Host Interface
+- All functionalities accessible through a local host page programmed using a Raspberry Pi.
+- Provides a centralized interface for controlling and monitoring various devices and sensors.
+
+## Conclusion
+By integrating these features into a system, users can enjoy enhanced convenience, security, and environmental awareness without having to leave their bed. This project demonstrates the potential of smart home technologies to streamline everyday tasks and improve quality of life.
