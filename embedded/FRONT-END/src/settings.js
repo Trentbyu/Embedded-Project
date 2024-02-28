@@ -162,8 +162,8 @@ const SettingsPage = () => {
           <option value="">selcet a Type </option>
           <option value="ImageViewer">Camera</option>
           <option value="TemperatureViewer">Temperature</option>
-          <option value="aqiViewer">aqi</option>
-          <option value="humidityViewer">humidity</option>
+          <option value="AqiViewer">aqi</option>
+          <option value="HumidityViewer">humidity</option>
 
 
         </select>

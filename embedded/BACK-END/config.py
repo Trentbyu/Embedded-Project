@@ -143,6 +143,41 @@ def get_playback_files():
     files = os.listdir(playback_folder)
     return jsonify(files)
 
+import json
+
+@app.route('/api/save_float', methods=['POST'])
+def save_float():
+    # Check if 'floatValue' is provided in the request data
+    if 'floatValue' not in request.json:
+        return jsonify({'error': 'No float value provided'}), 400
+
+    # Get the float value from the request
+    float_value = request.json['floatValue']
+
+    # Get the IP address of the sender and replace '.' with '_'
+    sender_ip = request.remote_addr.replace('.', '_')
+
+    # Generate timestamp
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+
+    # Create a dictionary to hold the data
+    data = {
+        'sender_ip': sender_ip,
+        'timestamp': timestamp,
+        'float_value': float_value
+    }
+
+    # Save the data to a JSON file
+    filename = f"{sender_ip}_{timestamp}_data.json"
+    save_path = os.path.join(UPLOAD_FOLDER, sender_ip, filename)
+    try:
+        with open(save_path, 'w') as json_file:
+            json.dump(data, json_file)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    return jsonify({'message': 'Float value saved successfully', 'path': save_path}), 200
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

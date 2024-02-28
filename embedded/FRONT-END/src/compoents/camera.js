@@ -4,7 +4,7 @@ import ipAddress from '../index';
 import PlaybackFiles from './playbackTHERE';
 
 const ImageViewer = ({ imageSourceLink,ESPNAME }) => {
-  const [refreshInterval, setRefreshInterval] = useState(50);
+  const [refreshInterval, setRefreshInterval] = useState(40);
 
   useEffect(() => {
     let i = 0; // Initialize the variable for constructing the image URL
