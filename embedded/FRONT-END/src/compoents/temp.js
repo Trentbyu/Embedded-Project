@@ -4,7 +4,7 @@ import { motion, useAnimation } from 'framer-motion';
 const TemperatureViewer = ({ temperatureApiEndpoint , ESPNAME }) => {
   const [temperature, setTemperature] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [refreshInterval, setRefreshInterval] = useState(1000); // Initial refresh interval in milliseconds
+  const [refreshInterval, setRefreshInterval] = useState(10000); // Initial refresh interval in milliseconds
   const [prevTemperature, setPrevTemperature] = useState(null);
 
 
