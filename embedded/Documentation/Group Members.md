@@ -1,7 +1,6 @@
-Trent Black (Software lead)
-
-Tyler Posegate (Team Leader/Software assistant)
-
-Ryan M. (Hardware lead)
-
-Nate Porter (Hardware assistant)
+| Name             | Role                     |
+|------------------|--------------------------|
+| Trent Black      | Software Lead            |
+| Tyler Posegate   | Team Leader/Software Assistant |
+| Ryan M.          | Hardware Lead            |
+| Nate Porter      | Hardware Assistant       |
