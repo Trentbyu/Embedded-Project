@@ -1,7 +1,7 @@
-Trent Black
+Trent Black (Software lead)
 
-Tyler Posegate
+Tyler Posegate (Team Leader/Software assistant)
 
-Ryan M.
+Ryan M. (Hardware lead)
 
-Nate Porter 
+Nate Porter (Hardware assistant)
