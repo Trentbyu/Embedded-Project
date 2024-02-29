@@ -1,38 +1,29 @@
 {
     "components": [
         {
-            "type": "ImageViewer",
+            "type": "TemperatureViewer",
             "props": {
                 "imageSourceLink": "192.100.1.116",
-                "ESPNAME": "Test",
+                "ESPNAME": "Tem",
                 "Device": "ESP32",
-                "room": "F"
+                "room": "L"
             }
         },
         {
             "type": "TemperatureViewer",
             "props": {
-                "imageSourceLink": "192.100.1.103",
-                "ESPNAME": "asdsa2",
-                "Device": "ESP8266",
-                "room": "L"
+                "imageSourceLink": "192.100.1.115",
+                "ESPNAME": "Temp2",
+                "Device": "ESP32",
+                "room": "F"
             }
         },
         {
-            "type": "HumidityViewer",
+            "type": "ImageViewer",
             "props": {
-                "imageSourceLink": "192.100.1.103",
-                "ESPNAME": "Tester22",
-                "Device": "ESP8266",
-                "room": "L"
-            }
-        },
-        {
-            "type": "AqiViewer",
-            "props": {
-                "imageSourceLink": "192.100.1.104",
-                "ESPNAME": "Tester2",
-                "Device": "ESP8266",
+                "imageSourceLink": "192.100.1.115",
+                "ESPNAME": "CAm",
+                "Device": "ESP32",
                 "room": "L"
             }
         }

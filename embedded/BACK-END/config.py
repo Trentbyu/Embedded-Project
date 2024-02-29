@@ -2,9 +2,11 @@ from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 from flask_cors import cross_origin
 import os
+import matplotlib.pyplot as plt  
+# import datetime
 # import cv2
 import json  # Import the json module
-from datetime import datetime
+from datetime import datetime, timedelta
 app = Flask(__name__)
 CORS(app)
 # os.chdir('c:\\Users\\trent\\OneDrive\\Documents\\GitHub\\Embedded-Project\\')
@@ -168,17 +170,53 @@ def save_float():
     }
 
     # Save the data to a JSON file
-    filename = f"{sender_ip}_{timestamp}_data.json"
-    save_path = os.path.join(UPLOAD_FOLDER, sender_ip, filename)
+    filename = f"{sender_ip}_data.json"
+    save_path = os.path.join(UPLOAD_FOLDER, filename)
     try:
-        with open(save_path, 'w') as json_file:
-            json.dump(data, json_file)
+        # Check if the file already exists
+        if os.path.exists(save_path):
+            with open(save_path, 'r') as json_file:
+                existing_data = json.load(json_file)
+            # Append the new data to the existing data
+            existing_data.append(data)
+            with open(save_path, 'w') as json_file:
+                json.dump(existing_data, json_file, indent=4)
+        else:
+            # If the file doesn't exist, create a new one and write the data
+            with open(save_path, 'w') as json_file:
+                json.dump([data], json_file, indent=4)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
     return jsonify({'message': 'Float value saved successfully', 'path': save_path}), 200
 
 
+
+@app.route('/api/get_float_data')
+def get_float_data():
+    ip_address = request.args.get('ip_address')
+    if ip_address is None:
+        return jsonify(error="IP address parameter is missing"), 400
+    
+    # Construct the file path based on the IP address
+    ip_address_formatted = ip_address.replace('.', '_') + "_plot.png"
+    file_path = os.path.join(UPLOAD_FOLDER, ip_address_formatted)
+    print(file_path)
+    try:
+        # Check if the file exists
+        if os.path.exists(file_path):
+            # Return the image file with cache-control headers disabled
+            response = send_file(file_path, mimetype='image/png')
+            response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'  # Disable caching
+            response.headers['Pragma'] = 'no-cache'
+            response.headers['Expires'] = '0'
+            return response
+        else:
+            return jsonify(error="Image file not found"), 404
+    except Exception as e:
+        return jsonify(error="An error occurred while processing the request: {}".format(str(e))), 500
+
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
     # app.run(debug=True)
