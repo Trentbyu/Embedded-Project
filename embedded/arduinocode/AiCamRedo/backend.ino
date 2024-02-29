@@ -15,8 +15,8 @@ String sendPhoto() {
 
   if (client.connect(serverName.c_str(), serverPort)) {
     // Serial.println("Connection successful!");    
-    String head = "--RandomNerdTutorials\r\nContent-Disposition: form-data; name=\"imageFile\"; filename=\"esp32-cam.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n";
-    String tail = "\r\n--RandomNerdTutorials--\r\n";
+    String head = "--ECEN361\r\nContent-Disposition: form-data; name=\"imageFile\"; filename=\"esp32-cam.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n";
+    String tail = "\r\n--ECEN361--\r\n";
 
     uint32_t imageLen = fb->len;
     uint32_t extraLen = head.length() + tail.length();
@@ -25,7 +25,7 @@ String sendPhoto() {
     client.println("POST " + serverPath + " HTTP/1.1");
     client.println("Host: " + serverName);
     client.println("Content-Length: " + String(totalLen));
-    client.println("Content-Type: multipart/form-data; boundary=RandomNerdTutorials");
+    client.println("Content-Type: multipart/form-data; boundary=ECEN361");
     client.println();
     client.print(head);
   
@@ -42,7 +42,7 @@ String sendPhoto() {
     
     while ((startTimer + timoutTimer) > millis()) {
       Serial.print(".");
-      delay(100);      
+      vTaskDelay(pdMS_TO_TICKS(10000));   
       while (client.available()) {
         char c = client.read();
         if (c == '\n') {
@@ -80,6 +80,35 @@ String sendPhoto() {
 
 
 
+void sendFloat(float floatValue) {
+  HTTPClient http;
+  
+  // Construct the complete URL with the hardcoded endpoint
+  String url = "http://192.100.1.100:5000/api/save_float";
+
+  Serial.print("Calling endpoint: ");
+  Serial.println(url);
+
+  // Prepare the JSON payload
+  String jsonPayload = "{\"floatValue\":" + String(floatValue, 2) + "}";
+
+  // Make a POST request to the endpoint
+  http.begin(url);
+  http.addHeader("Content-Type", "application/json");
+  
+  // Send the JSON payload
+  int httpResponseCode = http.POST(jsonPayload);
+
+  if (httpResponseCode > 0) {
+    Serial.println("HTTP Response code: " + String(httpResponseCode));
+  } else {
+    Serial.print("Error in HTTP request: ");
+    Serial.println(httpResponseCode);
+  }
+
+  // Close the connection
+  http.end();
+}
 
 
 
@@ -130,13 +159,23 @@ void handleServerIPRequest(AsyncWebServerRequest *request) {
 // Function to periodically execute
 void periodicTask(void *pvParameters) {
  
-
+  TickType_t lastFloatSendTime = 0;
   // Infinite loop for periodic execution
   while (true) {
-     vTaskDelay(pdMS_TO_TICKS(10000)); // Delay for 100ms
+     vTaskDelay(pdMS_TO_TICKS(10000)); 
 
       sendPhoto();
+      // Get the current FreeRTOS tick count
+    TickType_t currentTime = xTaskGetTickCount();
 
+    // Check if 5 seconds have passed since the last float send
+    if ((currentTime - lastFloatSendTime) >= pdMS_TO_TICKS(50000)) {
+        // Update the last float send time
+        lastFloatSendTime = currentTime;
+
+        // Send the float value
+        sendFloat(temprature_sens_read());
+    }
     }
 
     // Delay for a short time to avoid high CPU usage

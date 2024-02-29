@@ -50,7 +50,7 @@ void handleSetInterval(AsyncWebServerRequest *request) {
 
 void handleTemperature(AsyncWebServerRequest *request) {
   // Convert raw temperature in F to Celsius degrees
-  float temperatureC = (temprature_sens_read() - 32) / 1.8;
+  float temperatureC = temprature_sens_read() ;
 
   // Create a JSON string
   String jsonString = "{";

@@ -9,7 +9,7 @@ void connectToWiFi() {
       wifiConnected = true;
       break;
     }
-    delay(1000);
+    delay(500);
     Serial.println("Connecting to WiFi...");
   }
 
@@ -48,7 +48,7 @@ void connectToWiFi() {
         wifiConnected = true;
         break;
       }
-      delay(1000);
+      delay(500);
       Serial.println("Connecting to WiFi...");
     }
 

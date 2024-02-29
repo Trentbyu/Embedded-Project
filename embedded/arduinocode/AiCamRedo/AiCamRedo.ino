@@ -38,6 +38,7 @@ String serverName = "";   // REPLACE WITH YOUR Raspberry Pi IP ADDRESS
 //String serverName = "example.com";   // OR REPLACE WITH YOUR DOMAIN NAME
 
 String serverPath = "/api/save_image";     // The default serverPath should be upload.php
+String serverPath2 = "/api/save_float";     // The default serverPath should be upload.php
 
 const int serverPort = 5000;
 const int buttonPin = 2; // Change this to the GPIO pin you're using for the button
@@ -146,7 +147,7 @@ void setup() {
   // setCpuFrequencyMhz(80);
 
 
-  delay(1000);  // Add a delay of 5 seconds
+  delay(500);  // Add a delay of 5 seconds
 
   Serial.println(WiFi.status());
   // Serve the video stream
