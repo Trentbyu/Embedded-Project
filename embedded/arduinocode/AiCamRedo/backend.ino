@@ -162,9 +162,7 @@ void periodicTask(void *pvParameters) {
   TickType_t lastFloatSendTime = 0;
   // Infinite loop for periodic execution
   while (true) {
-     vTaskDelay(pdMS_TO_TICKS(10000)); 
-
-      sendPhoto();
+     vTaskDelay(pdMS_TO_TICKS(100)); 
       // Get the current FreeRTOS tick count
     TickType_t currentTime = xTaskGetTickCount();
 
@@ -175,6 +173,12 @@ void periodicTask(void *pvParameters) {
 
         // Send the float value
         sendFloat(temprature_sens_read());
+    }
+    if ((currentTime - lastFloatSendTime) >= pdMS_TO_TICKS(10000)) {
+        // Update the last float send time
+        lastFloatSendTime = currentTime;
+        // Send the float value
+         sendPhoto();
     }
     }
 

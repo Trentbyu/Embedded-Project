@@ -26,6 +26,7 @@ void callEndpoint(String endpoint) {
 }
 
 void buttonTask(void *parameter) {
+  TickType_t lastFloatSendTime = 0;
   while (true) {
     bool newState = digitalRead(buttonPin);
     
@@ -36,14 +37,17 @@ void buttonTask(void *parameter) {
       // If button is pressed (assuming the button is connected between GPIO and GND)
       if (buttonState == LOW) {
         Serial.println("Button pressed!");
-        // Perform your action here when the button is pressed
-        sendPhoto();
-        vTaskDelay(100 / portTICK_PERIOD_MS); // Delay for 100 milliseconds
-      }
-
-      for (int i = 0; i < 10; i++) {
-        sendPhoto();
-        vTaskDelay(100 / portTICK_PERIOD_MS); // Delay for 100 milliseconds
+        TickType_t startTime = xTaskGetTickCount(); // Record the start time
+        
+        // Run the block for 5 seconds
+        while ((xTaskGetTickCount() - startTime) <= pdMS_TO_TICKS(5000)) {
+          if ((xTaskGetTickCount() - lastFloatSendTime) >= pdMS_TO_TICKS(1000)) {
+            // Update the last float send time
+            lastFloatSendTime = xTaskGetTickCount();
+            // Send the float value
+            sendPhoto();
+          }
+        }
       }
     }
     vTaskDelay(10 / portTICK_PERIOD_MS); // Delay for 10 milliseconds before checking button state again
