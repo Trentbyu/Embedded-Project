@@ -26,7 +26,7 @@ uint8_t temprature_sens_read();
 char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 bool power;
-IPAddress staticIP(192, 168, 0, 100);  // Set your desired static IP address
+IPAddress staticIP(192, 168, 0, 106);  // Set your desired static IP address
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
 bool wifiConnected = 0;
