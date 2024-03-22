@@ -17,7 +17,7 @@ char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 char serverIP[16]; // Maximum length for server IP
 bool power;
-IPAddress staticIP(192, 100, 1, 117);  // Set your desired static IP address
+IPAddress staticIP(192, 100, 1, 116);  // Set your desired static IP address
 IPAddress gateway(192, 100, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
 bool wifiConnected = 0;

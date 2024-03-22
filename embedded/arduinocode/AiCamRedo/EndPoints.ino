@@ -142,6 +142,6 @@ void handleLight(AsyncWebServerRequest *request) {
         digitalWrite(flashPin, LOW);
     }
 
-    Serail.print("Lights");
+    // Serail.print("Lights");
     request->send(200, "text/plain", "Flash state toggled");
 }

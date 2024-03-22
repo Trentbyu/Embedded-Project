@@ -7,6 +7,8 @@
 #include <ESPAsyncWebServer.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
+#include <ESP8266HTTPClient.h>
+
 
 // Replace with your network credentials
 const char* ssid = "TP-Link_49D5";
@@ -30,7 +32,7 @@ unsigned long previousMillis = 0;    // will store last time DHT was updated
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
 // Updates DHT readings every 30 seconds
-const long interval = 30000;  
+const long interval = 5000;  
 
 
 // Replaces placeholder with DHT values
@@ -92,6 +94,7 @@ void loop(){
     //float newT = dht.readTemperature();
      //Read temperature as Fahrenheit (isFahrenheit = true)
     float newT = dht.readTemperature(true);
+    sendFloat(newT);
     // if temperature read failed, don't change t value
     if (isnan(newT)) {
       Serial.println("Failed to read from DHT sensor!");
@@ -137,4 +140,37 @@ void handleHumidity(AsyncWebServerRequest *request) {
 
   // Send the JSON response
   request->send(200, "application/json", jsonString);
+}
+// #include <ESP8266HTTPClient.h>
+
+
+void sendFloat(float floatValue) {
+  // Construct the complete URL with the hardcoded endpoint
+  String url = "http://192.100.1.100:5000/api/save_float";
+
+  Serial.print("Calling endpoint: ");
+  Serial.println(url);
+
+  // Prepare the JSON payload
+  String jsonPayload = "{\"floatValue\":" + String(floatValue, 2) + "}";
+
+  // Make a POST request to the endpoint
+  WiFiClient client;
+  HTTPClient http;
+  http.begin(client, url); // Updated line
+
+  http.addHeader("Content-Type", "application/json");
+  
+  // Send the JSON payload
+  int httpResponseCode = http.POST(jsonPayload);
+
+  if (httpResponseCode > 0) {
+    Serial.println("HTTP Response code: " + String(httpResponseCode));
+  } else {
+    Serial.print("Error in HTTP request: ");
+    Serial.println(httpResponseCode);
+  }
+
+  // Close the connection
+  http.end();
 }
