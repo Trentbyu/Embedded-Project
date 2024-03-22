@@ -1,12 +1,12 @@
-#include <WiFi.h>
-#include <AsyncTCP.h>
+#include <ESP8266WiFi.h>
+// #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 
 int ledPin = 2; // Change to your LED pin
-const char *ssid = "Blackfamily";
-const char *password = "Blacks1987";
-IPAddress staticIP(192, 168, 0, 200); // Define your desired static IP address
-IPAddress gateway(192, 168, 0, 1);     // Gateway should be on the same subnet
+const char *ssid = "TP-Link_49D5";
+const char *password = "ECEN361$";
+IPAddress staticIP(192, 100, 1, 200); // Define your desired static IP address
+IPAddress gateway(192, 100, 1, 1);     // Gateway should be on the same subnet
 IPAddress subnet(255, 255, 255, 0);
 
 AsyncWebServer server(80);
