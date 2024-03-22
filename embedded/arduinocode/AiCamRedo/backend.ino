@@ -160,6 +160,8 @@ void handleServerIPRequest(AsyncWebServerRequest *request) {
 void periodicTask(void *pvParameters) {
  
   TickType_t lastFloatSendTime = 0;
+  TickType_t lastPicSendTime = 0;
+
   // Infinite loop for periodic execution
   while (true) {
      vTaskDelay(pdMS_TO_TICKS(100)); 
@@ -167,16 +169,17 @@ void periodicTask(void *pvParameters) {
     TickType_t currentTime = xTaskGetTickCount();
 
     // Check if 5 seconds have passed since the last float send
-    if ((currentTime - lastFloatSendTime) >= pdMS_TO_TICKS(50000)) {
+    if ((currentTime - lastFloatSendTime) >= pdMS_TO_TICKS(15000)) {
         // Update the last float send time
         lastFloatSendTime = currentTime;
 
         // Send the float value
         sendFloat(temprature_sens_read());
+        Serial.println("sent float");
     }
-    if ((currentTime - lastFloatSendTime) >= pdMS_TO_TICKS(10000)) {
+    if ((currentTime - lastPicSendTime) >= pdMS_TO_TICKS(10000)) {
         // Update the last float send time
-        lastFloatSendTime = currentTime;
+        lastPicSendTime = currentTime;
         // Send the float value
          sendPhoto();
     }
