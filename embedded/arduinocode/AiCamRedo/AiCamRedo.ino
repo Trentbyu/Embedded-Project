@@ -17,7 +17,7 @@ char ssid[32]; // Maximum length for SSID
 char password[64]; // Maximum length for password
 char serverIP[16]; // Maximum length for server IP
 bool power;
-IPAddress staticIP(192, 100, 1, 116);  // Set your desired static IP address
+IPAddress staticIP(192, 100, 1, 117);  // Set your desired static IP address
 IPAddress gateway(192, 100, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
 bool wifiConnected = 0;
@@ -45,7 +45,9 @@ const int buttonPin = 2; // Change this to the GPIO pin you're using for the but
 bool buttonState = false;
 const int flashPin = 4;
 WiFiClient client;
+bool flashState = 0;
 
+const int lightPin = 26; // Change this to the GPIO pin you're using for the button
 
 // CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
@@ -78,10 +80,11 @@ void setup() {
   Serial.begin(115200);
   pinMode(buttonPin, INPUT_PULLUP); // Set buttonPin as input with internal pull-up resistor
   pinMode(flashPin, OUTPUT);
+  
   Serial.println("Hello...");
   // Connect to Wi-Fi
   EEPROM.begin(512); // Initialize EEPROM with 512 bytes
-
+  digitalWrite(flashPin, LOW);
   // Load WiFi credentials from EEPROM
   EEPROM.get(0, ssid);
   EEPROM.get(sizeof(ssid), password);
@@ -158,6 +161,8 @@ void setup() {
   server.on("/serverIP", HTTP_GET, handleServerIPRequest);
   server.on("/set_interval", HTTP_GET, handleSetInterval);
   server.on("/video", HTTP_GET, handleVideoStream);
+  server.on("/light", HTTP_GET, handleLight);
+
   
  
   DefaultHeaders::Instance().addHeader("access-Control-Allow-Origin", "*");

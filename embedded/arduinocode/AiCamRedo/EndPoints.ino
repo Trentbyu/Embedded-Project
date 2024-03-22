@@ -127,3 +127,21 @@ void setPowerState(int state) {
         break;
   }
 }
+
+
+void handleLight(AsyncWebServerRequest *request) {
+    // Toggle the flash state
+    flashState = !flashState;
+
+    // Perform other actions based on the flash state, such as controlling the flashPin
+    if (flashState) {
+        // If flashState is true, turn on the flash (assuming flashPin is defined elsewhere)
+        digitalWrite(flashPin, HIGH);
+    } else {
+        // If flashState is false, turn off the flash
+        digitalWrite(flashPin, LOW);
+    }
+
+    Serail.print("Lights");
+    request->send(200, "text/plain", "Flash state toggled");
+}

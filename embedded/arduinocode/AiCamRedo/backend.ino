@@ -169,14 +169,14 @@ void periodicTask(void *pvParameters) {
     TickType_t currentTime = xTaskGetTickCount();
 
     // Check if 5 seconds have passed since the last float send
-    if ((currentTime - lastFloatSendTime) >= pdMS_TO_TICKS(15000)) {
-        // Update the last float send time
-        lastFloatSendTime = currentTime;
+    // if ((currentTime - lastFloatSendTime) >= pdMS_TO_TICKS(15000)) {
+    //     // Update the last float send time
+    //     lastFloatSendTime = currentTime;
 
-        // Send the float value
-        sendFloat(temprature_sens_read());
-        Serial.println("sent float");
-    }
+    //     // Send the float value
+    //     sendFloat(temprature_sens_read());
+    //     Serial.println("sent float");
+    // }
     if ((currentTime - lastPicSendTime) >= pdMS_TO_TICKS(10000)) {
         // Update the last float send time
         lastPicSendTime = currentTime;
