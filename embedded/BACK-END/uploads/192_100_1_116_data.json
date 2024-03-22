@@ -1648,5 +1648,410 @@
         "sender_ip": "192_100_1_116",
         "timestamp": "20240229010042",
         "float_value": 140.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308211639",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308211740",
+        "float_value": 134.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308212326",
+        "float_value": 142.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308212457",
+        "float_value": 148.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308212556",
+        "float_value": 152.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308212656",
+        "float_value": 155.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308212756",
+        "float_value": 156.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308212921",
+        "float_value": 155.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308213207",
+        "float_value": 150.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308213307",
+        "float_value": 155.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308213527",
+        "float_value": 147.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308213736",
+        "float_value": 143.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308213836",
+        "float_value": 144.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308214020",
+        "float_value": 142.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308214202",
+        "float_value": 140.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308214303",
+        "float_value": 141.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308214403",
+        "float_value": 141.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308214503",
+        "float_value": 142.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308214603",
+        "float_value": 142.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308214704",
+        "float_value": 141.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308214804",
+        "float_value": 143.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308214904",
+        "float_value": 143.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215049",
+        "float_value": 141.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215225",
+        "float_value": 147.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215353",
+        "float_value": 150.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215514",
+        "float_value": 144.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215614",
+        "float_value": 144.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215715",
+        "float_value": 144.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215758",
+        "float_value": 141.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215809",
+        "float_value": 143.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215819",
+        "float_value": 142.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215829",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215839",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215849",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215859",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215909",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215919",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308215929",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220002",
+        "float_value": 141.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220012",
+        "float_value": 142.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220022",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220032",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220042",
+        "float_value": 142.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220052",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220102",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220112",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220122",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220159",
+        "float_value": 140.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220210",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220220",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220230",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220240",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220250",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220300",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220310",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220320",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220330",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220340",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220350",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220400",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220410",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220420",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220430",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220440",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220450",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220500",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220510",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220520",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220531",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220541",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220551",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220601",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220611",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220621",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220631",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240308220641",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240315200121",
+        "float_value": 145.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240315200141",
+        "float_value": 128.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240315200201",
+        "float_value": 147.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240315200222",
+        "float_value": 150.0
+    },
+    {
+        "sender_ip": "192_100_1_116",
+        "timestamp": "20240315200242",
+        "float_value": 152.0
     }
 ]

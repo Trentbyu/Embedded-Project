@@ -4,7 +4,7 @@ import TemperatureViewer from './compoents/temp';
 import AqiViewer from './compoents/aqi';
 import HumidityViewer from './compoents/humidity';
 import ipAddress from './index';
-
+import Tvmount from './compoents/TV_mount';
 const HomePage = () => {
   const [components, setComponents] = useState([]);
 
@@ -54,6 +54,12 @@ const HomePage = () => {
                   )}
                   {component.type === 'HumidityViewer' && (
                     <HumidityViewer 
+                      humidityApiEndpoint={component.props.imageSourceLink}
+                      ESPNAME={component.props.ESPNAME}
+                    />
+                  )}
+                  {component.type === 'Tvmount' && (
+                    <Tvmount 
                       humidityApiEndpoint={component.props.imageSourceLink}
                       ESPNAME={component.props.ESPNAME}
                     />

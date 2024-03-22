@@ -23,10 +23,6 @@ This project aims to create a comprehensive system for controlling various aspec
 - Integration of additional cameras for enhanced surveillance.
 - Can be used as a dog camera or for monitoring the backdoor.
 
-### Smart Porch Light
-- Implementation of a smart porch light to aid camera visibility in low-light conditions.
-- Enhances security and visibility around the front door area.
-
 ### AQI Sensor
 - Integration of an Air Quality Index (AQI) sensor for monitoring outdoor air quality.
 - Provides valuable environmental data for informational purposes.

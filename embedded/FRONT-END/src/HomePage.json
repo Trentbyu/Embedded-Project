@@ -1,30 +1,30 @@
 {
     "components": [
         {
+            "type": "ImageViewer",
+            "props": {
+                "imageSourceLink": "192.100.1.116",
+                "ESPNAME": "DOORBELL",
+                "Device": "ESP32",
+                "room": "Door"
+            }
+        },
+        {
             "type": "TemperatureViewer",
             "props": {
                 "imageSourceLink": "192.100.1.116",
-                "ESPNAME": "Tem",
+                "ESPNAME": "FrontROom",
                 "Device": "ESP32",
-                "room": "L"
+                "room": "Front "
             }
         },
         {
-            "type": "TemperatureViewer",
+            "type": "Tvmount",
             "props": {
-                "imageSourceLink": "192.100.1.115",
-                "ESPNAME": "Temp2",
+                "imageSourceLink": "192.100.1.116",
+                "ESPNAME": "Tester22",
                 "Device": "ESP32",
-                "room": "F"
-            }
-        },
-        {
-            "type": "ImageViewer",
-            "props": {
-                "imageSourceLink": "192.100.1.115",
-                "ESPNAME": "CAm",
-                "Device": "ESP32",
-                "room": "L"
+                "room": "new"
             }
         }
     ]
