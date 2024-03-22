@@ -7,7 +7,7 @@ const char* ssid = "TP-Link_49D5";
 const char* password = "ECEN361$";
 IPAddress staticIP(192, 100, 1, 104);  // Set your desired static IP address
 IPAddress gateway(192, 100, 1, 1);
-IPAddress subnet(255, 255, 255, 0)
+IPAddress subnet(255, 255, 255, 0);
 const int mqPin = A0;
 
 // Create an AsyncWebServer object on port 80 to view the data. 
